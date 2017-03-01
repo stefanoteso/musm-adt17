@@ -4,19 +4,19 @@ import sys
 import os
 import logging
 import numpy as np
-import setmargin
+import musm
 
 from sklearn.utils import check_random_state
 
 
 PROBLEMS = {
-    'synthetic': setmargin.Synthetic,
-    'pc': setmargin.PC,
+    'synthetic': musm.Synthetic,
+    'pc': musm.PC,
 }
 
 USERS = {
-    'noiseless': setmargin.NoiselessUser,
-    'pl': setmargin.PlackettLuceUser,
+    'noiseless': musm.NoiselessUser,
+    'pl': musm.PlackettLuceUser,
 }
 
 
@@ -36,7 +36,7 @@ def generate_users(problem, nopargs):
 
     users = []
     for uid in range(1, args.num_users + 1):
-        w_star = setmargin.sample_users(problem, rng=rng, **nopargs)
+        w_star = musm.sample_users(problem, rng=rng, **nopargs)
         users.append(User(problem, w_star, **nopargs))
 
     return users
@@ -46,18 +46,18 @@ def run(args):
     problem = PROBLEMS[args.problem]()
 
     rng = check_random_state(args.seed)
-    nopargs = setmargin.subdict(args, nokeys={'problem'})
+    nopargs = musm.subdict(args, nokeys={'problem'})
 
     try:
-        users = setmargin.load(args.users)
+        users = musm.load(args.users)
     except:
         users = generate_users(problem, nopargs)
-        setmargin.dump(args['weights'], users)
+        musm.dump(args['weights'], users)
 
     for uid in range('num_users'):
-        traces.append(setmargin.setmargin(problem, user, rng=rng))
+        traces.append(musm.setmargin(problem, user, rng=rng))
 
-    setmargin.dump(get_results_path(args),
+    musm.dump(get_results_path(args),
                    {'args': var(args), 'traces': traces})
 
 
