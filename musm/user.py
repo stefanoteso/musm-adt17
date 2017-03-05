@@ -3,6 +3,9 @@ from scipy.misc import logsumexp
 from sklearn.utils import check_random_state
 
 
+__all__ = ['sample_users', 'NoiselessUser', 'PlackettLuceUser']
+
+
 def _sparsify(w, density, rng):
     if not (0 < density <= 1):
         raise ValueError('density must be in (0, 1], got {}'.format(density))
@@ -12,11 +15,11 @@ def _sparsify(w, density, rng):
     return w
 
 
-def sample_users(problem, mode='normal', density=1, non_negative=False,
-                 rng=None):
+def sample_users(problem, user_distrib='normal', density=1, non_negative=False,
+                 rng=0, **kwargs):
     n = problem.num_attributes
     rng = check_random_state(rng)
-    if mode == 'uniform':
+    if user_distrib == 'uniform':
         w = rng.uniform(0, 1, size=n)
     else:
         w = rng.normal(-1, 1, size=n)
@@ -26,7 +29,7 @@ def sample_users(problem, mode='normal', density=1, non_negative=False,
 
 
 class User(object):
-    def __init__(self, problem, w_star, min_regret=0, uid=0, rng=None):
+    def __init__(self, problem, w_star, min_regret=0, uid=0, rng=None, **kwargs):
         self.problem = problem
         self.w_star = w_star
         self.min_regret = min_regret
@@ -63,8 +66,8 @@ class NoiselessUser(User):
 
 
 class PlackettLuceUser(User):
-    def __init__(self, lmbda=1, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, lmbda=1, **kwargs):
+        super().__init__(*args, **kwargs)
         self.lmbda = lmbda
 
     def _utils_to_pvals(self, utils):
