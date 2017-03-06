@@ -6,7 +6,7 @@ from time import time
 from . import get_logger
 
 
-_LOG = get_logger('setmargin')
+_LOG = get_logger('adt17')
 
 _ALL_ALPHAS = list(it.product(
         (20, 20, 5, 1),
@@ -62,8 +62,8 @@ def setmargin(problem, user, set_size=2, max_iters=100, cv=True, **kwargs):
         i_star = user.query_choice(query_set)
 
         t1 = time()
-        deltas = [np.array(query_set[i_star]) - np.array(query_set[i])
-                 for i in range(set_size) if i != i_star]
+        deltas = [query_set[i_star] - query_set[i] for i in range(set_size)
+                  if i != i_star]
         for delta in deltas:
             dataset = np.append(dataset, delta.reshape(1, -1), axis=0)
 

@@ -1,11 +1,12 @@
 import numpy as np
 from pymzn import MiniZincModel, minizinc
 from pymzn._mzn._solvers import Gurobi
+from textwrap import dedent
 
 from . import get_logger, freeze
 
 
-_LOG = get_logger('setmargin')
+_LOG = get_logger('adt17')
 
 _GUROBI = Gurobi(path='/opt/libminizinc/bin/mzn-gurobi')
 
@@ -19,10 +20,12 @@ class Problem(object):
         raise NotImplementedError()
 
     def infer(self, w):
-        _LOG.debug('''\
+        assert not hasattr(self, 'cost_matrix')
+
+        _LOG.debug(dedent('''\
                 running inference
-                w = {w}
-            '''.format(**locals()))
+                w = {}
+            ''').format(w))
 
         model = MiniZincModel(self.template)
         model.par('w', w)
@@ -35,10 +38,16 @@ class Problem(object):
             model.constraint(constraint)
 
         x = minizinc(model, output_vars=['x'], solver=_GUROBI)[0]['x']
-        return np.array(x)
+        x = np.array(x)
+
+        _LOG.debug('inferred {}'.format(x))
+
+        return x
 
     def select_query(self, dataset, set_size, alpha, timeout=0):
-        _LOG.debug('running qs ({set_size}, {alpha})'.format(**locals()))
+        assert not hasattr(self, 'cost_matrix')
+
+        _LOG.debug('running qs ({}, {})'.format(set_size, alpha))
 
         model = MiniZincModel(self.template)
 
@@ -103,4 +112,15 @@ class Problem(object):
                 model.constraint(constraint)
 
         assignment = minizinc(model, output_vars=['x', 'w'], solver=_GUROBI)[0]
-        return np.array(assignment['w']), np.array(assignment['x'])
+        w = np.array(assignment['w'])
+        x = np.array(assignment['x'])
+
+        _LOG.debug(dedent('''\
+                selected
+                w =
+                {}
+                x =
+                {}
+            ''').format(w, x))
+
+        return w, x

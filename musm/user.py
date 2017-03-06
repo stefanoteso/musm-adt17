@@ -1,43 +1,29 @@
 import numpy as np
 from scipy.misc import logsumexp
 from sklearn.utils import check_random_state
+from textwrap import dedent
+
+from . import get_logger, subdict
 
 
-__all__ = ['sample_users', 'NoiselessUser', 'PlackettLuceUser']
+__all__ = ['NoiselessUser', 'PlackettLuceUser']
 
-
-def _sparsify(w, density, rng):
-    if not (0 < density <= 1):
-        raise ValueError('density must be in (0, 1], got {}'.format(density))
-    w = np.array(w)
-    perm = rng.permutation(len(w))
-    w[perm[:round((1 - density) * len(w))]] = 0
-    return w
-
-
-def sample_users(problem, user_distrib='normal', density=1, non_negative=False,
-                 rng=0, **kwargs):
-    n = problem.num_attributes
-    rng = check_random_state(rng)
-    if user_distrib == 'uniform':
-        w = rng.uniform(0, 1, size=n)
-    else:
-        w = rng.normal(-1, 1, size=n)
-    if non_negative:
-        w = np.abs(w)
-    return _sparsify(w, density, rng)
+_LOG = get_logger('adt17')
 
 
 class User(object):
-    def __init__(self, problem, w_star, min_regret=0, uid=0, rng=None, **kwargs):
+    def __init__(self, problem, w_star, min_regret=0, noise=0, rng=None):
         self.problem = problem
         self.w_star = w_star
         self.min_regret = min_regret
-        self.uid = uid
+        self.noise = noise
         self.rng = check_random_state(rng)
 
         self.x_star = self.problem.infer(self.w_star)
         self.u_star = self.utility(self.x_star)
+
+    def __repr__(self):
+        return 'User({w_star}, {x_star}, {u_star}; {noise})'.format(**vars(self))
 
     def utility(self, x):
         return np.dot(self.w_star, x)
@@ -54,7 +40,15 @@ class User(object):
                              .format(len(query_set)))
         utils = np.array([self.utility(x) for x in query_set])
         pvals = self._utils_to_pvals(utils)
-        return np.argmax(self.rng.multinomial(1, pvals=(pvals / pvals.sum())))
+        pvals = pvals / pvals.sum()
+        i_star = np.argmax(self.rng.multinomial(1, pvals=pvals))
+        _LOG.debug(dedent('''\
+                selecting best item from
+                utils = {}
+                pvals = {}
+                i_star = {}
+            ''').format(utils, pvals, i_star))
+        return i_star
 
     def query_ranking(self, query_set):
         raise NotImplementedError()
@@ -66,9 +60,5 @@ class NoiselessUser(User):
 
 
 class PlackettLuceUser(User):
-    def __init__(self, *args, lmbda=1, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.lmbda = lmbda
-
     def _utils_to_pvals(self, utils):
-        return np.exp(utils - logsumexp(self.lmbda * utils))
+        return np.exp(utils - logsumexp(self.noise * utils))
