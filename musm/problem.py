@@ -29,7 +29,7 @@ class Problem(object):
             assert (transformed_w >= 0).all()
 
         _LOG.debug(dedent('''\
-                running inference
+                RUNNING INFERENCE
                 w =
                 {}
                 transformed w =
@@ -59,7 +59,11 @@ class Problem(object):
     def select_query(self, dataset, set_size, alpha, transform=None):
         assert not hasattr(self, 'cost_matrix')
 
-        _LOG.debug('running qs ({}, {})'.format(set_size, alpha))
+        _LOG.debug(dedent('''\
+                RUNNING QS k={}, alpha={}
+                dataset =
+                {}
+            ''').format(set_size, alpha, dataset))
 
         w_min = np.zeros(self.num_attributes)
         w_max = np.ones(self.num_attributes)
@@ -68,6 +72,7 @@ class Problem(object):
             w_min = a * w_min + b
             w_max = a * w_max + b
             assert (w_min >= 0).all() and (w_max >= 0).all()
+        w_top = w_max.max()
 
         model = MiniZincModel(self.template)
 
@@ -76,14 +81,14 @@ class Problem(object):
         model.var('array[1 .. 3] of float', 'ALPHA', alpha)
         model.par('W_MIN', w_min)
         model.par('W_MAX', w_max)
-        model.par('W_TOP', np.max(w_max))
+        model.par('W_TOP', w_top)
 
         model.var('array[QUERY, ATTRS] of var {0, 1}', 'x')
-        model.var('array[QUERY, ATTRS] of var float', 'w')
+        model.var('array[QUERY, ATTRS] of var 0.0 .. infinity', 'w')
         model.var('array[QUERY, QUERY, ATTRS] of var 0.0 .. infinity', 'p')
         model.var('var 0.0 .. infinity', 'margin')
 
-        obj_slacks = ' '
+        obj_slacks = ''
         if len(dataset) >= 1:
             model.par('DATASET', dataset)
             model.par('EXAMPLES', set(range(1, len(dataset) + 1)))
@@ -91,15 +96,18 @@ class Problem(object):
             obj_slacks = '- ALPHA[1] * sum([slack[i,h] | i in QUERY, h in EXAMPLES]) '
 
         model.var('var float', 'objective',
-                  ('margin ' + obj_slacks +
+                  ('margin ' +
+                   obj_slacks +
                    '- ALPHA[2] * sum([w[i,z] | i in QUERY, z in ATTRS]) ' +
                    '+ ALPHA[3] * sum([p[i,i,z] | i in QUERY, z in ATTRS]) '))
         model.solve('maximize objective')
 
         # dataset constraints
-        for h in range(1, len(dataset) + 1):
-            for i in range(1, set_size + 1):
-                model.constraint('sum(z in ATTRS)(w[{i},z] * row(DATASET, {h})[z]) >= margin - slack[{i},{h}]'.format(**locals()))
+        for s in range(1, len(dataset) + 1):
+            model.constraint('''\
+                forall(i in QUERY)(
+                    sum(z in ATTRS)(w[i,z] * row(DATASET, {s})[z]) >= margin - slack[i,{s}])
+                '''.format(s=s))
 
         # eq 6
         model.constraint('''\
@@ -107,11 +115,18 @@ class Problem(object):
                 sum([p[i,i,z] - p[i,j,z] | z in ATTRS]) >= margin)
             ''')
 
-        # eq 7
+        # eq 7a
         model.constraint('''\
             forall(i in QUERY)(
                 forall(z in ATTRS)(
-                    p[i,i,z] <= W_TOP * x[i,z] /\ p[i,i,z] <= w[i,z]))
+                    p[i,i,z] <= (W_TOP * x[i,z])))
+            ''')
+
+        # eq 7b
+        model.constraint('''\
+            forall(i in QUERY)(
+                forall(z in ATTRS)(
+                    p[i,i,z] <= w[i,z]))
             ''')
 
         # eq 8
@@ -121,11 +136,18 @@ class Problem(object):
                     p[i,j,z] >= (w[i,z] - 2 * W_TOP * (1 - x[j,z]))))
             ''')
 
-        # eq 9
+        # eq 9a
         model.constraint('''\
             forall(i in QUERY)(
                 forall(z in ATTRS)(
-                    w[i,z] >= W_MIN[z] /\\ w[i,z] <= W_MAX[z]))
+                    w[i,z] >= W_MIN[z]))
+            ''')
+
+        # eq 9b
+        model.constraint('''\
+            forall(i in QUERY)(
+                forall(z in ATTRS)(
+                    w[i,z] <= W_MAX[z]))
             ''')
 
         # work around unbounded problems
@@ -139,9 +161,10 @@ class Problem(object):
             for constraint in self._constraints(xk):
                 model.constraint(constraint)
 
-        assignment = minizinc(model, output_vars=['x', 'w'], solver=_GUROBI)[0]
-        w = np.array(assignment['w'])
-        x = np.array(assignment['x'])
+        assignments = minizinc(model, output_vars=['x', 'w'], solver=_GUROBI)
+        assert len(assignments) > 0, 'unsatisfiable'
+        w = np.array(assignments[0]['w'])
+        x = np.array(assignments[0]['x'])
 
         _LOG.debug(dedent('''\
                 selected
