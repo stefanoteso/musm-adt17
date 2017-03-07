@@ -1,6 +1,7 @@
 import numpy as np
 import itertools as it
 from scipy.spatial.distance import pdist
+from sklearn.utils import check_random_state
 from time import time
 
 from . import get_logger
@@ -9,12 +10,18 @@ from . import get_logger
 _LOG = get_logger('adt17')
 
 
-def select_user(datasets, similarity, quality):
-    # TODO experiment with other selection mechanisms
-    return np.argmax(quality)
+def select_user(variance, satisfied_users, rng):
+    """Select a user to be queried. Ties are broken at random."""
+    temp = np.array(variance)
+    temp[satisfied_users] = -1
+    pvals = np.array([var == temp.max() for var in temp])
+    pvals = pvals / len(pvals)
+    return np.argmax(rng.multinomial(1, pvals=pvals))
+
 
 
 def compute_kernel_row(weights, u):
+    """Compute a row of the kernel matrix."""
     row = np.zeros(len(weights))
     wu = weights[u]
     for v, wv in enumerate(weights):
@@ -23,7 +30,19 @@ def compute_kernel_row(weights, u):
     return row
 
 
-def musm(problem, group, set_size=2, max_iters=100):
+def compute_transformation(similarity, variance, u, transform='sumk'):
+    m = len(variance)
+    if transform == 'sumk':
+        a = 1,
+        b = similarity[u,[v for v in range(m) if m != u]].sum()
+    return a, b
+
+
+def musm(problem, group, set_size=2, max_iters=100, transform='sumk',
+         rng=None):
+    """Runs the multi-user setmargin algorithm."""
+    rng = check_random_state(rng)
+
     num_users, num_attributes = len(group), problem.num_attributes
 
     group_str = '\n'.join([str(user) for user in group])
@@ -34,15 +53,18 @@ def musm(problem, group, set_size=2, max_iters=100):
 
     datasets = [np.empty((0, num_attributes)) for _ in group]
     weights = np.zeros((num_users, set_size, num_attributes))
-    similarity, quality = np.eye(num_users), np.ones(num_users)
+    similarity, variance = np.eye(num_users), np.ones(num_users)
 
     alpha = (1, 1, 1)
 
-    trace = []
+    trace, satisfied_users = [], []
     for t in range(max_iters):
         t0 = time()
-        u = select_user(datasets, similarity, quality)
-        w, query_set = problem.select_query(datasets[u], set_size, alpha)
+        u = select_user(variance, satisfied_users, rng)
+        p = compute_transformation(similarity, variance, u,
+                                   transform=transform)
+        w, query_set = problem.select_query(datasets[u], set_size, alpha,
+                                            transform=p)
         t0 = time() - t0
 
         i_star = group[u].query_choice(query_set)
@@ -57,16 +79,17 @@ def musm(problem, group, set_size=2, max_iters=100):
 
         similarity[u,:] = similarity[:,u] = compute_kernel_row(weights, u)
 
-        dist = 2 * pdist(w) / (set_size * (set_size - 1))
-        quality[u] = 1 / (1 + np.exp(dist))
+        variance[u] = np.sum(pdist(w)**2)
 
         regrets, num_satisfied = [], 0
         for user in group:
-            _, x = problem.select_query(datasets[u], 1, alpha)
+            p = compute_transformation(similarity, variance, u,
+                                       transform=transform)
+            _, x = problem.select_query(datasets[u], 1, alpha, transform=p)
             x = x[0]
             regrets.append(user.regret(x))
-            # XXX what to do with satisfied users?
-            num_satisfied += user.is_satisfied(x)
+            if user.is_satisfied(x):
+                satisfied_users.append(u)
         t1 = time() - t1
 
         dataset = datasets[u]
@@ -87,6 +110,7 @@ def musm(problem, group, set_size=2, max_iters=100):
 
         # TODO crossvalidation
 
-    _LOG.info('{} users satisfied after {} iterations'.format(num_satisfied, t))
+    _LOG.info('{} users satisfied after {} iterations'
+              .format(len(satisfied_users), t))
 
     return trace

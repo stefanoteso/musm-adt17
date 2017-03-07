@@ -19,19 +19,31 @@ class Problem(object):
     def _constraints(self, x):
         raise NotImplementedError()
 
-    def infer(self, w):
+    def infer(self, w, transform=None):
         assert not hasattr(self, 'cost_matrix')
+
+        transformed_w = w
+        if transform is not None:
+            a, b = transform
+            transformed_w = a * w + b
+            assert (transformed_w >= 0).all()
 
         _LOG.debug(dedent('''\
                 running inference
-                w = {}
-            ''').format(w))
+                w =
+                {}
+                transformed w =
+                {}
+            ''').format(w, transformed_w))
 
         model = MiniZincModel(self.template)
-        model.par('w', w)
+
+        model.par('w', transformed_w)
         model.par('ATTRS', set(range(1, self.num_attributes + 1)))
+
         model.var('array[ATTRS] of var {0, 1}', 'x')
         model.var('var float', 'utility', 'sum(z in ATTRS)(w[z] * x[z])')
+
         model.solve('maximize utility')
 
         for constraint in self._constraints('x'):
@@ -44,21 +56,30 @@ class Problem(object):
 
         return x
 
-    def select_query(self, dataset, set_size, alpha, timeout=0):
+    def select_query(self, dataset, set_size, alpha, transform=None):
         assert not hasattr(self, 'cost_matrix')
 
         _LOG.debug('running qs ({}, {})'.format(set_size, alpha))
+
+        w_min = np.zeros(self.num_attributes)
+        w_max = np.ones(self.num_attributes)
+        if transform is not None:
+            a, b = transform
+            w_min = a * w_min + b
+            w_max = a * w_max + b
+            assert (w_min >= 0).all() and (w_max >= 0).all()
 
         model = MiniZincModel(self.template)
 
         model.par('ATTRS', set(range(1, self.num_attributes + 1)))
         model.par('QUERY', set(range(1, set_size + 1)))
         model.var('array[1 .. 3] of float', 'ALPHA', alpha)
-        model.par('W_MIN', 0.0)
-        model.par('W_MAX', 1.0)
+        model.par('W_MIN', w_min)
+        model.par('W_MAX', w_max)
+        model.par('W_TOP', np.max(w_max))
 
         model.var('array[QUERY, ATTRS] of var {0, 1}', 'x')
-        model.var('array[QUERY, ATTRS] of var W_MIN .. W_MAX', 'w')
+        model.var('array[QUERY, ATTRS] of var float', 'w')
         model.var('array[QUERY, QUERY, ATTRS] of var 0.0 .. infinity', 'p')
         model.var('var 0.0 .. infinity', 'margin')
 
@@ -90,14 +111,21 @@ class Problem(object):
         model.constraint('''\
             forall(i in QUERY)(
                 forall(z in ATTRS)(
-                    p[i,i,z] <= W_MAX * x[i,z] /\ p[i,i,z] <= w[i,z]))
+                    p[i,i,z] <= W_TOP * x[i,z] /\ p[i,i,z] <= w[i,z]))
             ''')
 
         # eq 8
         model.constraint('''\
             forall(i, j in QUERY where i != j)(
                 forall(z in ATTRS)(
-                    p[i,j,z] >= (w[i,z] - 2 * W_MAX * (1 - x[j,z]))))
+                    p[i,j,z] >= (w[i,z] - 2 * W_TOP * (1 - x[j,z]))))
+            ''')
+
+        # eq 9
+        model.constraint('''\
+            forall(i in QUERY)(
+                forall(z in ATTRS)(
+                    w[i,z] >= W_MIN[z] /\\ w[i,z] <= W_MAX[z]))
             ''')
 
         # work around unbounded problems

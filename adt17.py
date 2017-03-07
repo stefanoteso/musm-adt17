@@ -94,7 +94,8 @@ def run(args):
         traces.append(musm.musm(problem,
                                 user_groups[gid],
                                 set_size=args['set_size'],
-                                max_iters=args['max_iters']))
+                                max_iters=args['max_iters'],
+                                rng=0))
 
     musm.dump(get_results_path(args), {'args': args, 'traces': traces})
 
