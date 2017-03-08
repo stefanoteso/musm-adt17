@@ -43,8 +43,7 @@ def _sparsify(w, density, rng):
     return w
 
 
-def sample_user_group(problem, num_users=5, user_distrib='normal', density=1,
-                      rng=0, **kwargs):
+def sample_group(problem, num_users=5, user_distrib='normal', density=1, rng=0):
     if user_distrib == 'uniform':
         w = rng.uniform(25, 25/4, size=(num_users, problem.num_attributes))
     elif user_distrib == 'normal':
@@ -56,20 +55,23 @@ def sample_user_group(problem, num_users=5, user_distrib='normal', density=1,
     return w
 
 
-def generate_user_groups(problem, nopargs):
-    User = USERS[nopargs['response_model']]
+def generate_user_groups(problem, args):
+    User = USERS[args['response_model']]
 
-    # we use a fixed RNG here for reproducibility
     rng = check_random_state(0)
 
     user_groups = []
-    for gid in range(nopargs['num_groups']):
-        w_star = sample_user_group(problem, rng=rng, **nopargs)
-        user_groups.append([User(problem, w_star[u],
-                                 min_regret=nopargs['min_regret'],
-                                 noise=nopargs['noise'],
+    for gid in range(args['num_groups']):
+        w_star = sample_group(problem,
+                              num_users=args['num_users_per_group'],
+                              user_distrib=args['user_distrib'],
+                              density=args['density'],
+                              rng=rng)
+        user_groups.append([User(problem, w_star[uid],
+                                 min_regret=args['min_regret'],
+                                 noise=args['noise'],
                                  rng=rng)
-                           for u in range(nopargs['num_users_per_group'])])
+                           for uid in range(args['num_users_per_group'])])
 
     return user_groups
 
