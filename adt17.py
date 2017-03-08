@@ -145,7 +145,7 @@ def main():
     if args.verbose:
         handlers.append(logging.StreamHandler(sys.stdout))
     logging.basicConfig(level=logging.DEBUG, handlers=handlers,
-                        format='%(levelname)-6s %(name)-14s: %(message)s')
+                        format='%(levelname)-6s %(name)-6s %(funcName)-12s: %(message)s')
 
     run(vars(args))
 
