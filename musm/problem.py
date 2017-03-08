@@ -10,6 +10,18 @@ from . import get_logger, freeze
 _LOG = get_logger('adt17')
 
 
+def dict2array(d):
+    indices = np.array(list(d.keys()))
+    if not len(indices):
+        return None
+    ndim = len(indices[0])
+    shape = [indices[:, dim].max() + 1 for dim in range(ndim)]
+    array = np.zeros(shape)
+    for index in map(tuple, indices):
+        array[index] = d[index].x
+    return array
+
+
 def dot(x, z):
     return gurobi.quicksum([x[i] * z[i] for i in range(len(x))])
 
@@ -79,22 +91,25 @@ class Problem(object):
         model.params.Seed = 0
         model.params.OutputFlag = 0
 
-        x = {(i, z): model.addVar(vtype=G.BINARY)
+        x = {(i, z): model.addVar(vtype=G.BINARY, name='x_{}_{}'.format(i, z))
              for i in range(set_size) for z in range(self.num_attributes)}
-        w = {(i, z): model.addVar(lb=0, vtype=G.CONTINUOUS)
+        w = {(i, z): model.addVar(lb=0, vtype=G.CONTINUOUS, name='w_{}_{}'.format(i, z))
              for i in range(set_size) for z in range(self.num_attributes)}
-        p = {(i, j, z): model.addVar(lb=0, vtype=G.CONTINUOUS)
+        p = {(i, j, z): model.addVar(lb=0, vtype=G.CONTINUOUS, name='p_{}_{}_{}'.format(i, j, z))
              for i, j, z in it.product(range(set_size), range(set_size), range(self.num_attributes))}
-        slacks = {(i, s): model.addVar(lb=0, vtype=G.CONTINUOUS)
+        slacks = {(i, s): model.addVar(lb=0, vtype=G.CONTINUOUS, name='slack_{}_{}'.format(i, s))
                   for i in range(set_size) for s in range(len(dataset))}
-        margin = model.addVar(vtype=G.CONTINUOUS)
+        margin = model.addVar(vtype=G.CONTINUOUS, name='margin')
 
         p_diag = [p[i,i,z] for i in range(set_size) for z in range(self.num_attributes)]
+        obj_slacks = 0
+        if len(slacks) > 0:
+            obj_slacks = gurobi.quicksum(slacks.values())
 
         # eq 4
         model.modelSense = G.MAXIMIZE
         model.setObjective(margin
-                           - alpha[0] * gurobi.quicksum(slacks.values())
+                           - alpha[0] * obj_slacks
                            - alpha[1] * gurobi.quicksum(w.values())
                            + alpha[2] * gurobi.quicksum(p_diag))
 
@@ -112,7 +127,8 @@ class Problem(object):
 
         # eq 7
         for i, z in it.product(range(set_size), range(self.num_attributes)):
-            model.addConstr(p[i,i,z] <= w_top * x[i,z])
+            model.addConstr(p[i,i,z] <= (w_top * x[i,z]))
+        for i, z in it.product(range(set_size), range(self.num_attributes)):
             model.addConstr(p[i,i,z] <= w[i,z])
 
         # eq 8
@@ -137,19 +153,24 @@ class Problem(object):
 
         model.optimize()
 
-        output_w = np.zeros((set_size, self.num_attributes))
-        output_x = np.zeros((set_size, self.num_attributes))
-        for i, z in it.product(range(set_size), range(self.num_attributes)):
-            output_w[i,z] = w[i,z].x
-            output_x[i,z] = x[i,z].x
-        w, x = output_w, output_x
+        x = dict2array(x)
+        w = dict2array(w)
+        p = dict2array(p)
+        slacks = dict2array(slacks)
+        margin = margin.x
 
         _LOG.debug(dedent('''\
-                selected
+                SELECTED QUERY SET:
+                utilities
                 w =
-                {}
+                {w}
                 x =
-                {}
-            ''').format(w, x))
+                {x}
+                p =
+                {p}
+                slacks =
+                {slacks}
+                margin = {margin}
+            ''').format(**locals()))
 
         return w, x
