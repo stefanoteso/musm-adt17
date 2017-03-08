@@ -1,3 +1,5 @@
+import gurobipy as gurobi
+
 from .problem import Problem
 
 class Synthetic(Problem):
@@ -12,11 +14,9 @@ class Synthetic(Problem):
         num_attributes = sum(self.domain_sizes)
         super().__init__('', num_attributes)
 
-    def _constraints(self, x):
-        constraints = []
-        lo = 0
+    def _add_constraints(self, model, x):
+        base = 0
         for domain_size in self.domain_sizes:
-            hi = lo + domain_size
-            constraints.append('sum([{x}[z] | z in {lo} + 1 .. {hi}]) == 1'.format(**locals()))
-            lo = hi
-        return constraints
+            x_domain = [x[z] for z in range(base, base + domain_size)]
+            model.addConstr(gurobi.quicksum(x_domain) == 1)
+            base += domain_size
