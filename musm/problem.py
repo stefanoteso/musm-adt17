@@ -10,6 +10,23 @@ from . import get_logger, freeze
 _LOG = get_logger('adt17')
 
 
+_STATUS = {
+    1: 'LOADED',
+    2: 'OPTIMAL',
+    3: 'INFEASIBLE',
+    4: 'INF_OR_UNBD',
+    5: 'UNBOUNDED',
+    6: 'CUTOFF',
+    7: 'ITERATION_LIMIT',
+    8: 'NODE_LIMIT',
+    9: 'TIME_LIMIT',
+    10: 'SOLUTION_LIMIT',
+    11: 'INTERRUPTED',
+    12: 'NUMERIC',
+    13: 'SUBOPTIMAL',
+}
+
+
 def dict2array(d):
     indices = np.array(list(d.keys()))
     if not len(indices):
@@ -53,7 +70,6 @@ class Problem(object):
 
         model.params.Threads = 1
         model.params.Seed = 0
-        model.params.OutputFlag = 0
 
         x = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
 
@@ -89,7 +105,6 @@ class Problem(object):
         model = gurobi.Model('queryselection')
         model.params.Threads = 1
         model.params.Seed = 0
-        model.params.OutputFlag = 0
 
         x = {(i, z): model.addVar(vtype=G.BINARY, name='x_{}_{}'.format(i, z))
              for i in range(set_size) for z in range(self.num_attributes)}
@@ -151,7 +166,22 @@ class Problem(object):
         for k in range(set_size):
             self._add_constraints(model, [x[k,z] for z in range(self.num_attributes)])
 
-        model.optimize()
+        try:
+            model.optimize()
+            model.objVal
+        except gurobi.GurobiError:
+            status = _STATUS[model.status]
+            msg = dedent('''\
+                    unsatisfiable, reason: {status}
+
+                    set_size = {set_size}
+                    alpha = {alpha}
+                    dataset =
+                    {dataset}
+                    transform = {transform}
+                ''').format(**locals())
+            model.write('failed.lp')
+            raise RuntimeError(msg)
 
         x = dict2array(x)
         w = dict2array(w)
