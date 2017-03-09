@@ -48,8 +48,9 @@ def bilinear(x, A, z):
 
 
 class Problem(object):
-    def __init__(self, template, num_attributes):
+    def __init__(self, template, num_attributes, transform=None):
         self.num_attributes = num_attributes
+        self.transform = transform
 
     def infer(self, w, transform=None):
         assert not hasattr(self, 'cost_matrix')

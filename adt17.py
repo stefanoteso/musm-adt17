@@ -25,10 +25,9 @@ USERS = {
 def get_results_path(args):
     properties = [
         args['problem'], args['num_groups'], args['num_users_per_group'],
-        args['max_iters'], args['set_size'],
-        args['min_regret'], args['user_distrib'], args['density'],
-        args['response_model'], args['noise'],
-        args['seed'],
+        args['max_iters'], args['set_size'], args['transform'],
+        args['enable_cv'], args['min_regret'], args['user_distrib'],
+        args['density'], args['response_model'], args['noise'], args['seed'],
     ]
     return os.path.join('results', '_'.join(map(str, properties)) + '.pickle')
 
@@ -45,9 +44,9 @@ def _sparsify(w, density, rng):
 
 def sample_group(problem, num_users=5, user_distrib='normal', density=1, rng=0):
     if user_distrib == 'uniform':
-        w = rng.uniform(25, 25/4, size=(num_users, problem.num_attributes))
+        w = rng.uniform(25, 25 / 3, size=(num_users, problem.num_attributes))
     elif user_distrib == 'normal':
-        w = rng.uniform(1, 100+1, size=(num_users, problem.num_attributes))
+        w = rng.uniform(1, 100 + 1, size=(num_users, problem.num_attributes))
     else:
         raise ValueError('invalid user_distrib, got {}'.format(user_distrib))
     for u in range(len(w)):
@@ -77,10 +76,8 @@ def generate_user_groups(problem, args):
 
 
 def run(args):
-    # build the problem instance
     problem = PROBLEMS[args['problem']]()
 
-    # build the user groups
     try:
         user_groups = musm.load(args['groups'])
     except:
@@ -97,6 +94,8 @@ def run(args):
                                 user_groups[gid],
                                 set_size=args['set_size'],
                                 max_iters=args['max_iters'],
+                                enable_cv=args['enable_cv'],
+                                transform=args['transform'],
                                 rng=0))
 
     musm.dump(get_results_path(args), {'args': args, 'traces': traces})
@@ -109,23 +108,29 @@ def main():
 
     fmt = argparse.ArgumentDefaultsHelpFormatter
     parser = argparse.ArgumentParser(formatter_class=fmt)
-    parser.add_argument('problem', type=str,
+
+    group = parser.add_argument_group('Experiment')
+    group.add_argument('problem', type=str,
                         help='the problem, any of {}'
                              .format(sorted(PROBLEMS.keys())))
-    parser.add_argument('-N', '--num-groups', type=int, default=20,
-                        help='number of user groups')
-    parser.add_argument('-M', '--num-users-per-group', type=int, default=5,
-                        help='number of users per group')
-    parser.add_argument('-T', '--max-iters', type=int, default=100,
-                        help='maximum number of elicitation iterations')
-    parser.add_argument('-s', '--seed', type=int, default=0,
-                        help='RNG seed')
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='enable debug spew')
+    group.add_argument('-N', '--num-groups', type=int, default=20,
+                       help='number of user groups')
+    group.add_argument('-M', '--num-users-per-group', type=int, default=5,
+                       help='number of users per group')
+    group.add_argument('-T', '--max-iters', type=int, default=100,
+                       help='maximum number of elicitation iterations')
+    group.add_argument('-s', '--seed', type=int, default=0,
+                       help='RNG seed')
+    group.add_argument('-v', '--verbose', action='store_true',
+                       help='enable debug spew')
 
-    group = parser.add_argument_group('Query Selection')
+    group = parser.add_argument_group('Algorithm')
     group.add_argument('-k', '--set-size', type=int, default=2,
                        help='set size')
+    group.add_argument('-t', '--transform', type=str, default=None,
+                       help='user-user transformation to use')
+    group.add_argument('-X', '--enable-cv', action='store_true',
+                       help='enable hyperparameter cross-validation')
 
     group = parser.add_argument_group('User Simulation')
     group.add_argument('--min-regret', type=float, default=0,
