@@ -13,8 +13,5 @@ from .pc import *
 from . import user
 from .user import *
 
-from . import singleuser
-from .singleuser import *
-
 from . import multiuser
 from .multiuser import *
