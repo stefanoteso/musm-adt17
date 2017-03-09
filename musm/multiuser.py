@@ -20,7 +20,7 @@ _I_TO_ALPHA = {i: alpha for i, alpha in enumerate(_ALPHAS)}
 
 def select_user(var, satisfied_users, rng):
     temp = np.array(var)
-    temp[satisfied_users] = -np.inf
+    temp[list(satisfied_users)] = -np.inf
     pvals = np.array([var == temp.max() for var in temp])
     pvals = pvals / pvals.sum()
     return np.argmax(rng.multinomial(1, pvals=pvals))
@@ -124,7 +124,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     alpha = 1, 0.1, 0.1
 
-    trace, satisfied_users = [], []
+    trace, satisfied_users = [], set()
     for t in range(max_iters):
         t0 = time()
 
@@ -157,9 +157,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
             x = x[0]
 
             regrets[vid] = user.regret(x)
-
             if user.is_satisfied(x):
-                satisfied_users.append(vid)
+                satisfied_users.add(vid)
 
         t1 = time() - t1
 
@@ -175,7 +174,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                 datasets =
                 {datasets}
                 x = {x}
-                regrets = {regrets}
+                regrets = {regrets}({satisfied_users})
             ''', **locals())
 
         trace.append(list(regrets) + [uid, t0 + t1])
@@ -183,7 +182,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         if len(satisfied_users) == len(group):
             break
 
-        if enable_cv:
+        if enable_cv and t % 5 == 0:
             alpha = crossvalidate(problem, datasets, set_size, var, cov, transform)
 
     _LOG.info('{} users satisfied after {} iterations'
