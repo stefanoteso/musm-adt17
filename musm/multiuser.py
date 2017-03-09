@@ -186,6 +186,6 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
             alpha = crossvalidate(problem, datasets, set_size, var, cov, transform)
 
     _LOG.info('{} users satisfied after {} iterations'
-              .format(len(satisfied_users), t))
+              .format(len(satisfied_users), max_iters))
 
     return trace
