@@ -13,9 +13,9 @@ _LOG = get_logger('adt17')
 def select_user(var, satisfied_users, rng):
     """Select a user to be queried. Ties are broken at random."""
     temp = np.array(var)
-    temp[satisfied_users] = -1
+    temp[satisfied_users] = -np.inf
     pvals = np.array([var == temp.max() for var in temp])
-    pvals = pvals / len(pvals)
+    pvals = pvals / pvals.sum()
     return np.argmax(rng.multinomial(1, pvals=pvals))
 
 
