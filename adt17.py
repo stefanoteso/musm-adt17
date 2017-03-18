@@ -24,10 +24,11 @@ USERS = {
 
 def get_results_path(args):
     properties = [
-        args['problem'], args['num_groups'], args['num_users_per_group'],
-        args['max_iters'], args['set_size'], args['transform'],
-        args['enable_cv'], args['min_regret'], args['user_distrib'],
-        args['density'], args['response_model'], args['noise'], args['seed'],
+        args['problem'], args['num_groups'], args['num_clusters_per_group'],
+        args['num_users_per_group'], args['max_iters'], args['set_size'],
+        args['transform'], args['enable_cv'], args['min_regret'],
+        args['distrib'], args['density'], args['response_model'],
+        args['noise'], args['seed'],
     ]
     return os.path.join('results', '_'.join(map(str, properties)) + '.pickle')
 
@@ -35,23 +36,22 @@ def get_results_path(args):
 def _sparsify(w, density, rng):
     if not (0 < density <= 1):
         raise ValueError('density must be in (0, 1], got {}'.format(density))
-    w = np.array(w)
-    perm = rng.permutation(len(w))
-    num_zeros = round((1 - density) * len(w))
-    w[perm[:min(num_zeros, len(w) - 1)]] = 0
+    w = np.array(w, copy=True)
+    perm = rng.permutation(w.shape[1])
+    num_zeros = round((1 - density) * w.shape[1])
+    w[:,perm[:min(num_zeros, w.shape[1] - 1)]] = 0
     return w
 
 
-def sample_group(problem, num_users=5, user_distrib='normal', density=1, rng=0):
-    if user_distrib == 'uniform':
-        w = rng.uniform(25, 25 / 3, size=(num_users, problem.num_attributes))
-    elif user_distrib == 'normal':
-        w = rng.uniform(1, 100 + 1, size=(num_users, problem.num_attributes))
+def sample_cluster(problem, num_users=5, distrib='normal', density=1, rng=0):
+    if distrib == 'uniform':
+        w_mean = rng.uniform(25, 25 / 3, size=problem.num_attributes)
+    elif distrib == 'normal':
+        w_mean = rng.uniform(1, 100 + 1, size=problem.num_attributes)
     else:
-        raise ValueError('invalid user_distrib, got {}'.format(user_distrib))
-    for u in range(len(w)):
-        w[u] = _sparsify(np.abs(w[u]), density, rng)
-    return w
+        raise ValueError('invalid distrib, got {}'.format(distrib))
+    w = w_mean + rng.uniform(10, 10 / 3, size=(num_users, problem.num_attributes))
+    return _sparsify(np.abs(w), density, rng)
 
 
 def generate_user_groups(problem, args):
@@ -59,14 +59,30 @@ def generate_user_groups(problem, args):
 
     rng = check_random_state(0)
 
+    num_users_per_cluster = max(1, round(args['num_users_per_group'] /
+                                         args['num_clusters_per_group']))
+
     user_groups = []
     for gid in range(args['num_groups']):
-        w_star = sample_group(problem,
-                              num_users=args['num_users_per_group'],
-                              user_distrib=args['user_distrib'],
-                              density=args['density'],
-                              rng=rng)
-        user_groups.append([User(problem, w_star[uid],
+
+        w_star = []
+        for cid in range(1, args['num_clusters_per_group'] + 1):
+            if cid == args['num_clusters_per_group']:
+                num_users_in_cluster = args['num_users_per_group'] - len(w_star)
+            else:
+                num_users_in_cluster = num_users_per_cluster
+            temp = sample_cluster(problem,
+                                  num_users=num_users_in_cluster,
+                                  distrib=args['distrib'],
+                                  density=args['density'],
+                                  rng=rng)
+            if len(w_star) == 0:
+                w_star = temp
+            else:
+                w_star = np.append(w_star, temp, axis=0)
+
+        user_groups.append([User(problem,
+                                 w_star[uid],
                                  min_regret=args['min_regret'],
                                  noise=args['noise'],
                                  rng=rng)
@@ -115,8 +131,10 @@ def main():
                              .format(sorted(PROBLEMS.keys())))
     group.add_argument('-N', '--num-groups', type=int, default=20,
                        help='number of user groups')
+    group.add_argument('-C', '--num-clusters-per-group', type=int, default=1,
+                       help='number of clusters in a group')
     group.add_argument('-M', '--num-users-per-group', type=int, default=5,
-                       help='number of users per group')
+                       help='number of users in a group')
     group.add_argument('-T', '--max-iters', type=int, default=100,
                        help='maximum number of elicitation iterations')
     group.add_argument('-s', '--seed', type=int, default=0,
@@ -137,7 +155,7 @@ def main():
                        help='minimum regret for satisfaction')
     group.add_argument('-G', '--groups', type=str, default=None,
                        help='path to pickle with user weights')
-    group.add_argument('-u', '--user-distrib', type=str, default='normal',
+    group.add_argument('-u', '--distrib', type=str, default='normal',
                        help='distribution of user weights')
     group.add_argument('-d', '--density', type=float, default=1,
                        help='percentage of non-zero user weights')
