@@ -208,4 +208,6 @@ class Problem(object):
                 margin = {margin}
             ''').format(**locals()))
 
+        assert (w != 0).sum() > 0, 'all-zero weights are bad'
+
         return w, x
