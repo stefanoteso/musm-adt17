@@ -93,8 +93,8 @@ def compute_transform(weights, cov, var, transform, uid):
         a = 1
         b = np.dot(cov[uid, others], avg_weights[others])
     elif transform == 'varsumvarcov':
-        negvar = 1 - var
-        a = negvar[uid]
+        negvar = 2 * var.max() - var
+        a = 1
         b = var[uid] * np.dot(negvar[others] * cov[uid, others],
                               avg_weights[others])
     else:
