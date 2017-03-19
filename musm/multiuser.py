@@ -146,8 +146,10 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         for i in range(set_size):
             if i != i_star:
-                delta = (query_set[i_star] - query_set[i]).reshape(1, -1)
-                datasets[uid] = np.append(datasets[uid], delta , axis=0)
+                delta = (query_set[i_star] - query_set[i])
+                assert (delta != 0).sum() > 0, 'all-zero deltas are bad'
+                datasets[uid] = np.append(datasets[uid], delta.reshape(1, -1),
+                                          axis=0)
 
         var, cov = compute_var_cov(weights)
 
