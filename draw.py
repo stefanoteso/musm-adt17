@@ -57,7 +57,7 @@ def prettify(ax, max_iters, title):
 
 def get_style(args):
     return {
-            None: ('#000000', 'indep.'),
+            'indep': ('#000000', 'indep.'),
             'sumcov': ('#FF0000', 'sum k w'),
             'varsumvarcov': ('#00FF00', 'q sum q k w'),
         }[args['transform']]
