@@ -26,22 +26,25 @@ def select_user(var, satisfied_users, rng):
     return np.argmax(rng.multinomial(1, pvals=pvals))
 
 
-def compute_var_cov(weights):
-    num_users, set_size, _ = weights.shape
+def compute_var_cov(w):
+    if w.ndim == 2:
+        num_users, set_size = len(w), 1
+    else:
+        num_users, set_size = w.shape[0], w.shape[1]
 
     var = np.zeros(num_users)
     for uid in range(num_users):
         for i, j in it.product(range(set_size), repeat=2):
-            diff = weights[uid,i] - weights[uid,j]
+            diff = w[uid,i] - w[uid,j]
             var[uid] += np.dot(diff, diff)
     var = var / (2 * set_size**2)
 
     cov = np.zeros((num_users, num_users))
     for uid1, uid2 in it.product(range(num_users), repeat=2):
-        p = np.dot(weights[uid1], weights[uid2].T).sum()
-        q1 = np.dot(weights[uid1], weights[uid1].T).sum()
-        q2 = np.dot(weights[uid2], weights[uid2].T).sum()
-        cov[uid1, uid2] = 1 / np.exp(p / np.sqrt(q1 * q2))
+        p = np.dot(w[uid1], w[uid2].T).sum()
+        q1 = np.dot(w[uid1], w[uid1].T).sum()
+        q2 = np.dot(w[uid2], w[uid2].T).sum()
+        cov[uid1, uid2] = p / np.sqrt(q1 * q2)
 
     return var, cov
 
