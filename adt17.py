@@ -50,7 +50,12 @@ def sample_cluster(problem, num_users=5, distrib='normal', density=1, rng=0):
         w_mean = rng.uniform(1, 1 + 1, size=problem.num_attributes)
     else:
         raise ValueError('invalid distrib, got {}'.format(distrib))
-    w = w_mean + rng.uniform(0, 1 / 3, size=(num_users, problem.num_attributes))
+
+    if False: # XXX
+        w = w_mean + np.zeros((num_users, problem.num_attributes))
+    else:
+        w = w_mean + rng.uniform(0, 1 / 3, size=(num_users, problem.num_attributes))
+
     return _sparsify(np.abs(w), density, rng)
 
 
