@@ -30,11 +30,10 @@ def load(path):
         loss1_matrix.append(pad(trace[:,:num_users], max_iters))
         lossk_matrix.append(pad(trace[:,num_users:2*num_users], max_iters))
         time_matrix.append(pad(trace[:,-1], max_iters))
-    info = {**{'method': 'musm'}, **data['args']}
     return np.array(loss1_matrix), \
            np.array(lossk_matrix), \
            np.array(time_matrix), \
-           info
+           data['args']
 
 
 def prettify(ax, max_iters, title):
@@ -56,6 +55,14 @@ def prettify(ax, max_iters, title):
         label.set_linewidth(2)
 
 
+def get_style(args):
+    return {
+            None: ('#000000', 'indep.'),
+            'sumcov': ('#FF0000', 'sum k w'),
+            'varsumvarcov': ('#00FF00', 'q sum q k w'),
+        }[args['transform']]
+
+
 def draw(args):
     loss1_fig, loss1_ax = plt.subplots(1, 1)
     lossk_fig, lossk_ax = plt.subplots(1, 1)
@@ -70,6 +77,7 @@ def draw(args):
 
     max_regret1, max_regretk, max_time = -np.inf, -np.inf, -np.inf
     for loss1_matrix, lossk_matrix, time_matrix, info in data:
+        color, label = get_style(info)
 
         max_iters = info['max_iters']
         x = np.arange(1, max_iters + 1)
@@ -82,9 +90,9 @@ def draw(args):
                       / np.sqrt(loss1_matrix.shape[0])
         max_regret1 = max(max_regret1, y.max())
 
-        loss1_ax.plot(x, y, linewidth=2, color='#000000', label='label',
+        loss1_ax.plot(x, y, linewidth=2, color=color, label=label,
                       marker='o', markersize=6)
-        loss1_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color='#000000',
+        loss1_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color=color,
                               alpha=0.35)
 
         # query-set regret
@@ -95,9 +103,9 @@ def draw(args):
                       / np.sqrt(lossk_matrix.shape[0])
         max_regretk = max(max_regretk, y.max())
 
-        lossk_ax.plot(x, y, linewidth=2, color='#000000', label='label',
+        lossk_ax.plot(x, y, linewidth=2, color=color, label=label,
                       marker='o', markersize=6)
-        lossk_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color='#000000',
+        lossk_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color=color,
                               alpha=0.35)
 
         # cumulative time
@@ -108,9 +116,9 @@ def draw(args):
                    / np.sqrt(time_matrix.shape[0])
         max_time = max(max_time, y.max())
 
-        time_ax.plot(x, y, linewidth=2, color='#000000', label='label',
+        time_ax.plot(x, y, linewidth=2, color=color, label=label,
                      marker='o', markersize=6)
-        time_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color='#000000',
+        time_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color=color,
                              alpha=0.35)
 
     loss1_ax.set_ylabel('regret')
