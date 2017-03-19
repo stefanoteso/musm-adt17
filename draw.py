@@ -11,6 +11,9 @@ from glob import glob
 import musm
 
 
+plt.style.use('ggplot')
+
+
 def pad(array, length):
     full = np.zeros((length,) + array.shape[1:], dtype=array.dtype)
     full[:len(array)] = array
@@ -19,14 +22,19 @@ def pad(array, length):
 
 def load(path):
     data = musm.load(path)
+    num_users = data['args']['num_users_per_group']
     max_iters = data['args']['max_iters']
-    loss_matrix, time_matrix = [], []
+    loss1_matrix, lossk_matrix, time_matrix = [], [], []
     for trace in data['traces']:
         trace = np.array(trace)
-        loss_matrix.append(pad(trace[:,:-2], max_iters))
+        loss1_matrix.append(pad(trace[:,:num_users], max_iters))
+        lossk_matrix.append(pad(trace[:,num_users:2*num_users], max_iters))
         time_matrix.append(pad(trace[:,-1], max_iters))
     info = {**{'method': 'musm'}, **data['args']}
-    return np.array(loss_matrix), np.array(time_matrix), info
+    return np.array(loss1_matrix), \
+           np.array(lossk_matrix), \
+           np.array(time_matrix), \
+           info
 
 
 def prettify(ax, max_iters, title):
@@ -49,31 +57,50 @@ def prettify(ax, max_iters, title):
 
 
 def draw(args):
-    plt.style.use('ggplot')
+    loss1_fig, loss1_ax = plt.subplots(1, 1)
+    lossk_fig, lossk_ax = plt.subplots(1, 1)
+    time_fig, time_ax = plt.subplots(1, 1)
 
     data = []
     for path in args.pickles:
         data.append(load(path))
 
-    loss_fig, loss_ax = plt.subplots(1, 1)
-    time_fig, time_ax = plt.subplots(1, 1)
+    # TODO plot selected users
+    # TODO plot per-run debug plots
 
-    max_regret, max_time = -np.inf, -np.inf
-    for loss_matrix, time_matrix, info in data:
-        loss_matrix = loss_matrix.mean(axis=2) # average over all users
+    max_regret1, max_regretk, max_time = -np.inf, -np.inf, -np.inf
+    for loss1_matrix, lossk_matrix, time_matrix, info in data:
 
         max_iters = info['max_iters']
         x = np.arange(1, max_iters + 1)
 
-        y = np.median(loss_matrix, axis=0)[:max_iters]
-        yerr = np.std(loss_matrix, axis=0)[:max_iters] \
-                   / np.sqrt(loss_matrix.shape[0])
-        max_regret = max(max_regret, y.max())
+        # regret
 
-        loss_ax.plot(x, y, linewidth=2, color='#000000', label='label',
-                     marker='o', markersize=6)
-        loss_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color='#000000',
-                             alpha=0.35)
+        loss1_matrix = loss1_matrix.mean(axis=2) # average over all users
+        y = np.median(loss1_matrix, axis=0)[:max_iters]
+        yerr = np.std(loss1_matrix, axis=0)[:max_iters] \
+                      / np.sqrt(loss1_matrix.shape[0])
+        max_regret1 = max(max_regret1, y.max())
+
+        loss1_ax.plot(x, y, linewidth=2, color='#000000', label='label',
+                      marker='o', markersize=6)
+        loss1_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color='#000000',
+                              alpha=0.35)
+
+        # query-set regret
+
+        lossk_matrix = lossk_matrix.mean(axis=2) # average over all users
+        y = np.median(lossk_matrix, axis=0)[:max_iters]
+        yerr = np.std(lossk_matrix, axis=0)[:max_iters] \
+                      / np.sqrt(lossk_matrix.shape[0])
+        max_regretk = max(max_regretk, y.max())
+
+        lossk_ax.plot(x, y, linewidth=2, color='#000000', label='label',
+                      marker='o', markersize=6)
+        lossk_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color='#000000',
+                              alpha=0.35)
+
+        # cumulative time
 
         cumtime_matrix = time_matrix.cumsum(axis=1)
         y = np.mean(cumtime_matrix, axis=0)[:max_iters]
@@ -86,17 +113,24 @@ def draw(args):
         time_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color='#000000',
                              alpha=0.35)
 
-    loss_ax.set_ylabel('regret')
-    loss_ax.set_xlim([1, max_iters])
-    loss_ax.set_ylim([0, 1.05 * max_regret])
-    prettify(loss_ax, max_iters, "you'll regret this!")
-    loss_fig.savefig(args.png_basename + '_loss.png', bbox_inches='tight',
-                     pad_inches=0, dpi=120)
+    loss1_ax.set_ylabel('regret')
+    loss1_ax.set_xlim([1, max_iters])
+    loss1_ax.set_ylim([0, 1.05 * max_regret1])
+    prettify(loss1_ax, max_iters, 'Regret')
+    loss1_fig.savefig(args.png_basename + '_loss1.png', bbox_inches='tight',
+                      pad_inches=0, dpi=120)
+
+    lossk_ax.set_ylabel('min set-wise regret')
+    lossk_ax.set_xlim([1, max_iters])
+    lossk_ax.set_ylim([0, 1.05 * max_regretk])
+    prettify(lossk_ax, max_iters, 'Query Set Regret')
+    lossk_fig.savefig(args.png_basename + '_lossk.png', bbox_inches='tight',
+                      pad_inches=0, dpi=120)
 
     time_ax.set_ylabel('cumulative time (s)')
     time_ax.set_xlim([1, max_iters])
     time_ax.set_ylim([0, 1.05 * max_time])
-    prettify(time_ax, max_iters, "you'll time this!")
+    prettify(time_ax, max_iters, 'Time')
     time_fig.savefig(args.png_basename + '_time.png', bbox_inches='tight',
                      pad_inches=0, dpi=120)
 
