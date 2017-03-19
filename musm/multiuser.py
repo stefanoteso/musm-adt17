@@ -17,7 +17,7 @@ _ALPHAS = list(it.product(
     ))
 _I_TO_ALPHA = {i: alpha for i, alpha in enumerate(_ALPHAS)}
 
-_DEFAULT_ALPHA = 1, 0.1, 0.1
+_DEFAULT_ALPHA = 10, 0.1, 0.1
 _NUM_FOLDS = 5
 
 
