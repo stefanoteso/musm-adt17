@@ -21,13 +21,13 @@ _DEFAULT_ALPHA = 1, 0.1, 0.1
 _NUM_FOLDS = 5
 
 
-def crossvalidate(problem, dataset, set_size, uid, var, cov, transform,
-                  old_alpha):
+def crossvalidate(problem, dataset, set_size, uid, weights, var, cov,
+                  transform, old_alpha):
     if len(dataset) % _NUM_FOLDS != 0:
         return old_alpha
 
     kfold = KFold(len(dataset), n_folds=_NUM_FOLDS)
-    p = compute_transform(cov, var, transform, uid)
+    p = compute_transform(weights, cov, var, transform, uid)
 
     avg_accuracy = np.zeros(len(_ALPHAS))
     for i, alpha in enumerate(_ALPHAS):
@@ -55,7 +55,9 @@ def select_user(var, satisfied_users, rng):
     temp[list(satisfied_users)] = -np.inf
     pvals = np.array([var == temp.max() for var in temp])
     pvals = pvals / pvals.sum()
-    return np.argmax(rng.multinomial(1, pvals=pvals))
+    uid = np.argmax(rng.multinomial(1, pvals=pvals))
+    assert not uid in satisfied_users
+    return uid
 
 
 def compute_var_cov(w):
@@ -81,13 +83,20 @@ def compute_var_cov(w):
     return var, cov
 
 
-def compute_transform(cov, var, transform, uid):
+def compute_transform(weights, cov, var, transform, uid):
     if transform is None:
         return 1, 1
 
+    avg_weights = weights.mean(axis=1)
     others = [i for i in range(len(var)) if i != uid]
     if transform == 'sumcov':
-        a, b = 1, cov[uid, others].sum()
+        a = 1
+        b = np.dot(cov[uid, others], avg_weights[others])
+    elif transform == 'varsumvarcov':
+        negvar = 1 - var
+        a = negvar[uid]
+        b = var[uid] * np.dot(negvar[others] * cov[uid, others],
+                              avg_weights[others])
     else:
         raise NotImplementedError('transform = {}'.format(transform))
 
@@ -119,9 +128,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         t0 = time()
 
         uid = select_user(var, satisfied_users, rng)
-        assert uid not in satisfied_users
 
-        p = compute_transform(cov, var, transform, uid)
+        p = compute_transform(weights, cov, var, transform, uid)
         w, query_set = problem.select_query(datasets[uid], set_size,
                                             alphas[uid], transform=p)
         weights[uid] = w
@@ -145,13 +153,11 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         regrets_1 = np.zeros(len(group))
         for vid, user in enumerate(group):
-            p = compute_transform(cov, var, transform, vid)
+            vid_p = compute_transform(weights, cov, var, transform, vid)
             _, x = problem.select_query(datasets[vid], 1,
-                                        alphas[uid], transform=p)
-            x = x[0]
-
-            regrets_1[vid] = user.regret(x)
-            if user.is_satisfied(x):
+                                        alphas[uid], transform=vid_p)
+            regrets_1[vid] = user.regret(x[0])
+            if user.is_satisfied(x[0]):
                 satisfied_users.add(vid)
 
         t1 = time() - t1
@@ -164,17 +170,17 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                 var = {var}
                 cov = {cov}
                 w = {w}
+                transform = {p}
                 q = {query_set}
                 i_star = {i_star}
                 datasets =
                 {datasets}
-                x = {x}
             ''', **locals())
 
         t2 = time()
         if enable_cv:
             alphas[uid] = crossvalidate(problem, datasets[uid], set_size, uid,
-                                        var, cov, transform, alphas[uid])
+                                        weights, var, cov, transform, alphas[uid])
         t2 = time() - t2
 
         trace.append(list(regrets_1) + list(regrets_k) + [uid, t0 + t1 + t2])
