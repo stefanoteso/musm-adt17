@@ -145,7 +145,7 @@ def main():
     group = parser.add_argument_group('Algorithm')
     group.add_argument('-k', '--set-size', type=int, default=2,
                        help='set size')
-    group.add_argument('-t', '--transform', type=str, default=None,
+    group.add_argument('-F', '--transform', type=str, default=None,
                        help='user-user transformation to use')
     group.add_argument('-X', '--enable-cv', action='store_true',
                        help='enable hyperparameter cross-validation')
