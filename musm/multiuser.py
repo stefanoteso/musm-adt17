@@ -94,7 +94,6 @@ def compute_transform(cov, var, transform, uid):
 
 def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
          transform='sumk', rng=None):
-    """Runs the multi-user setmargin algorithm."""
     rng = check_random_state(rng)
 
     num_users, num_attributes = len(group), problem.num_attributes
