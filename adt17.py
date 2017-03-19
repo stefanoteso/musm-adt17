@@ -45,12 +45,12 @@ def _sparsify(w, density, rng):
 
 def sample_cluster(problem, num_users=5, distrib='normal', density=1, rng=0):
     if distrib == 'uniform':
-        w_mean = rng.uniform(25, 25 / 3, size=problem.num_attributes)
+        w_mean = rng.uniform(1, 1 / 3, size=problem.num_attributes)
     elif distrib == 'normal':
-        w_mean = rng.uniform(1, 100 + 1, size=problem.num_attributes)
+        w_mean = rng.uniform(1, 1 + 1, size=problem.num_attributes)
     else:
         raise ValueError('invalid distrib, got {}'.format(distrib))
-    w = w_mean + rng.uniform(10, 10 / 3, size=(num_users, problem.num_attributes))
+    w = w_mean + rng.uniform(0, 1 / 3, size=(num_users, problem.num_attributes))
     return _sparsify(np.abs(w), density, rng)
 
 
