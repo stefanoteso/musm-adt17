@@ -4,7 +4,7 @@ import gurobipy as gurobi
 from gurobipy import GRB as G
 from textwrap import dedent
 
-from . import get_logger, freeze
+from . import get_logger, freeze, subdict
 
 
 _LOG = get_logger('adt17')
@@ -90,12 +90,6 @@ class Problem(object):
     def select_query(self, dataset, set_size, alpha, transform=None):
         assert not hasattr(self, 'cost_matrix')
 
-        _LOG.debug(dedent('''\
-                SELECTING QUERY SET k={} alpha={}
-                dataset =
-                {}
-            ''').format(set_size, alpha, dataset))
-
         w_min = np.zeros(self.num_attributes)
         w_max = np.ones(self.num_attributes)
         if transform is not None:
@@ -104,6 +98,16 @@ class Problem(object):
             w_max = a * w_max + b
             assert (w_min >= 0).all() and (w_max >= 0).all()
         w_top = w_max.max()
+
+        _LOG.debug(dedent('''\
+                SELECTING QUERY SET k={set_size} alpha={alpha}
+                dataset =
+                {dataset}
+                transform = {transform}
+                w_min = {w_min}
+                w_max = {w_max}
+                w_top = {w_top}
+            ''').format(**subdict(locals(), nokeys=['self'])))
 
         model = gurobi.Model('queryselection')
 
@@ -168,8 +172,8 @@ class Problem(object):
             model.addConstr(margin == 0)
 
         # add hard constraints
-        for k in range(set_size):
-            self._add_constraints(model, [x[k,z] for z in range(self.num_attributes)])
+        for i in range(set_size):
+            self._add_constraints(model, [x[i,z] for z in range(self.num_attributes)])
 
         try:
             model.optimize()
