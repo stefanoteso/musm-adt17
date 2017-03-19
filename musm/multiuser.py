@@ -84,7 +84,7 @@ def compute_var_cov(w):
 
 
 def compute_transform(weights, cov, var, transform, uid):
-    if transform is None:
+    if transform == 'indep':
         return 1, 1
 
     avg_weights = weights.mean(axis=1)
