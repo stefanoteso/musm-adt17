@@ -1,6 +1,0 @@
-[submodule "thirdparty/mtgp"]
-	path = thirdparty/mtgp
-	url = https://github.com/ebonilla/mtgp.git
-[submodule "thirdparty/gppe"]
-	path = thirdparty/gppe
-	url = https://github.com/ebonilla/gppe.git
