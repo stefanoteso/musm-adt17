@@ -21,9 +21,10 @@ _DEFAULT_ALPHA = 1, 0.1, 0.1
 _NUM_FOLDS = 5
 
 
-def crossvalidate(problem, dataset, set_size, uid, var, cov, transform):
-    if len(dataset) < _NUM_FOLDS:
-        return _DEFAULT_ALPHA
+def crossvalidate(problem, dataset, set_size, uid, var, cov, transform,
+                  old_alpha):
+    if len(dataset) % _NUM_FOLDS != 0:
+        return old_alpha
 
     kfold = KFold(len(dataset), n_folds=_NUM_FOLDS)
     p = compute_transform(cov, var, transform, uid)
@@ -83,11 +84,13 @@ def compute_var_cov(w):
 def compute_transform(cov, var, transform, uid):
     if transform is None:
         return 1, 1
+
     others = [i for i in range(len(var)) if i != uid]
-    if transform == 'sumk':
+    if transform == 'sumcov':
         a, b = 1, cov[uid, others].sum()
     else:
         raise NotImplementedError('transform = {}'.format(transform))
+
     assert a >= 0 and (b >= 0).all(), 'invalid transform {}, {}'.format(a, b)
     return a, b
 
@@ -119,8 +122,14 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         assert uid not in satisfied_users
 
         p = compute_transform(cov, var, transform, uid)
-        w, query_set = problem.select_query(datasets[uid], set_size, alphas[uid],
-                                            transform=p)
+        w, query_set = problem.select_query(datasets[uid], set_size,
+                                            alphas[uid], transform=p)
+        weights[uid] = w
+
+        regrets_k = np.zeros(len(group))
+        for vid, user in enumerate(group):
+            regrets_k[vid] = min([user.regret(x) for x in query_set])
+
         t0 = time() - t0
 
         i_star = group[uid].query_choice(query_set)
@@ -132,17 +141,16 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                 delta = (query_set[i_star] - query_set[i]).reshape(1, -1)
                 datasets[uid] = np.append(datasets[uid], delta , axis=0)
 
-        weights[uid] = w
         var, cov = compute_var_cov(weights)
 
-        regrets = np.zeros(len(group))
+        regrets_1 = np.zeros(len(group))
         for vid, user in enumerate(group):
             p = compute_transform(cov, var, transform, vid)
-            _, x = problem.select_query(datasets[vid], 1, alphas[uid],
-                                        transform=p)
+            _, x = problem.select_query(datasets[vid], 1,
+                                        alphas[uid], transform=p)
             x = x[0]
 
-            regrets[vid] = user.regret(x)
+            regrets_1[vid] = user.regret(x)
             if user.is_satisfied(x):
                 satisfied_users.add(vid)
 
@@ -150,7 +158,9 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         _LOG.debug('''\
                 ITERATION {t:3d}
-                uid = {uid}
+                user = {uid} {satisfied_users} {var}
+                regrets@1 = {regrets_1}
+                regrets@k = {regrets_k}
                 var = {var}
                 cov = {cov}
                 w = {w}
@@ -159,17 +169,18 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                 datasets =
                 {datasets}
                 x = {x}
-                regrets = {regrets}({satisfied_users})
             ''', **locals())
 
-        trace.append(list(regrets) + [uid, t0 + t1])
+        t2 = time()
+        if enable_cv:
+            alphas[uid] = crossvalidate(problem, datasets[uid], set_size, uid,
+                                        var, cov, transform, alphas[uid])
+        t2 = time() - t2
+
+        trace.append(list(regrets_1) + list(regrets_k) + [uid, t0 + t1 + t2])
 
         if len(satisfied_users) == len(group):
             break
-
-        if enable_cv:
-            alphas[uid] = crossvalidate(problem, datasets[uid], set_size, uid,
-                                        var, cov, transform)
 
     _LOG.info('{} users satisfied after {} iterations'
               .format(len(satisfied_users), max_iters))
