@@ -158,7 +158,7 @@ def main():
     group.add_argument('-u', '--distrib', type=str, default='normal',
                        help='distribution of user weights')
     group.add_argument('-d', '--density', type=float, default=1,
-                       help='percentage of non-zero user weights')
+                       help='proportion of non-zero user weights')
     group.add_argument('-R', '--response-model', type=str, default='pl',
                        help='user response model for choice queries')
     group.add_argument('-n', '--noise', type=float, default=1,
