@@ -48,9 +48,10 @@ def bilinear(x, A, z):
 
 
 class Problem(object):
-    def __init__(self, template, num_attributes, transform=None):
+    def __init__(self, template, num_attributes, transform=None, num_threads=0):
         self.num_attributes = num_attributes
         self.transform = transform
+        self.num_threads = num_threads
 
     def infer(self, w, transform=None):
         assert not hasattr(self, 'cost_matrix')
@@ -69,7 +70,7 @@ class Problem(object):
 
         model = gurobi.Model('inference')
 
-        model.params.Threads = 1
+        model.params.Threads = self.num_threads
         model.params.Seed = 0
         model.params.OutputFlag = 0
 
@@ -106,7 +107,7 @@ class Problem(object):
 
         model = gurobi.Model('queryselection')
 
-        model.params.Threads = 1
+        model.params.Threads = self.num_threads
         model.params.Seed = 0
         model.params.OutputFlag = 0
 
