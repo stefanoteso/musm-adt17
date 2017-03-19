@@ -153,8 +153,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                 ITERATION {t:3d}
                 uid = {uid}
                 var = {var}
-                cov =
-                {cov}
+                cov = {cov}
                 w = {w}
                 q = {query_set}
                 i_star = {i_star}
