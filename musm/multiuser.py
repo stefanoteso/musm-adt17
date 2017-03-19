@@ -17,6 +17,37 @@ _ALPHAS = list(it.product(
     ))
 _I_TO_ALPHA = {i: alpha for i, alpha in enumerate(_ALPHAS)}
 
+_DEFAULT_ALPHA = 1, 0.1, 0.1
+_NUM_FOLDS = 5
+
+
+def crossvalidate(problem, dataset, set_size, uid, var, cov, transform):
+    if len(dataset) < _NUM_FOLDS:
+        return _DEFAULT_ALPHA
+
+    kfold = KFold(len(dataset), n_folds=_NUM_FOLDS)
+    p = compute_transform(cov, var, transform, uid)
+
+    avg_accuracy = np.zeros(len(_ALPHAS))
+    for i, alpha in enumerate(_ALPHAS):
+        accuracies = []
+        for tr_indices, ts_indices in kfold:
+            w, _ = problem.select_query(dataset[tr_indices], set_size, alpha,
+                                        transform=p)
+            utilities = np.dot(w, dataset[ts_indices].T)
+            accuracies.append((utilities > 0).mean())
+        avg_accuracy[i] = sum(accuracies) / len(accuracies)
+
+    alpha = _I_TO_ALPHA[np.argmax(avg_accuracy)]
+
+    _LOG.debug('''\
+            crossvalidation says:
+            avg_accuracy = {avg_accuracy}
+            best alpha = {alpha}
+        ''', **locals())
+
+    return alpha
+
 
 def select_user(var, satisfied_users, rng):
     temp = np.array(var)
@@ -61,52 +92,6 @@ def compute_transform(cov, var, transform, uid):
     return a, b
 
 
-def _crossvalidate_user(problem, dataset, set_size, cov, var, transform, uid):
-    if len(dataset) < 5:
-        return np.nan
-
-    kfold = KFold(len(dataset), n_folds=5)
-    p = compute_transform(cov, var, transform, uid)
-
-    avg_accuracy = np.zeros(len(_ALPHAS))
-    for a, alpha in enumerate(_ALPHAS):
-        accuracies = []
-        for tr_indices, ts_indices in kfold:
-            w, _ = problem.select_query(dataset[tr_indices], set_size, alpha,
-                                        transform=p)
-            signs = np.dot(w, dataset[ts_indices].T) > 0
-            assert signs.shape == (set_size, len(ts_indices))
-            accuracies.append(signs.mean())
-        avg_accuracy[a] = sum(accuracies) / len(accuracies)
-    return avg_accuracy
-
-
-def crossvalidate(problem, datasets, set_size, var, cov, transform):
-    perfs = np.zeros((len(datasets), len(_ALPHAS)))
-    for uid, dataset in enumerate(datasets):
-        perfs[uid, :] = _crossvalidate_user(problem, dataset, set_size,
-                                            cov, var, transform, uid)
-
-    if np.isnan(perfs).all():
-        mean_perfs = None
-        alpha = 1, 0.1, 0.1
-    else:
-        mean_perfs = np.nanmean(perfs, axis=0)
-        alpha = _I_TO_ALPHA[mean_perfs.argmax()]
-
-    _LOG.debug('''\
-            crossvalidation says:
-            perfs =
-            {perfs}
-            mean perfs =
-            {mean_perfs}
-
-            best alpha =
-            {alpha}
-        ''', **locals())
-
-    return alpha
-
 def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
          transform='sumk', rng=None):
     """Runs the multi-user setmargin algorithm."""
@@ -125,7 +110,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     weights = rng.uniform(0, 1, size=(num_users, set_size, num_attributes))
     var, cov = compute_var_cov(weights)
 
-    alpha = 1, 0.1, 0.1
+    alphas = [_DEFAULT_ALPHA for _ in group]
 
     trace, satisfied_users = [], set()
     for t in range(max_iters):
@@ -134,10 +119,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         uid = select_user(var, satisfied_users, rng)
         assert uid not in satisfied_users
 
-        dataset = datasets[uid]
-
         p = compute_transform(cov, var, transform, uid)
-        w, query_set = problem.select_query(dataset, set_size, alpha,
+        w, query_set = problem.select_query(datasets[uid], set_size, alphas[uid],
                                             transform=p)
         t0 = time() - t0
 
@@ -148,7 +131,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         for i in range(set_size):
             if i != i_star:
                 delta = (query_set[i_star] - query_set[i]).reshape(1, -1)
-                datasets[uid] = dataset = np.append(dataset, delta , axis=0)
+                datasets[uid] = np.append(datasets[uid], delta , axis=0)
 
         weights[uid] = w
         var, cov = compute_var_cov(weights)
@@ -156,7 +139,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         regrets = np.zeros(len(group))
         for vid, user in enumerate(group):
             p = compute_transform(cov, var, transform, vid)
-            _, x = problem.select_query(datasets[vid], 1, alpha, transform=p)
+            _, x = problem.select_query(datasets[vid], 1, alphas[uid],
+                                        transform=p)
             x = x[0]
 
             regrets[vid] = user.regret(x)
@@ -185,8 +169,9 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         if len(satisfied_users) == len(group):
             break
 
-        if enable_cv and t % 5 == 0:
-            alpha = crossvalidate(problem, datasets, set_size, var, cov, transform)
+        if enable_cv:
+            alphas[uid] = crossvalidate(problem, datasets[uid], set_size, uid,
+                                        var, cov, transform)
 
     _LOG.info('{} users satisfied after {} iterations'
               .format(len(satisfied_users), max_iters))
