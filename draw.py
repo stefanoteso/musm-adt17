@@ -55,12 +55,20 @@ def prettify(ax, max_iters, title):
         label.set_linewidth(2)
 
 
+_WINTER = cm.ScalarMappable(cmap=plt.get_cmap('winter'),
+                            norm=colors.Normalize(vmin=0, vmax=1))
+_SUMMER = cm.ScalarMappable(cmap=plt.get_cmap('summer'),
+                            norm=colors.Normalize(vmin=0, vmax=1))
+
+
 def get_style(args):
-    return {
-            'indep': ('#000000', 'indep.'),
-            'sumcov': ('#FF0000', 'sum k w'),
-            'varsumvarcov': ('#00FF00', 'q sum q k w'),
-        }[args['transform']]
+    transform, lmbda = args['transform'], args['lmbda']
+    if transform == 'indep':
+        return '#FF0000', 'indep.'
+    elif transform == 'sumcov':
+        return _WINTER.to_rgba(lmbda), 'k only, λ={}'.format(lmbda)
+    elif transform == 'varsumvarcov':
+        return _SUMMER.to_rgba(lmbda), 'v and k, λ={}'.format(lmbda)
 
 
 def draw(args):
