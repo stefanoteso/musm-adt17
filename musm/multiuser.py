@@ -116,11 +116,11 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
             {group_str}
         ''', **locals())
 
-    datasets = [np.empty((0, num_attributes)) for _ in group]
-
-    weights = rng.uniform(0, 1, size=(num_users, set_size, num_attributes))
+    default_w, _ = problem.select_query([], set_size, _DEFAULT_ALPHA)
+    weights = np.array([default_w] * num_users)
     var, cov = compute_var_cov(weights)
 
+    datasets = [np.empty((0, num_attributes)) for _ in group]
     alphas = [_DEFAULT_ALPHA for _ in group]
 
     trace, satisfied_users = [], set()
