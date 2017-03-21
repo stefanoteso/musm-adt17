@@ -148,7 +148,7 @@ def main():
                        help='enable debug spew')
 
     group = parser.add_argument_group('Algorithm')
-    group.add_argument('-k', '--set-size', type=int, default=2,
+    group.add_argument('-K', '--set-size', type=int, default=2,
                        help='set size')
     group.add_argument('-F', '--transform', type=str, default=None,
                        help='user-user transformation to use')
