@@ -75,7 +75,7 @@ def compute_var_cov(w):
         for i, j in it.product(range(set_size), repeat=2):
             diff = w[uid,i] - w[uid,j]
             var[uid] += np.dot(diff, diff)
-    var = var / (2 * set_size**2)
+    var = logistic(var)
 
     cov = np.zeros((num_users, num_users))
     for uid1, uid2 in it.product(range(num_users), repeat=2):
@@ -95,11 +95,10 @@ def compute_transform(weights, cov, var, transform, uid):
     others = [i for i in range(len(var)) if i != uid]
     if transform == 'sumcov':
         a = 1
-        b = np.dot(cov[uid, others], avg_weights[others])
+        b = logistic(np.dot(cov[uid, others], avg_weights[others]))
     elif transform == 'varsumvarcov':
-        negvar = 2 * var.max() - var
         a = 1
-        b = var[uid] * np.dot(negvar[others] * cov[uid, others],
+        b = var[uid] * np.dot((1 - var)[others] * cov[uid, others],
                               avg_weights[others])
     else:
         raise NotImplementedError('transform = {}'.format(transform))
