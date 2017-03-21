@@ -73,9 +73,10 @@ def compute_var_cov(w):
     var = np.zeros(num_users)
     for uid in range(num_users):
         for i, j in it.product(range(set_size), repeat=2):
-            diff = w[uid,i] - w[uid,j]
+            diff = (w[uid,i] / np.linalg.norm(w[uid,i]) -
+                    w[uid,j] / np.linalg.norm(w[uid,j]))
             var[uid] += np.dot(diff, diff)
-    var = logistic(var)
+    var /= 4
 
     cov = np.zeros((num_users, num_users))
     for uid1, uid2 in it.product(range(num_users), repeat=2):
