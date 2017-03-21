@@ -21,6 +21,10 @@ _DEFAULT_ALPHA = 10, 0.1, 0.1
 _NUM_FOLDS = 5
 
 
+def logistic(x):
+    return 1 / (1 + np.exp(-x))
+
+
 def crossvalidate(problem, dataset, set_size, uid, weights, var, cov,
                   transform, old_alpha):
     if len(dataset) % _NUM_FOLDS != 0:
