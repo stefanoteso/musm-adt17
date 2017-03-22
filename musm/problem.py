@@ -48,19 +48,16 @@ def bilinear(x, A, z):
 
 
 class Problem(object):
-    def __init__(self, template, num_attributes, transform=None, num_threads=0):
+    def __init__(self, template, num_attributes, num_threads=0):
         self.num_attributes = num_attributes
-        self.transform = transform
         self.num_threads = num_threads
 
-    def infer(self, w, transform=None):
+    def infer(self, w, transform=(1, 1)):
         assert not hasattr(self, 'cost_matrix')
 
-        transformed_w = w
-        if transform is not None:
-            a, b = transform
-            transformed_w = a * w + b
-            assert (transformed_w >= 0).all()
+        a, b = transform
+        transformed_w = a * w + b
+        assert (transformed_w >= 0).all()
 
         _LOG.debug(dedent('''
                 INFERENCE
@@ -87,16 +84,17 @@ class Problem(object):
 
         return x
 
-    def select_query(self, dataset, set_size, alpha, transform=None):
+    def select_query(self, dataset, set_size, alpha, transform=(1, 1)):
         assert not hasattr(self, 'cost_matrix')
 
         w_min = np.zeros(self.num_attributes)
         w_max = np.ones(self.num_attributes)
-        if transform is not None:
-            a, b = transform
-            w_min = a * w_min + b
-            w_max = a * w_max + b
-            assert (w_min >= 0).all() and (w_max >= 0).all()
+
+        a, b = transform
+        w_min = a * w_min + b
+        w_max = a * w_max + b
+        assert (w_min >= 0).all() and (w_max >= 0).all()
+
         w_top = w_max.max()
 
         _LOG.debug(dedent('''\
