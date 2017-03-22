@@ -166,7 +166,8 @@ class Problem(object):
                 model.addConstr(w[i,z] <= w_max[z])
 
         # work around unbounded problems
-        if set_size == 1 and len(dataset) == 0:
+        apply_workaround = set_size == 1 and len(dataset) == 0
+        if apply_workaround:
             model.addConstr(margin == 0)
 
         # add hard constraints
@@ -210,6 +211,6 @@ class Problem(object):
                 margin = {margin}
             ''').format(**locals()))
 
-        assert (w != 0).sum() > 0, 'all-zero weights are bad'
+        assert apply_workaround or (w != 0).sum() > 0, 'all-zero weights are bad'
 
         return w, x
