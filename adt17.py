@@ -127,6 +127,7 @@ def main():
     import argparse
 
     np.seterr(all='raise')
+    np.set_printoptions(precision=2)
 
     fmt = argparse.ArgumentDefaultsHelpFormatter
     parser = argparse.ArgumentParser(formatter_class=fmt)
