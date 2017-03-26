@@ -211,6 +211,7 @@ class Problem(object):
                 margin = {margin}
             ''').format(**locals()))
 
-        assert apply_workaround or (w != 0).sum() > 0, 'all-zero weights are bad'
+        if not apply_workaround and (w == 0).all():
+            _LOG.warning('all-zero weights are bad')
 
         return w, x
