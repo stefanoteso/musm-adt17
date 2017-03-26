@@ -161,7 +161,9 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     uid_to_w = {uid: None for uid in range(num_users)}
     uid_to_w1 = {uid: None for uid in range(num_users)}
-    source_w = {'all': uid_to_w, 'best': uid_to_w1}[sources]
+    uid_to_wstar = {uid: normalize(user.w_star).reshape(1, -1)
+                    for uid, user in enumerate(group)}
+    source_w = {'all': uid_to_w, 'best': uid_to_w1, 'star': uid_to_wstar}[sources]
 
     var, cov = compute_var_cov(source_w)
 
