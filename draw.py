@@ -62,13 +62,13 @@ _SUMMER = cm.ScalarMappable(cmap=plt.get_cmap('summer'),
 
 
 def get_style(args):
-    transform, lmbda = args['transform'], args['lmbda']
+    transform, sources, lmbda = args['transform'], args['sources'], args['lmbda']
     if transform == 'indep':
-        return '#FF0000', 'indep.'
+        return '#FF0000', 'independent'
     elif transform == 'sumcov':
-        return _WINTER.to_rgba(lmbda), 'k only, λ={}'.format(lmbda)
-    elif transform == 'varsumvarcov':
-        return _SUMMER.to_rgba(lmbda), 'v and k, λ={}'.format(lmbda)
+        return _WINTER.to_rgba(lmbda), 'k-only, {} λ={}'.format(sources, lmbda)
+    elif transform == 'varsumcov':
+        return _SUMMER.to_rgba(lmbda), 'v+k {}, {} λ={}'.format(sources, lmbda)
 
 
 def draw(args):
@@ -77,7 +77,7 @@ def draw(args):
     time_fig, time_ax = plt.subplots(1, 1)
 
     data = []
-    for path in args.pickles:
+    for path in sorted(args.pickles):
         data.append(load(path))
 
     # TODO plot selected users
@@ -87,7 +87,7 @@ def draw(args):
     for loss1_matrix, lossk_matrix, time_matrix, info in data:
         color, label = get_style(info)
 
-        max_iters = info['max_iters']
+        max_iters = min(args.max_iters or info['max_iters'], info['max_iters'])
         x = np.arange(1, max_iters + 1)
 
         # regret
@@ -98,9 +98,9 @@ def draw(args):
                       / np.sqrt(loss1_matrix.shape[0])
         max_regret1 = max(max_regret1, y.max())
 
-        loss1_ax.plot(x, y, linewidth=2, color=color, label=label,
+        loss1_ax.plot(x, y, linewidth=2, label=label,
                       marker='o', markersize=6)
-        loss1_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color=color,
+        loss1_ax.fill_between(x, y - yerr, y + yerr, linewidth=0,
                               alpha=0.35)
 
         # query-set regret
@@ -111,9 +111,9 @@ def draw(args):
                       / np.sqrt(lossk_matrix.shape[0])
         max_regretk = max(max_regretk, y.max())
 
-        lossk_ax.plot(x, y, linewidth=2, color=color, label=label,
+        lossk_ax.plot(x, y, linewidth=2, label=label,
                       marker='o', markersize=6)
-        lossk_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color=color,
+        lossk_ax.fill_between(x, y - yerr, y + yerr, linewidth=0,
                               alpha=0.35)
 
         # cumulative time
@@ -124,9 +124,9 @@ def draw(args):
                    / np.sqrt(time_matrix.shape[0])
         max_time = max(max_time, y.max())
 
-        time_ax.plot(x, y, linewidth=2, color=color, label=label,
+        time_ax.plot(x, y, linewidth=2, label=label,
                      marker='o', markersize=6)
-        time_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color=color,
+        time_ax.fill_between(x, y - yerr, y + yerr, linewidth=0,
                              alpha=0.35)
 
     loss1_ax.set_ylabel('regret')
@@ -159,6 +159,8 @@ if __name__ == '__main__':
                         help='basename of the loss/time PNG plots')
     parser.add_argument('pickles', type=str, nargs='+',
                         help='comma-separated list of result pickles')
+    parser.add_argument('--max-iters', type=int, default=None,
+                        help='maximum iterations to plot')
     args = parser.parse_args()
 
     draw(args)
