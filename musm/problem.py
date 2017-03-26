@@ -52,7 +52,7 @@ class Problem(object):
         self.num_attributes = num_attributes
         self.num_threads = num_threads
 
-    def infer(self, w, transform=(1, 1)):
+    def infer(self, w, transform=(1, 0)):
         assert not hasattr(self, 'cost_matrix')
 
         a, b = transform
@@ -84,7 +84,7 @@ class Problem(object):
 
         return x
 
-    def select_query(self, dataset, set_size, alpha, transform=(1, 1)):
+    def select_query(self, dataset, set_size, alpha, transform=(1, 0)):
         assert not hasattr(self, 'cost_matrix')
 
         w_min = np.zeros(self.num_attributes)
