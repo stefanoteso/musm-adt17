@@ -11,8 +11,7 @@ class Synthetic(Problem):
         except TypeError:
             # Assumes an integer
             self.domain_sizes = [domain_sizes] * domain_sizes
-        num_attributes = sum(self.domain_sizes)
-        super().__init__('', num_attributes)
+        super().__init__(sum(self.domain_sizes))
 
     def _add_constraints(self, model, x):
         base = 0

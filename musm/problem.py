@@ -48,7 +48,7 @@ def bilinear(x, A, z):
 
 
 class Problem(object):
-    def __init__(self, template, num_attributes, num_threads=0):
+    def __init__(self, num_attributes, num_threads=0):
         self.num_attributes = num_attributes
         self.num_threads = num_threads
 
