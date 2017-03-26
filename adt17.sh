@@ -1,12 +1,24 @@
 #!/bin/bash
 
-for k in 3 4; do
-    for c in 1 2 5; do
-        for d in 0.5 1.0; do
-            for f in indep sumcov varsumvarcov; do
-                ./adt17.py synthetic -N 20 -M 10 -C $c -K $k -T 100 -d $d --min-regret 0.1 -F $f
+#MC_LIST=('2 1')
+MC_LIST=('10 1' '10 2' '10 5')
+
+for i in `seq 0 $((${#MC_LIST[*]} - 1))`; do
+    M=`echo ${MC_LIST[$i]} | cut -d' ' -f1`
+    C=`echo ${MC_LIST[$i]} | cut -d' ' -f2`
+    for d in 0.5; do
+        for K in 2; do
+
+            echo "RUNNING INDEPENDENT $M $C $d $K"
+            ./adt17.py synthetic -N 10 -M $M -C $C -T 50 -K $K -d $d --min-regret 0.1 -F indep
+
+            for S in best; do
+                for L in 0.25 0.5 0.75; do
+                    echo "RUNNING SUMCOV $M $C $d $K $S $L"
+                    ./adt17.py synthetic -N 10 -M $M -C $C -T 50 -K $K -d $d --min-regret 0.1 -F sumcov -S $S -L $L
+                done
             done
-            ./draw.py debug_k${k}_10on${c}_density\=$d results/synthetic_20_${c}_10_100_${k}_*_False_0.1_normal_${d}_pl_1_0.pickle
+
         done
     done
 done
