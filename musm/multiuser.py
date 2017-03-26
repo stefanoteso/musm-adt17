@@ -163,9 +163,9 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     uid_to_w1 = {uid: None for uid in range(num_users)}
     uid_to_wstar = {uid: normalize(user.w_star).reshape(1, -1)
                     for uid, user in enumerate(group)}
-    source_w = {'all': uid_to_w, 'best': uid_to_w1, 'star': uid_to_wstar}[sources]
+    source_w = {'all': uid_to_w, 'best': uid_to_w1}[sources]
 
-    var, cov = compute_var_cov(source_w)
+    var, cov = compute_var_cov(source_w if True else uid_to_wstar)
 
     satisfied_users = set()
     datasets = [np.empty((0, problem.num_attributes)) for _ in group]
@@ -192,7 +192,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                     _LOG.warning('all-zero delta added!')
                 datasets[uid] = np.append(datasets[uid], delta, axis=0)
 
-        var, cov = compute_var_cov(source_w)
+        var, cov = compute_var_cov(source_w if True else uid_to_wstar)
 
         # XXX regretsk is only computed for uid!!!
 
