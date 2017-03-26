@@ -157,11 +157,12 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     uid_to_w = {uid: None for uid in range(num_users)}
     uid_to_w1 = {uid: None for uid in range(num_users)}
-    uid_to_wstar = {uid: normalize(user.w_star).reshape(1, -1)
-                    for uid, user in enumerate(group)}
+    #uid_to_wstar = {uid: normalize(user.w_star).reshape(1, -1)
+    #                for uid, user in enumerate(group)}
+
     source_w = {'all': uid_to_w, 'best': uid_to_w1}[sources]
 
-    var, cov = compute_var_cov(source_w if True else uid_to_wstar)
+    var, cov = compute_var_cov(source_w)
 
     satisfied_users = set()
     datasets = [np.empty((0, problem.num_attributes)) for _ in group]
@@ -188,23 +189,28 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                     _LOG.warning('all-zero delta added!')
                 datasets[uid] = np.append(datasets[uid], delta, axis=0)
 
-        var, cov = compute_var_cov(source_w if True else uid_to_wstar)
+        var, cov = compute_var_cov(source_w)
 
-        # XXX regretsk is only computed for uid!!!
+        f = compute_transform(uid, source_w, var, cov, transform, lmbda)
+        w, x = problem.select_query(datasets[uid], 1,
+                                    alphas[uid], transform=f)
+        uid_to_w1[uid] = normalize(w)
+        t1 = time() - t1
 
         regrets1, regretsk = np.zeros(num_users), np.zeros(num_users)
         for vid, user in enumerate(group):
             f = compute_transform(vid, source_w, var, cov, transform, lmbda)
+
             w, x = problem.select_query(datasets[vid], 1,
                                         alphas[vid], transform=f)
-            uid_to_w1[vid] = normalize(w)
-
             regrets1[vid] = user.regret(x[0])
-            regretsk[vid] = min([user.regret(x) for x in query_set])
+
+            # w, x = problem.select_query(datasets[vid], set_size,
+            #                             alphas[vid], transform=f)
+            regretsk[vid] = 0 # min([user.regret(x) for x in x])
 
             if user.is_satisfied(x[0]):
                 satisfied_users.add(vid)
-        t1 = time() - t1
 
 
         cov_str = '\n'.join([str(cov[vid]) for vid in range(num_users)]) + '\n'
@@ -216,10 +222,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                 var = {var}
                 cov =
                 {cov_str}
-                w =
-                {uid_to_w}
-                w1 =
-                {uid_to_w1}
+                source_w =
+                {source_w}
                 q = {query_set}
                 i_star = {i_star}
                 datasets =
