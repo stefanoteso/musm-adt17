@@ -92,18 +92,14 @@ def compute_var_cov(uid_to_w):
 
     cov = np.eye(num_users)
     for uid, vid in it.product(known_users, known_users):
-        p = np.dot(uid_to_w[uid], uid_to_w[vid].T).min()
-        q = np.dot(uid_to_w[uid], uid_to_w[uid].T).min() * \
-            np.dot(uid_to_w[vid], uid_to_w[vid].T).min()
-        if q == 0:
-            cov[uid, vid] = 1
-        else:
-            cov[uid, vid] = p / np.sqrt(q)
-
-    # XXX for some reason the second assertion triggers for indep
+        sqdists = []
+        for i, j in it.product(range(set_size), repeat=2):
+            diff = uid_to_w[uid][i] - uid_to_w[vid][j]
+            sqdists.append(np.dot(diff, diff))
+        cov[uid,vid] = np.exp(-np.array(sqdists).mean())
 
     assert (cov >= 0).all(), 'cov is negative'
-    assert (cov <= 1 + 1e-1).all(), 'cov is too large, cov =\n{}'.format(cov)
+    assert (cov <= 1 + 1e-1).all(), 'cov is too large'
 
     return var, cov
 
