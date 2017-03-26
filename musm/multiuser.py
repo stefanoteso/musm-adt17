@@ -38,14 +38,14 @@ def crossvalidate(problem, dataset, set_size, uid, w, var, cov,
         return old_alpha
 
     kfold = KFold(len(dataset), n_folds=_NUM_FOLDS)
-    p = compute_transform(uid, w, cov, var, transform, lmbda)
+    f = compute_transform(uid, w, var, cov, transform, lmbda)
 
     avg_accuracy = np.zeros(len(_ALPHAS))
     for i, alpha in enumerate(_ALPHAS):
         accuracies = []
         for tr_indices, ts_indices in kfold:
             w, _ = problem.select_query(dataset[tr_indices], set_size, alpha,
-                                        transform=p)
+                                        transform=f)
             utilities = np.dot(w, dataset[ts_indices].T)
             accuracies.append((utilities > 0).mean())
         avg_accuracy[i] = sum(accuracies) / len(accuracies)
