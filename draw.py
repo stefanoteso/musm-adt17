@@ -24,14 +24,12 @@ def load(path):
     data = musm.load(path)
     num_users = data['args']['num_users_per_group']
     max_iters = data['args']['max_iters']
-    loss1_matrix, lossk_matrix, time_matrix = [], [], []
+    loss1_matrix, time_matrix = [], []
     for trace in data['traces']:
         trace = np.array(trace)
         loss1_matrix.append(pad(trace[:,:num_users], max_iters))
-        lossk_matrix.append(pad(trace[:,num_users:2*num_users], max_iters))
         time_matrix.append(pad(trace[:,-1], max_iters))
     return np.array(loss1_matrix), \
-           np.array(lossk_matrix), \
            np.array(time_matrix), \
            data['args']
 
@@ -66,14 +64,13 @@ def get_style(args):
     if transform == 'indep':
         return '#FF0000', 'independent'
     elif transform == 'sumcov':
-        return _WINTER.to_rgba(lmbda), 'k-only, {} λ={}'.format(sources, lmbda)
-    elif transform == 'varsumcov':
-        return _SUMMER.to_rgba(lmbda), 'v+k {}, {} λ={}'.format(sources, lmbda)
+        return _WINTER.to_rgba(lmbda), 'k only (λ={})'.format(lmbda)
+    elif transform == 'varsumvarcov':
+        return _SUMMER.to_rgba(lmbda), 'v + k'
 
 
 def draw(args):
     loss1_fig, loss1_ax = plt.subplots(1, 1)
-    lossk_fig, lossk_ax = plt.subplots(1, 1)
     time_fig, time_ax = plt.subplots(1, 1)
 
     data = []
@@ -83,8 +80,8 @@ def draw(args):
     # TODO plot selected users
     # TODO plot per-run debug plots
 
-    max_regret1, max_regretk, max_time = -np.inf, -np.inf, -np.inf
-    for loss1_matrix, lossk_matrix, time_matrix, info in data:
+    max_regret1, max_time = -np.inf, -np.inf
+    for loss1_matrix, time_matrix, info in data:
         color, label = get_style(info)
 
         max_iters = min(args.max_iters or info['max_iters'], info['max_iters'])
@@ -101,19 +98,6 @@ def draw(args):
         loss1_ax.plot(x, y, linewidth=2, label=label,
                       marker='o', markersize=6)
         loss1_ax.fill_between(x, y - yerr, y + yerr, linewidth=0,
-                              alpha=0.35)
-
-        # query-set regret
-
-        lossk_matrix = lossk_matrix.mean(axis=2) # average over all users
-        y = np.median(lossk_matrix, axis=0)[:max_iters]
-        yerr = np.std(lossk_matrix, axis=0)[:max_iters] \
-                      / np.sqrt(lossk_matrix.shape[0])
-        max_regretk = max(max_regretk, y.max())
-
-        lossk_ax.plot(x, y, linewidth=2, label=label,
-                      marker='o', markersize=6)
-        lossk_ax.fill_between(x, y - yerr, y + yerr, linewidth=0,
                               alpha=0.35)
 
         # cumulative time
@@ -134,13 +118,6 @@ def draw(args):
     loss1_ax.set_ylim([0, 1.05 * max_regret1])
     prettify(loss1_ax, max_iters, 'Regret')
     loss1_fig.savefig(args.png_basename + '_loss1.png', bbox_inches='tight',
-                      pad_inches=0, dpi=120)
-
-    lossk_ax.set_ylabel('min set-wise regret')
-    lossk_ax.set_xlim([1, max_iters])
-    lossk_ax.set_ylim([0, 1.05 * max_regretk])
-    prettify(lossk_ax, max_iters, 'Query Set Regret')
-    lossk_fig.savefig(args.png_basename + '_lossk.png', bbox_inches='tight',
                       pad_inches=0, dpi=120)
 
     time_ax.set_ylabel('cumulative time (s)')
