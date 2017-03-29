@@ -137,8 +137,6 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
                 {cov}
                 eigval(cov) =
                 {eigval}
-                eigvec(cov) =
-                {eigvec}
                 a = {a}
                 b = {b}
             ''').format(**locals())
