@@ -150,11 +150,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     rng = check_random_state(rng)
     num_users = len(group)
 
-    group_str = '\n'.join([str(user) for user in group])
-    _LOG.info('''\
-            running multi-user setmargin on {num_users} users (k={set_size}, T={max_iters})
-            {group_str}
-        ''', **locals())
+    _LOG.info('running musm, {num_users} users, k={set_size}, T={max_iters}',
+              **locals())
 
     uid_to_w = {uid: None for uid in range(num_users)}
     uid_to_w1 = {uid: None for uid in range(num_users)}
@@ -198,37 +195,28 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         uid_to_w1[uid] = normalize(w)
         t1 = time() - t1
 
-        regrets1, regretsk = np.zeros(num_users), np.zeros(num_users)
+        regrets1 = np.zeros(num_users)
         for vid, user in enumerate(group):
-            f = compute_transform(vid, source_w, var, cov, transform, lmbda)
-
+            ff = compute_transform(vid, uid_to_w1, var, cov, transform, lmbda)
             w, x = problem.select_query(datasets[vid], 1,
-                                        alphas[vid], transform=f)
+                                        alphas[vid], transform=ff)
             regrets1[vid] = user.regret(x[0])
-
-            # w, x = problem.select_query(datasets[vid], set_size,
-            #                             alphas[vid], transform=f)
-            regretsk[vid] = 0 # min([user.regret(x) for x in x])
 
             if user.is_satisfied(x[0]):
                 satisfied_users.add(vid)
 
-
-        cov_str = '\n'.join([str(cov[vid]) for vid in range(num_users)]) + '\n'
         _LOG.debug('''\
-                ITERATION {t:3d}
-                user = {uid} {satisfied_users}
-                regrets@1 = {regrets1}
-                regrets@k = {regretsk}
-                var = {var}
-                cov =
-                {cov_str}
-                source_w =
-                {source_w}
+                {t:3d} var={var} regrets={regrets1} uid={uid} {satisfied_users}
+                cov = {cov}
+                transform = {f}
                 q = {query_set}
                 i_star = {i_star}
                 datasets =
                 {datasets}
+                uid_to_w =
+                {uid_to_w}
+                uid_to_w1 =
+                {uid_to_w1}
             ''', **locals())
 
         t2 = time()
@@ -238,7 +226,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                                         alphas[uid])
         t2 = time() - t2
 
-        trace.append(list(regrets1) + list(regretsk) + [uid, t0 + t1 + t2])
+        trace.append(list(regrets1) + [uid, t0 + t1 + t2])
 
         if len(satisfied_users) == len(group):
             break
