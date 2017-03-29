@@ -153,14 +153,12 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     _LOG.info('running musm, {num_users} users, k={set_size}, T={max_iters}',
               **locals())
 
-    uid_to_w = {uid: None for uid in range(num_users)}
+    w, _ = problem.select_query([], set_size, _DEFAULT_ALPHA)
+    uid_to_w = {uid: normalize(w) for uid in range(num_users)}
+
+    var, cov = compute_var_cov(uid_to_w)
+
     uid_to_w1 = {uid: None for uid in range(num_users)}
-    #uid_to_wstar = {uid: normalize(user.w_star).reshape(1, -1)
-    #                for uid, user in enumerate(group)}
-
-    source_w = {'all': uid_to_w, 'best': uid_to_w1}[sources]
-
-    var, cov = compute_var_cov(source_w)
 
     satisfied_users = set()
     datasets = [np.empty((0, problem.num_attributes)) for _ in group]
@@ -171,7 +169,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         t0 = time()
         uid = select_user(var, satisfied_users, rng)
 
-        f = compute_transform(uid, source_w, var, cov, transform, lmbda)
+        f = compute_transform(uid, uid_to_w1, var, cov, transform, lmbda)
         w, query_set = problem.select_query(datasets[uid], set_size,
                                             alphas[uid], transform=f)
         uid_to_w[uid] = normalize(w)
@@ -187,9 +185,9 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                     _LOG.warning('all-zero delta added!')
                 datasets[uid] = np.append(datasets[uid], delta, axis=0)
 
-        var, cov = compute_var_cov(source_w)
+        var, cov = compute_var_cov(uid_to_w)
 
-        f = compute_transform(uid, source_w, var, cov, transform, lmbda)
+        f = compute_transform(uid, uid_to_w1, var, cov, transform, lmbda)
         w, x = problem.select_query(datasets[uid], 1,
                                     alphas[uid], transform=f)
         uid_to_w1[uid] = normalize(w)
