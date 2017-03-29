@@ -115,18 +115,21 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
 
     if transform == 'sumcov':
         a = lmbda
-        b = (1 - lmbda) * sum([cov[uid,vid] * uid_to_w1[vid] for vid in others])
-    elif transform == 'varsumcov':
+        b = (1 - lmbda) * sum([cov[uid,vid] * uid_to_w1[vid]
+                               for vid in others])
+    elif transform == 'varsumvarcov':
         a = (1 - var[uid])
-        b = var[uid] * sum([cov[uid,vid] * uid_to_w1[vid] for vid in others])
+        b = var[uid] * sum([cov[uid,vid] * (1 - var)[vid] * uid_to_w1[vid]
+                            for vid in others])
     else:
         raise NotImplementedError('invalid transform, {}'.format(transform))
 
-    # XXX suppress very small negative values
+    # NOTE this clamps close-to-zero negative values to zero; in theory it
+    # should not be required...
     b[np.logical_and(-1e-2 <= b, b <= 0)] = 0
 
-    if a < 0 or (b < 0).any():
-        eigval, eigvec = np.linalg.eigh(cov)
+    if a <= 0 or (b < 0).any():
+        eigval, _ = np.linalg.eigh(cov)
         msg = dedent('''\
                 uid = {uid}, others = {others}
                 var = {var}
