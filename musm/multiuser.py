@@ -95,7 +95,7 @@ def compute_var_cov(uid_to_w):
         sqdists = []
         for i, j in it.product(range(set_size), repeat=2):
             diff = uid_to_w[uid][i] - uid_to_w[vid][j]
-            sqdists.append(np.dot(diff, diff))
+            sqdists.append(np.dot(diff, diff) / 4)
         cov[uid,vid] = np.exp(-np.array(sqdists).mean())
 
     assert (cov >= 0).all(), 'cov is negative'
