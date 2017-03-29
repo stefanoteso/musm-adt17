@@ -105,8 +105,8 @@ def compute_var_cov(uid_to_w):
 
 
 def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
-    others = [vid for vid in range(len(var))
-              if vid != uid and uid_to_w[vid] is not None]
+    others = sorted(vid for vid, w in uid_to_w.items()
+                    if vid != uid and w is not None)
 
     if transform == 'indep' or not len(others):
         return 1, 0
