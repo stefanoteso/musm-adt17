@@ -44,17 +44,21 @@ def _sparsify(w, density, rng):
 
 
 def sample_cluster(problem, num_users=5, distrib='normal', density=1, rng=0):
+    num_attributes = problem.num_attributes
+    if hasattr(problem, 'cost_matrix'):
+        num_attributes += problem.cost_matrix.shape[0]
+
     if distrib == 'uniform':
-        w_mean = rng.uniform(25, 25 / 3, size=problem.num_attributes)
+        w_mean = rng.uniform(25, 25 / 3, size=num_attributes)
     elif distrib == 'normal':
-        w_mean = rng.uniform(1, 100 + 1, size=problem.num_attributes)
+        w_mean = rng.uniform(1, 100 + 1, size=num_attributes)
     else:
         raise ValueError('invalid distrib, got {}'.format(distrib))
 
     if True: # XXX
-        w = w_mean + np.zeros((num_users, problem.num_attributes))
+        w = w_mean + np.zeros((num_users, num_attributes))
     else:
-        w = w_mean + rng.uniform(0, 25, size=(num_users, problem.num_attributes))
+        w = w_mean + rng.uniform(0, 25, size=(num_users, num_attributes))
 
     return _sparsify(np.abs(w), density, rng)
 
@@ -81,6 +85,11 @@ def generate_user_groups(problem, args):
                                   distrib=args['distrib'],
                                   density=args['density'],
                                   rng=rng)
+            if hasattr(problem, 'cost_matrix'):
+                num_costs = problem.cost_matrix.shape[0]
+                temp_bools = temp[:, :-num_costs]
+                temp_costs = temp[:, -num_costs:]
+                temp = temp_bools + np.dot(temp_costs, problem.cost_matrix)
             if len(w_star) == 0:
                 w_star = temp
             else:
