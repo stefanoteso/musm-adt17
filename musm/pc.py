@@ -41,7 +41,7 @@ class PC(Problem):
         self.cost_matrix = np.hstack([
                 np.array(self._ATTR_TO_COSTS[attr], dtype=float)
                 for attr, _ in self._ATTRIBUTES
-            ]) / 2754.4
+            ]).reshape((1, -1)) / 2754.4
 
     def _add_constraints(self, model, x):
         base, offs = 0, {}
