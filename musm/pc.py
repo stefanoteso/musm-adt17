@@ -1,3 +1,4 @@
+import numpy as np
 import gurobipy as gurobi
 
 from .problem import Problem
@@ -36,7 +37,7 @@ class PC(Problem):
     }
 
     def __init__(self, **kwargs):
-        super().__init__(len(self._ATTRIBUTES))
+        super().__init__(sum(attr[1] for attr in self._ATTRIBUTES))
         self.cost_matrix = np.hstack([
                 np.array(self._ATTR_TO_COSTS[attr], dtype=float)
                 for attr, _ in self._ATTRIBUTES
@@ -50,12 +51,12 @@ class PC(Problem):
             model.addConstr(gurobi.quicksum(x_attr) == 1)
             base += size
 
-        def implies(x, head, body):
+        def implies(head, body):
             # NOTE here we subtract 1 from head and body bits because the bit
             # numbers in the constraints were computed starting from one, to
             # work in MiniZinc, while Gurobi expects them to start from zero
             head = 1 - x[head - 1]
-            body = grb.quicksum([x[i - 1] for i in body])
+            body = gurobi.quicksum([x[i - 1] for i in body])
             return model.addConstr(head + body >= 1)
 
         # Manufacturer -> Type
@@ -66,8 +67,8 @@ class PC(Problem):
 
         # Manufacturer -> CPU
         implies(offs['manufacturer'] + 1, [offs['cpu'] + i for i in range(28, 37+1)])
-        implies(offs['manufacturer'] + 2, [offs['cpu'] + i for i in range(1, 4+1) + range(6, 27+1)])
-        implies(offs['manufacturer'] + 7, [offs['cpu'] + i for i in range(1, 4+1) + range(6, 27+1)])
+        implies(offs['manufacturer'] + 2, [offs['cpu'] + i for i in list(range(1, 4+1)) + list(range(6, 27+1))])
+        implies(offs['manufacturer'] + 7, [offs['cpu'] + i for i in list(range(1, 4+1)) + list(range(6, 27+1))])
         implies(offs['manufacturer'] + 4, [offs['cpu'] + i for i in range(5, 27+1)])
         implies(offs['manufacturer'] + 3, [offs['cpu'] + i for i in range(6, 27+1)])
         implies(offs['manufacturer'] + 5, [offs['cpu'] + i for i in range(6, 27+1)])
