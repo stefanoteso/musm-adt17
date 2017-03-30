@@ -146,7 +146,7 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
 
 
 def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
-         transform='indep', sources='all', lmbda=0.5, rng=None):
+         transform='indep', lmbda=0.5, rng=None):
     rng = check_random_state(rng)
     num_users = len(group)
 

@@ -26,7 +26,7 @@ def get_results_path(args):
     properties = [
         args['problem'], args['num_groups'], args['num_clusters_per_group'],
         args['num_users_per_group'], args['max_iters'], args['set_size'],
-        args['transform'], args['sources'], args['lmbda'], args['enable_cv'],
+        args['transform'], args['lmbda'], args['enable_cv'],
         args['min_regret'], args['distrib'], args['density'],
         args['response_model'], args['noise'], args['seed'],
     ]
@@ -117,7 +117,6 @@ def run(args):
                                 max_iters=args['max_iters'],
                                 enable_cv=args['enable_cv'],
                                 transform=args['transform'],
-                                sources=args['sources'],
                                 lmbda=args['lmbda'],
                                 rng=0))
 
@@ -155,8 +154,6 @@ def main():
                        help='set size')
     group.add_argument('-F', '--transform', type=str, default='indep',
                        help='user-user transformation to use')
-    group.add_argument('-S', '--sources', type=str, default='all',
-                       help='what weight vectors to use as sources')
     group.add_argument('-L', '--lmbda', type=float, default=0.5,
                        help='transform importance')
     group.add_argument('-X', '--enable-cv', action='store_true',
