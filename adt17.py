@@ -26,7 +26,7 @@ def get_results_path(args):
     properties = [
         args['problem'], args['num_groups'], args['num_clusters_per_group'],
         args['num_users_per_group'], args['max_iters'], args['set_size'],
-        args['transform'], args['lmbda'], args['enable_cv'],
+        args['pick'], args['transform'], args['lmbda'], args['enable_cv'],
         args['min_regret'], args['distrib'], args['density'],
         args['response_model'], args['noise'], args['seed'],
     ]
@@ -125,6 +125,7 @@ def run(args):
                                 set_size=args['set_size'],
                                 max_iters=args['max_iters'],
                                 enable_cv=args['enable_cv'],
+                                pick=args['pick'],
                                 transform=args['transform'],
                                 lmbda=args['lmbda'],
                                 rng=0))
@@ -161,6 +162,8 @@ def main():
     group = parser.add_argument_group('Algorithm')
     group.add_argument('-K', '--set-size', type=int, default=2,
                        help='set size')
+    group.add_argument('-P', '--pick', type=str, default='maxvar',
+                       help='critertion used for picking users')
     group.add_argument('-F', '--transform', type=str, default='indep',
                        help='user-user transformation to use')
     group.add_argument('-L', '--lmbda', type=float, default=0.5,
