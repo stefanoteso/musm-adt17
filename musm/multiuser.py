@@ -65,7 +65,9 @@ def select_user(var, datasets, satisfied_users, pick, rng):
     if pick == 'random':
         pvals = np.ones_like(var)
     elif pick == 'maxvar':
-        maxvar = var.max()
+        temp = np.array(var)
+        temp[list(satisfied_users)] = -np.inf
+        maxvar = temp.max()
         pvals = np.array([np.isclose(v, maxvar) for v in var])
     elif pick == 'invnumqueries':
         pvals = [1 / (1 + len(datasets[u])) for u in range(len(var))]
