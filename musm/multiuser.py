@@ -60,10 +60,20 @@ def crossvalidate(problem, dataset, set_size, uid, w, var, cov,
     return alpha
 
 
-def select_user(var, satisfied_users, rng):
-    temp = np.array(var)
-    temp[list(satisfied_users)] = -np.inf
-    pvals = np.array([var == temp.max() for var in temp])
+def select_user(var, datasets, satisfied_users, pick, rng):
+    # TODO implement centrality
+    if pick == 'random':
+        pvals = np.ones_like(var)
+    elif pick == 'maxvar':
+        temp = np.array(var)
+        temp[list(satisfied_users)] = -np.inf
+        maxvar = temp.max()
+        pvals = np.array([np.isclose(v, maxvar) for v in var])
+    elif pick == 'invnumqueries':
+        pvals = [1 / (1 + len(datasets[u])) for u in range(len(var))]
+    else:
+        raise ValueError('invalid pick')
+    pvals[list(satisfied_users)] = 0
     pvals = pvals / pvals.sum()
     uid = np.argmax(rng.multinomial(1, pvals=pvals))
     assert not uid in satisfied_users
@@ -146,7 +156,7 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
 
 
 def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
-         transform='indep', lmbda=0.5, rng=None):
+         pick='maxvar', transform='indep', lmbda=0.5, rng=None):
     rng = check_random_state(rng)
     num_users = len(group)
 
@@ -167,7 +177,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     trace = []
     for t in range(max_iters):
         t0 = time()
-        uid = select_user(var, satisfied_users, rng)
+        uid = select_user(var, datasets, satisfied_users, pick, rng)
 
         f = compute_transform(uid, uid_to_w1, var, cov, transform, lmbda)
         w, query_set = problem.select_query(datasets[uid], set_size,
