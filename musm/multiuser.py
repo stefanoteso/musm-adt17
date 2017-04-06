@@ -119,7 +119,7 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
                     if vid != uid and w is not None)
 
     if transform == 'indep' or not len(others):
-        return 1, 0
+        return 1, np.array([0])
 
     uid_to_w1 = {vid: uid_to_w[vid].mean(axis=0) for vid in others}
 
