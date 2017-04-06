@@ -26,9 +26,9 @@ def get_results_path(args):
     properties = [
         args['problem'], args['num_groups'], args['num_clusters_per_group'],
         args['num_users_per_group'], args['max_iters'], args['set_size'],
-        args['pick'], args['transform'], args['lmbda'], args['enable_cv'],
-        args['min_regret'], args['distrib'], args['density'],
-        args['response_model'], args['noise'], args['seed'],
+        args['pick'], args['transform'], args['tau'], args['lmbda'],
+        args['enable_cv'], args['min_regret'], args['distrib'],
+        args['density'], args['response_model'], args['noise'], args['seed'],
     ]
     return os.path.join('results', '_'.join(map(str, properties)) + '.pickle')
 
@@ -127,6 +127,7 @@ def run(args):
                                 enable_cv=args['enable_cv'],
                                 pick=args['pick'],
                                 transform=args['transform'],
+                                tau=args['tau'],
                                 lmbda=args['lmbda'],
                                 rng=0))
 
@@ -166,6 +167,8 @@ def main():
                        help='critertion used for picking users')
     group.add_argument('-F', '--transform', type=str, default='indep',
                        help='user-user transformation to use')
+    group.add_argument('-t', '--tau', type=float, default=0.25,
+                       help='kernel inverse temperature parameter')
     group.add_argument('-L', '--lmbda', type=float, default=0.5,
                        help='transform importance')
     group.add_argument('-X', '--enable-cv', action='store_true',
