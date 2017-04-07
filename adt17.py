@@ -7,6 +7,7 @@ import numpy as np
 import musm
 
 from sklearn.utils import check_random_state
+from textwrap import dedent
 
 
 _LOG = musm.get_logger('adt17')
@@ -80,20 +81,32 @@ def generate_user_groups(problem, args):
                 num_users_in_cluster = args['num_users_per_group'] - len(w_star)
             else:
                 num_users_in_cluster = num_users_per_cluster
+
             temp = sample_cluster(problem,
                                   num_users=num_users_in_cluster,
                                   distrib=args['distrib'],
                                   density=args['density'],
                                   rng=rng)
+
+            ttemp = temp
             if hasattr(problem, 'cost_matrix'):
                 num_costs = problem.cost_matrix.shape[0]
                 temp_bools = temp[:, :-num_costs]
                 temp_costs = temp[:, -num_costs:]
-                temp = temp_bools + np.dot(temp_costs, problem.cost_matrix)
+                ttemp = temp_bools + np.dot(temp_costs, problem.cost_matrix)
+
+            _LOG.debug(dedent('''\
+                    CLUSTER {cid}:
+                    true user weights =
+                    {temp}
+                    true user weights transformed by cost matrix =
+                    {ttemp}
+                ''').format(**locals()))
+
             if len(w_star) == 0:
-                w_star = temp
+                w_star = ttemp
             else:
-                w_star = np.append(w_star, temp, axis=0)
+                w_star = np.append(w_star, ttemp, axis=0)
 
         user_groups.append([User(problem,
                                  w_star[uid],
