@@ -60,13 +60,13 @@ _SUMMER = cm.ScalarMappable(cmap=plt.get_cmap('summer'),
 
 
 def get_style(args):
-    transform, lmbda = args['transform'], args['lmbda']
+    transform, tau, lmbda = args['transform'], args['tau'], args['lmbda']
     if transform == 'indep':
         return '#FF0000', 'independent'
     elif transform == 'sumcov':
         return _WINTER.to_rgba(lmbda), 'k only (λ={})'.format(lmbda)
     elif transform == 'varsumvarcov':
-        return _SUMMER.to_rgba(lmbda), 'v + k'
+        return _SUMMER.to_rgba(lmbda), 'v + k τ={}'.format(tau)
 
 
 def draw(args):
