@@ -28,7 +28,7 @@ Run the `adt17.sh` runner script from a terminal, like this:
 $ ./adt17.sh
 ```
 The results will be dumped into the `results/` directory as pickle files.
-You can plot them individually
+You can plot them individually using the `draw.py` script.
 
 * * *
 
