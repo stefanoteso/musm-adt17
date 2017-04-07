@@ -23,13 +23,12 @@ _NUM_FOLDS = 3
 
 
 def normalize(w):
-    if w.ndim == 1:
-        return w / np.linalg.norm(w)
-    else:
-        v = np.array(w, copy=True)
-        for i in range(len(v)):
-            v[i] /= (np.linalg.norm(v[i]) + 1e-13)
-        return v
+    if w.ndim != 2:
+        raise ValueError('I only work with 2D arrays')
+    v = np.array(w, copy=True)
+    for i in range(len(v)):
+        v[i] /= (np.linalg.norm(v[i]) + 1e-13)
+    return v
 
 
 def crossvalidate(problem, dataset, set_size, uid, w, var, cov,
