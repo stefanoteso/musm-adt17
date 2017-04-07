@@ -162,12 +162,26 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     _LOG.info('running musm, {num_users} users, k={set_size}, T={max_iters}',
               **locals())
 
+    uid_to_w1 = {uid: None for uid in range(num_users)}
+
     w, _ = problem.select_query([], set_size, _DEFAULT_ALPHA)
     uid_to_w = {uid: normalize(w) for uid in range(num_users)}
-
     var, cov = compute_var_cov(uid_to_w, tau=tau)
 
-    uid_to_w1 = {uid: None for uid in range(num_users)}
+    uid_to_w_star = {uid: normalize(group[uid].w_star.reshape(1,-1))
+                     for uid in range(num_users)}
+    var_star, cov_star = compute_var_cov(uid_to_w_star, tau=tau)
+
+    _LOG.debug(dedent('''\
+            initial var =
+            {var}
+            initial cov =
+            {cov}
+            var* =
+            {var_star}
+            cov* =
+            {cov_star}
+        ''').format(**locals()))
 
     satisfied_users = set()
     datasets = [np.empty((0, problem.num_attributes)) for _ in group]
