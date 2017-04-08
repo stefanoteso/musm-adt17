@@ -23,6 +23,7 @@ _NUM_FOLDS = 3
 
 
 def normalize(w):
+    """Normalizes the rows of a matrix w.r.t. their Euclidean norm."""
     if w.ndim != 2:
         raise ValueError('I only work with 2D arrays')
     v = np.array(w, copy=True)
@@ -32,12 +33,24 @@ def normalize(w):
 
 
 def crossvalidate(problem, dataset, set_size, uid, w, var, cov,
-                  transform, lmbda, old_alpha):
+                  transform, old_alpha):
+    """Finds the best hyperparameters using cross-validation.
+
+    Parameters
+    ----------
+    WRITEME
+
+    Returns
+    -------
+    alpha : tuple
+        The best hyperparameter.
+    """
+
     if len(dataset) % _NUM_FOLDS != 0:
         return old_alpha
 
     kfold = KFold(len(dataset), n_folds=_NUM_FOLDS)
-    f = compute_transform(uid, w, var, cov, transform, lmbda)
+    f = compute_transform(uid, w, var, cov, transform)
 
     avg_accuracy = np.zeros(len(_ALPHAS))
     for i, alpha in enumerate(_ALPHAS):
@@ -60,6 +73,7 @@ def crossvalidate(problem, dataset, set_size, uid, w, var, cov,
 
 
 def select_user(var, datasets, satisfied_users, pick, rng):
+    """Selects the user to query."""
     # TODO implement centrality
     if pick == 'random':
         pvals = np.ones_like(var)
@@ -80,6 +94,7 @@ def select_user(var, datasets, satisfied_users, pick, rng):
 
 
 def compute_var_cov(uid_to_w, tau=0.25):
+    """Computes the variance (spread) and covariance (kernel) of users."""
     num_users = len(uid_to_w)
 
     known_users = [uid for uid, w in uid_to_w.items() if w is not None]
@@ -113,7 +128,8 @@ def compute_var_cov(uid_to_w, tau=0.25):
     return var, cov
 
 
-def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
+def compute_transform(uid, uid_to_w, var, cov, transform):
+    """Computes the linear transformation of the aggregate utility function."""
     others = sorted(vid for vid, w in uid_to_w.items()
                     if vid != uid and w is not None)
 
@@ -122,11 +138,7 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
 
     uid_to_w1 = {vid: uid_to_w[vid].mean(axis=0) for vid in others}
 
-    if transform == 'sumcov':
-        a = lmbda
-        b = (1 - lmbda) * sum([cov[uid,vid] * uid_to_w1[vid]
-                               for vid in others])
-    elif transform == 'varsumvarcov':
+    if transform == 'varsumvarcov':
         a = (1 - var[uid])
         b = var[uid] * sum([cov[uid,vid] * (1 - var)[vid] * uid_to_w1[vid]
                             for vid in others])
@@ -155,7 +167,36 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
 
 
 def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
-         pick='maxvar', transform='indep', tau=0.25, lmbda=0.5, rng=None):
+         pick='maxvar', transform='indep', tau=0.25, rng=None):
+    """Runs the MUSM algorithm on a group of users.
+
+    Parameters
+    ----------
+    group : list of User
+        The group of users to interact with.
+    set_size : int, defaults to 2
+        The size of the query set.
+    max_iters : int, defaults to 100
+        Maximum number of iterations to run for.
+    enable_cv : bool, defaults to False
+        Whether to perform hyperparameter cross-validation.
+    pick : str, defaults to 'maxvar'
+        Criterion use for picking a user at each iteration.
+    transform : str, defaults to 'indep'
+        What kind of transform to use for computing the aggregate (multi-user)
+        utility.
+    tau : float > 0, defaults to 0.25
+        Inverse temperature of the inter-user kernel.
+    rng : WRITEME
+        The RNG.
+
+    Returns
+    -------
+    trace : list
+        It holds one element per iteration; each element holds the regret of
+        all users, the ID of the selected user, and the time spen at that
+        iteration.
+    """
     rng = check_random_state(rng)
     num_users = len(group)
 
@@ -192,7 +233,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         t0 = time()
         uid = select_user(var, datasets, satisfied_users, pick, rng)
 
-        f = compute_transform(uid, uid_to_w1, var, cov, transform, lmbda)
+        f = compute_transform(uid, uid_to_w1, var, cov, transform)
         w, query_set = problem.select_query(datasets[uid], set_size,
                                             alphas[uid], transform=f)
         uid_to_w[uid] = normalize(w)
@@ -210,7 +251,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         var, cov = compute_var_cov(uid_to_w, tau=tau)
 
-        f = compute_transform(uid, uid_to_w1, var, cov, transform, lmbda)
+        f = compute_transform(uid, uid_to_w1, var, cov, transform)
         w, x = problem.select_query(datasets[uid], 1,
                                     alphas[uid], transform=f)
         uid_to_w1[uid] = normalize(w)
@@ -218,7 +259,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         regrets = np.zeros(num_users)
         for vid, user in enumerate(group):
-            ff = compute_transform(vid, uid_to_w1, var, cov, transform, lmbda)
+            ff = compute_transform(vid, uid_to_w1, var, cov, transform)
             w, x = problem.select_query(datasets[vid], 1,
                                         alphas[vid], transform=ff)
             regrets[vid] = user.regret(x[0])
@@ -243,7 +284,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         t2 = time()
         if enable_cv:
             alphas[uid] = crossvalidate(problem, datasets[uid], set_size, uid,
-                                        source_w, var, cov, transform, lmbda,
+                                        source_w, var, cov, transform,
                                         alphas[uid])
         t2 = time() - t2
 

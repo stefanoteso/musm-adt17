@@ -27,7 +27,7 @@ def get_results_path(args):
     properties = [
         args['problem'], args['num_groups'], args['num_clusters_per_group'],
         args['num_users_per_group'], args['max_iters'], args['set_size'],
-        args['pick'], args['transform'], args['tau'], args['lmbda'],
+        args['pick'], args['transform'], args['tau'],
         args['enable_cv'], args['min_regret'], args['distrib'],
         args['density'], args['response_model'], args['noise'], args['seed'],
     ]
@@ -197,7 +197,6 @@ def run(args):
                                 pick=args['pick'],
                                 transform=args['transform'],
                                 tau=args['tau'],
-                                lmbda=args['lmbda'],
                                 rng=0))
 
     musm.dump(get_results_path(args), {'args': args, 'traces': traces})
@@ -238,8 +237,6 @@ def main():
                        help='user-user transformation to use')
     group.add_argument('-t', '--tau', type=float, default=0.25,
                        help='kernel inverse temperature parameter')
-    group.add_argument('-L', '--lmbda', type=float, default=0.5,
-                       help='transform importance')
     group.add_argument('-X', '--enable-cv', action='store_true',
                        help='enable hyperparameter cross-validation')
 
