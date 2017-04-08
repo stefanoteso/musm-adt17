@@ -216,18 +216,18 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         uid_to_w1[uid] = normalize(w)
         t1 = time() - t1
 
-        regrets1 = np.zeros(num_users)
+        regrets = np.zeros(num_users)
         for vid, user in enumerate(group):
             ff = compute_transform(vid, uid_to_w1, var, cov, transform, lmbda)
             w, x = problem.select_query(datasets[vid], 1,
                                         alphas[vid], transform=ff)
-            regrets1[vid] = user.regret(x[0])
+            regrets[vid] = user.regret(x[0])
 
             if user.is_satisfied(x[0]):
                 satisfied_users.add(vid)
 
         _LOG.debug('''\
-                {t:3d} var={var} regrets={regrets1} uid={uid} {satisfied_users}
+                {t:3d} var={var} regrets={regrets} uid={uid} {satisfied_users}
                 cov = {cov}
                 transform = {f}
                 q = {query_set}
@@ -247,7 +247,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                                         alphas[uid])
         t2 = time() - t2
 
-        trace.append(list(regrets1) + [uid, t0 + t1 + t2])
+        trace.append(list(regrets) + [uid, t0 + t1 + t2])
 
         if len(satisfied_users) == len(group):
             break
