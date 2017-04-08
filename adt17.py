@@ -35,6 +35,17 @@ def get_results_path(args):
 
 
 def _sparsify(w, density, rng):
+    """Sets random entries to zero.
+
+    Parameters
+    ----------
+    w : ndarray of shape (num_users, num_attributes)
+        True weights of users in a cluster.
+    density : float in (0, 1], defaults to 1
+        Proportion of non-zero entries in the cluster centroid
+    rng : int, RandomStream, or None
+        The RNG.
+    """
     if not (0 < density <= 1):
         raise ValueError('density must be in (0, 1], got {}'.format(density))
     w = np.array(w, copy=True)
@@ -45,6 +56,28 @@ def _sparsify(w, density, rng):
 
 
 def sample_cluster(problem, num_users=5, distrib='normal', density=1, rng=0):
+    """Samples a cluster of users.
+
+    All users in the cluster are subject to same sparsity pattern.
+
+    Parameters
+    ----------
+    problem : musm.Problem
+        A recommendation problem.
+    num_users : int, defaults to 5
+        Number of users in the cluster.
+    distrib : str, defaults to 'normal'
+        Distribution to sample the cluster mean from.
+    density : float in (0, 1], defaults to 1
+        Proportion of non-zero entries in the cluster centroid
+    rng : int, RandomStream, or None, defaults to 0
+        The RNG.
+
+    Returns
+    -------
+    weights : ndarray of shape (num_users, num_attributes)
+        True weight vectors of the users in the cluster.
+    """
     num_attributes = problem.num_attributes
     if hasattr(problem, 'cost_matrix'):
         num_attributes += problem.cost_matrix.shape[0]
@@ -59,12 +92,27 @@ def sample_cluster(problem, num_users=5, distrib='normal', density=1, rng=0):
     if True: # XXX
         w = w_mean + np.zeros((num_users, num_attributes))
     else:
-        w = w_mean + rng.uniform(0, 25, size=(num_users, num_attributes))
+        w = w_mean + rng.uniform(0, 25 / 6, size=(num_users, num_attributes))
 
     return _sparsify(np.abs(w), density, rng)
 
 
-def generate_user_groups(problem, args):
+def sample_groups(problem, args):
+    """Samples N user groups with M users each.
+
+    Parameters
+    ----------
+    problem : musm.Problem
+        A recommendation problem.
+    args : dict
+        Arguments to the script.
+
+    Returns
+    -------
+    groups : list of list of musm.User
+        A list of user groups
+    """
+
     User = USERS[args['response_model']]
 
     rng = check_random_state(0)
@@ -72,7 +120,7 @@ def generate_user_groups(problem, args):
     num_users_per_cluster = max(1, round(args['num_users_per_group'] /
                                          args['num_clusters_per_group']))
 
-    user_groups = []
+    groups = []
     for gid in range(args['num_groups']):
 
         w_star = []
@@ -108,33 +156,41 @@ def generate_user_groups(problem, args):
             else:
                 w_star = np.append(w_star, ttemp, axis=0)
 
-        user_groups.append([User(problem,
-                                 w_star[uid],
-                                 min_regret=args['min_regret'],
-                                 noise=args['noise'],
-                                 rng=rng)
-                           for uid in range(args['num_users_per_group'])])
+        group = []
+        for uid in range(args['num_users_per_group']):
+            group.append(User(problem,
+                              w_star[uid],
+                              min_regret=args['min_regret'],
+                              noise=args['noise'],
+                              rng=rng))
 
-    return user_groups
+        groups.append(group)
+
+    return groups
 
 
 def run(args):
+    """Runs an experiment over several groups of users.
+
+    It takes care of sampling the user groups (or load them from disk, if
+    available), calling the actual MUSM algorithm on each group, and dumping
+    the results to file.
+    """
     problem = PROBLEMS[args['problem']]()
 
     try:
-        user_groups = musm.load(args['groups'])
+        groups = musm.load(args['groups'])
     except:
-        user_groups = generate_user_groups(problem,
-                                           musm.subdict(args, nokeys={'problem'}))
+        groups = sample_groups(problem, musm.subdict(args, nokeys={'problem'}))
         if args['groups'] is not None:
-            musm.dump(args['groups'], user_groups)
+            musm.dump(args['groups'], groups)
 
     rng = check_random_state(args['seed'])
 
     traces = []
     for gid in range(args['num_groups']):
         traces.append(musm.musm(problem,
-                                user_groups[gid],
+                                groups[gid],
                                 set_size=args['set_size'],
                                 max_iters=args['max_iters'],
                                 enable_cv=args['enable_cv'],
