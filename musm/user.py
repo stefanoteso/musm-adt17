@@ -26,15 +26,35 @@ class User(object):
         return 'User({w_star}, {x_star}, {u_star}; {noise})'.format(**vars(self))
 
     def utility(self, x):
+        """Computes the utility of item x."""
         return np.dot(self.w_star, x)
 
     def regret(self, x):
+        """Computes the regret of item x."""
         return self.u_star - self.utility(x)
 
     def is_satisfied(self, x):
+        """Checks whether recommendation x satisfies the user."""
         return self.regret(x) <= self.min_regret
 
     def query_choice(self, query_set):
+        """Chooses an item from the query set.
+
+        The criterion depends on the actual sub-class. NoiselessUser simply
+        picks one of the items with the best true utility. PlackettLuceUser
+        applies some random noise to the choice, so it may choose a sub-optimal
+        item.
+
+        Parameters
+        ----------
+        query_set : list
+            A list of configurations.
+
+        Returns
+        -------
+        i_star : int
+            The index of the chosen configuration.
+        """
         if len(query_set) < 2:
             raise ValueError('Expected >= 2 items, got {}'
                              .format(len(query_set)))
