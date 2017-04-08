@@ -53,6 +53,21 @@ class Problem(object):
         self.num_threads = num_threads
 
     def infer(self, w, transform=(1, 0)):
+        """Computes a highest-utility configuration w.r.t. the given weights.
+
+        Parameters
+        ----------
+        w : ndarray of shape (num_attributes,)
+            A weight vector.
+        transform : tuple of (float, 1D ndarray)
+            The transformation parameters (a, b).
+
+        Returns
+        -------
+        x : ndarray of shape (num_attributes,)
+            An optimal configuration.
+        """
+
         a, b = transform
         transformed_w = a * w + b
         assert (transformed_w >= 0).all()
@@ -83,6 +98,27 @@ class Problem(object):
         return x
 
     def select_query(self, dataset, set_size, alpha, transform=(1, 0)):
+        """Solves the set-wise max-margin problem for a given set size.
+
+        Parameters
+        ----------
+        dataset : ndarray of shape (num_examples, num_attributes)
+            Array of collected feedback of the form $x^+ - x^-$.
+        set_size : int
+            Size of the query set.
+        alpha : tuple of float
+            Hyperparameters
+        transform : tuple of (float, 1D ndarray)
+            The transformation parameters (a, b).
+
+        Returns
+        -------
+        w : ndarray of shape (set_size, num_attributes)
+            Optimal weight vectors.
+        x : ndarray of shape (set_size, num_attributes)
+            Optimal configurations.
+        """
+
         w_min = np.zeros(self.num_attributes)
         w_max = np.ones(self.num_attributes)
 
