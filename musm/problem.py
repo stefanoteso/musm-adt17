@@ -39,14 +39,6 @@ def dict2array(d):
     return array
 
 
-def dot(x, z):
-    return gurobi.quicksum([x[i] * z[i] for i in range(len(x))])
-
-
-def bilinear(x, A, z):
-    return dot(x, [dot(a[i], z) for i in range(len(x))])
-
-
 class Problem(object):
     def __init__(self, num_attributes, num_threads=0):
         self.num_attributes = num_attributes
@@ -87,7 +79,7 @@ class Problem(object):
         x = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
 
         model.modelSense = G.MAXIMIZE
-        model.setObjective(dot(w, x))
+        model.setObjective(gurobi.quicksum([w[i] * x[i] for i in range(self.num_attributes)]))
         self._add_constraints(model, x)
         model.optimize()
 
