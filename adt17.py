@@ -241,7 +241,7 @@ def main():
                        help='enable hyperparameter cross-validation')
 
     group = parser.add_argument_group('User Simulation')
-    group.add_argument('--min-regret', type=float, default=0,
+    group.add_argument('-r', '--min-regret', type=float, default=0,
                        help='minimum regret for satisfaction')
     group.add_argument('-G', '--groups', type=str, default=None,
                        help='path to pickle with user weights')
