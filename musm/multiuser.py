@@ -82,8 +82,8 @@ def select_user(var, datasets, satisfied_users, pick, rng):
         temp[list(satisfied_users)] = -np.inf
         maxvar = temp.max()
         pvals = np.array([np.isclose(v, maxvar) for v in var])
-    elif pick == 'invnumqueries':
-        pvals = [1 / (1 + len(datasets[u])) for u in range(len(var))]
+    elif pick == 'numqueries':
+        pvals = np.array([1 / (1 + len(datasets[u])) for u in range(len(var))])
     else:
         raise ValueError('invalid pick')
     pvals[list(satisfied_users)] = 0
