@@ -288,7 +288,10 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                                         alphas[uid])
         t2 = time() - t2
 
-        trace.append(list(regrets) + [uid, t0 + t1 + t2])
+        trace.append(list(regrets) + \
+                     [len(d) for d in datasets] + \
+                     list(var) + \
+                     [uid, t0 + t1 + t2])
 
         if len(satisfied_users) == len(group):
             break
