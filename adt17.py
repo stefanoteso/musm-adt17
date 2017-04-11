@@ -214,10 +214,10 @@ def main():
                              .format(sorted(PROBLEMS.keys())))
     group.add_argument('-N', '--num-groups', type=int, default=20,
                        help='number of user groups')
-    group.add_argument('-C', '--num-clusters-per-group', type=int, default=1,
-                       help='number of clusters in a group')
     group.add_argument('-M', '--num-users-per-group', type=int, default=5,
                        help='number of users in a group')
+    group.add_argument('-C', '--num-clusters-per-group', type=int, default=1,
+                       help='number of clusters in a group')
     group.add_argument('-T', '--max-iters', type=int, default=100,
                        help='maximum number of elicitation iterations')
     group.add_argument('-s', '--seed', type=int, default=0,
