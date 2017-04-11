@@ -98,7 +98,7 @@ def draw(args):
         max_regret1 = max(max_regret1, y.max())
 
         loss1_ax.plot(x, y, linewidth=2, label=label,
-                      marker='o', markersize=6)
+                      marker='o', markersize=6, markevery=5)
         loss1_ax.fill_between(x, y - yerr, y + yerr, linewidth=0,
                               alpha=0.35)
 
@@ -111,7 +111,7 @@ def draw(args):
         max_time = max(max_time, y.max())
 
         time_ax.plot(x, y, linewidth=2, label=label,
-                     marker='o', markersize=6)
+                     marker='o', markersize=6, markevery=5)
         time_ax.fill_between(x, y - yerr, y + yerr, linewidth=0,
                              alpha=0.35)
 
