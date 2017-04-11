@@ -91,7 +91,8 @@ def draw(args):
         # regret
 
         loss1_matrix = loss1_matrix.mean(axis=2) # average over all users
-        y = np.median(loss1_matrix, axis=0)[:max_iters]
+        y = {'median': np.median, 'mean': np.mean}[args.aggregate] \
+                (loss1_matrix, axis=0)[:max_iters]
         yerr = np.std(loss1_matrix, axis=0)[:max_iters] \
                       / np.sqrt(loss1_matrix.shape[0])
         max_regret1 = max(max_regret1, y.max())
@@ -139,6 +140,8 @@ if __name__ == '__main__':
                         help='comma-separated list of result pickles')
     parser.add_argument('--max-iters', type=int, default=None,
                         help='maximum iterations to plot')
+    parser.add_argument('--aggregate', type=str, default='median',
+                        help='how to aggregate the use regrets')
     args = parser.parse_args()
 
     draw(args)
