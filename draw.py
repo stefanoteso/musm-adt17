@@ -63,7 +63,7 @@ def get_style(args):
     transform, tau, pick = args['transform'], args['tau'], args['pick']
     lmbda = -1.0
     if transform == 'indep':
-        return '#FF0000', 'independent'
+        return '#FF0000', 'indep. {}'.format(pick)
     elif transform == 'sumcov':
         return _WINTER.to_rgba(lmbda), 'k only, λ={}'.format(lmbda)
     elif transform == 'varsumvarcov':
