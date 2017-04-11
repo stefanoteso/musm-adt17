@@ -228,7 +228,7 @@ def main():
     group = parser.add_argument_group('Algorithm')
     group.add_argument('-K', '--set-size', type=int, default=2,
                        help='set size')
-    group.add_argument('-P', '--pick', type=str, default='maxvar',
+    group.add_argument('-P', '--pick', type=str, default='random',
                        help='critertion used for picking users')
     group.add_argument('-F', '--transform', type=str, default='indep',
                        help='user-user transformation to use')
