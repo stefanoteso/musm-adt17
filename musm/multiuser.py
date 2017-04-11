@@ -72,24 +72,50 @@ def crossvalidate(problem, dataset, set_size, uid, w, var, cov,
     return alpha
 
 
-def select_user(var, datasets, satisfied_users, pick, rng):
+def pseudoregret(w, x):
+    temp = -np.inf
+    set_size = len(w)
+    for i in range(set_size):
+        for j in list(range(0, i)) + list(range(i + 1, set_size)):
+            temp = max(temp, np.dot(w[i], x[i] - x[j]))
+    return temp
+
+
+def select_user(var, datasets, uid_to_w, uid_to_x, regrets, satisfied_users, pick, rng):
     """Selects the user to query."""
-    # TODO implement centrality
+    satisfied_users = list(satisfied_users)
+
+    def max_to_1(values):
+        values = np.array(values, dtype=float)
+        values[satisfied_users] = -np.inf
+        max_value = values.max()
+        return np.array([np.isclose(value, max_value) for value in values])
+
+    def min_to_1(values):
+        values = np.array(values, dtype=float)
+        values[satisfied_users] = -np.inf
+        min_value = values.max()
+        return np.array([np.isclose(value, min_value) for value in values])
+
     if pick == 'random':
         pvals = np.ones_like(var)
     elif pick == 'maxvar':
-        temp = np.array(var)
-        temp[list(satisfied_users)] = -np.inf
-        maxvar = temp.max()
-        pvals = np.array([np.isclose(v, maxvar) for v in var])
+        pvals = max_to_1(var)
     elif pick == 'numqueries':
-        pvals = np.array([1 / (1 + len(datasets[u])) for u in range(len(var))])
+        pvals = min_to_1(list(map(len, datasets)))
+    elif pick == 'pseudoregret':
+        pvals = max_to_1([pseudoregret(uid_to_w[uid], uid_to_x[uid])
+                          for uid in range(len(var))])
+    elif pick == 'regret': # NOTE for debug only
+        pvals = max_to_1(regrets)
     else:
         raise ValueError('invalid pick')
+
     pvals[list(satisfied_users)] = 0
     pvals = pvals / pvals.sum()
     uid = np.argmax(rng.multinomial(1, pvals=pvals))
     assert not uid in satisfied_users
+
     return uid
 
 
@@ -205,8 +231,9 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     uid_to_w1 = {uid: None for uid in range(num_users)}
 
-    w, _ = problem.select_query([], set_size, _DEFAULT_ALPHA)
+    w, x = problem.select_query([], set_size, _DEFAULT_ALPHA)
     uid_to_w = {uid: normalize(w) for uid in range(num_users)}
+    uid_to_x = {uid: x for uid in range(num_users)}
     var, cov = compute_var_cov(uid_to_w, tau=tau)
 
     uid_to_w_star = {uid: normalize(group[uid].w_star.reshape(1,-1))
@@ -228,15 +255,19 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     datasets = [np.empty((0, problem.num_attributes)) for _ in group]
     alphas = [_DEFAULT_ALPHA for _ in group]
 
+    regrets = np.ones(num_users)
+
     trace = []
     for t in range(max_iters):
         t0 = time()
-        uid = select_user(var, datasets, satisfied_users, pick, rng)
+        uid = select_user(var, datasets, uid_to_w, uid_to_x, regrets, satisfied_users,
+                          pick, rng)
 
         f = compute_transform(uid, uid_to_w1, var, cov, transform)
         w, query_set = problem.select_query(datasets[uid], set_size,
                                             alphas[uid], transform=f)
         uid_to_w[uid] = normalize(w)
+        uid_to_x[uid] = query_set
         t0 = time() - t0
 
         i_star = group[uid].query_choice(query_set)
@@ -257,7 +288,6 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         uid_to_w1[uid] = normalize(w)
         t1 = time() - t1
 
-        regrets = np.zeros(num_users)
         for vid, user in enumerate(group):
             ff = compute_transform(vid, uid_to_w1, var, cov, transform)
             w, x = problem.select_query(datasets[vid], 1,
