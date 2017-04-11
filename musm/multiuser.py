@@ -314,7 +314,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         t2 = time()
         if enable_cv:
             alphas[uid] = crossvalidate(problem, datasets[uid], set_size, uid,
-                                        source_w, var, cov, transform,
+                                        uid_to_w1, var, cov, transform,
                                         alphas[uid])
         t2 = time() - t2
 
