@@ -45,7 +45,7 @@ def prettify(ax, max_iters, title):
     for line in ax.get_xgridlines() + ax.get_ygridlines():
         line.set_linestyle('-.')
 
-    ax.set_title(title, fontsize=18)
+    #ax.set_title(title, fontsize=18)
     legend = ax.legend(loc='upper right', fancybox=False, shadow=False)
     for label in legend.get_texts():
         label.set_fontsize('x-large')
@@ -60,14 +60,14 @@ _SUMMER = cm.ScalarMappable(cmap=plt.get_cmap('summer'),
 
 
 def get_style(args):
-    transform, tau = args['transform'], args['tau']
+    transform, tau, pick = args['transform'], args['tau'], args['pick']
     lmbda = -1.0
     if transform == 'indep':
         return '#FF0000', 'independent'
     elif transform == 'sumcov':
-        return _WINTER.to_rgba(lmbda), 'k only (λ={})'.format(lmbda)
+        return _WINTER.to_rgba(lmbda), 'k only, λ={}'.format(lmbda)
     elif transform == 'varsumvarcov':
-        return _SUMMER.to_rgba(lmbda), 'v + k τ={}'.format(tau)
+        return _SUMMER.to_rgba(lmbda), 'v + k, τ={} {}'.format(tau, pick)
 
 
 def draw(args):
