@@ -60,7 +60,8 @@ _SUMMER = cm.ScalarMappable(cmap=plt.get_cmap('summer'),
 
 
 def get_style(args):
-    transform, tau, lmbda = args['transform'], args['tau'], args['lmbda']
+    transform, tau = args['transform'], args['tau']
+    lmbda = -1.0
     if transform == 'indep':
         return '#FF0000', 'independent'
     elif transform == 'sumcov':
