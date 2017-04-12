@@ -27,7 +27,7 @@ def get_results_path(args):
     properties = [
         args['problem'], args['num_groups'], args['num_clusters_per_group'],
         args['num_users_per_group'], args['max_iters'], args['set_size'],
-        args['pick'], args['transform'], args['tau'],
+        args['pick'], args['transform'], args['lmbda'], args['tau'],
         args['enable_cv'], args['min_regret'], args['distrib'],
         args['density'], args['response_model'], args['noise'], args['seed'],
     ]
@@ -193,6 +193,7 @@ def run(args):
                                 enable_cv=args['enable_cv'],
                                 pick=args['pick'],
                                 transform=args['transform'],
+                                lmbda=args['lmbda'],
                                 tau=args['tau'],
                                 rng=0))
 
@@ -232,6 +233,8 @@ def main():
                        help='critertion used for picking users')
     group.add_argument('-F', '--transform', type=str, default='indep',
                        help='user-user transformation to use')
+    group.add_argument('-l', '--lmbda', type=float, default=0,
+                       help='amount of transfer for the sumcov transform')
     group.add_argument('-t', '--tau', type=float, default=0.25,
                        help='kernel inverse temperature parameter')
     group.add_argument('-X', '--enable-cv', action='store_true',

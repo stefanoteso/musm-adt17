@@ -33,7 +33,7 @@ def normalize(w):
 
 
 def crossvalidate(problem, dataset, set_size, uid, w, var, cov,
-                  transform, old_alpha):
+                  transform, old_alpha, lmbda=0.5):
     """Finds the best hyperparameters using cross-validation.
 
     Parameters
@@ -50,7 +50,7 @@ def crossvalidate(problem, dataset, set_size, uid, w, var, cov,
         return old_alpha
 
     kfold = KFold(len(dataset), n_folds=_NUM_FOLDS)
-    f = compute_transform(uid, w, var, cov, transform)
+    f = compute_transform(uid, w, var, cov, transform, lmbda=lmbda)
 
     avg_accuracy = np.zeros(len(_ALPHAS))
     for i, alpha in enumerate(_ALPHAS):
@@ -154,7 +154,7 @@ def compute_var_cov(uid_to_w, tau=0.25):
     return var, cov
 
 
-def compute_transform(uid, uid_to_w, var, cov, transform):
+def compute_transform(uid, uid_to_w, var, cov, transform, lmbda=0.5):
     """Computes the linear transformation of the aggregate utility function."""
     others = sorted(vid for vid, w in uid_to_w.items()
                     if vid != uid and w is not None)
@@ -164,7 +164,10 @@ def compute_transform(uid, uid_to_w, var, cov, transform):
 
     uid_to_w1 = {vid: uid_to_w[vid].mean(axis=0) for vid in others}
 
-    if transform == 'varsumvarcov':
+    if transform == 'sumcov':
+        a = (1 - lmbda)
+        b = lmbda * sum([cov[uid,vid] * uid_to_w1[vid] for vid in others])
+    elif transform == 'varsumvarcov':
         a = (1 - var[uid])
         b = var[uid] * sum([cov[uid,vid] * (1 - var)[vid] * uid_to_w1[vid]
                             for vid in others])
@@ -193,7 +196,7 @@ def compute_transform(uid, uid_to_w, var, cov, transform):
 
 
 def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
-         pick='maxvar', transform='indep', tau=0.25, rng=None):
+         pick='maxvar', transform='indep', lmbda=0.5, tau=0.25, rng=None):
     """Runs the MUSM algorithm on a group of users.
 
     Parameters
@@ -263,7 +266,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         uid = select_user(var, datasets, uid_to_w, uid_to_x, regrets, satisfied_users,
                           pick, rng)
 
-        f = compute_transform(uid, uid_to_w1, var, cov, transform)
+        f = compute_transform(uid, uid_to_w1, var, cov, transform, lmbda=lmbda)
         w, query_set = problem.select_query(datasets[uid], set_size,
                                             alphas[uid], transform=f)
         uid_to_w[uid] = normalize(w)
@@ -282,14 +285,14 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         var, cov = compute_var_cov(uid_to_w, tau=tau)
 
-        f = compute_transform(uid, uid_to_w1, var, cov, transform)
+        f = compute_transform(uid, uid_to_w1, var, cov, transform, lmbda=lmbda)
         w, x = problem.select_query(datasets[uid], 1,
                                     alphas[uid], transform=f)
         uid_to_w1[uid] = normalize(w)
         t1 = time() - t1
 
         for vid, user in enumerate(group):
-            ff = compute_transform(vid, uid_to_w1, var, cov, transform)
+            ff = compute_transform(vid, uid_to_w1, var, cov, transform, lmbda=lmbda)
             w, x = problem.select_query(datasets[vid], 1,
                                         alphas[vid], transform=ff)
             regrets[vid] = user.regret(x[0])
@@ -315,7 +318,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         if enable_cv:
             alphas[uid] = crossvalidate(problem, datasets[uid], set_size, uid,
                                         uid_to_w1, var, cov, transform,
-                                        alphas[uid])
+                                        alphas[uid], lmbda=lmbda)
         t2 = time() - t2
 
         trace.append(list(regrets) + [uid, t0 + t1 + t2])
