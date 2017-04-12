@@ -65,9 +65,9 @@ def get_style(args):
     if transform == 'indep':
         return '#FF0000', 'indep. {}'.format(pick)
     elif transform == 'sumcov':
-        return _WINTER.to_rgba(lmbda), 'k only, λ={}'.format(lmbda)
+        return _WINTER.to_rgba(lmbda), 'k only ({}, λ={})'.format(pick, lmbda)
     elif transform == 'varsumvarcov':
-        return _SUMMER.to_rgba(lmbda), 'v + k, τ={} {}'.format(tau, pick)
+        return _SUMMER.to_rgba(lmbda), 'v + k ({}, τ={})'.format(pick, tau)
 
 
 def draw(args):
@@ -116,7 +116,7 @@ def draw(args):
                              alpha=0.35)
 
     loss1_ax.set_ylabel('regret')
-    loss1_ax.set_xlabel('prop. queries per user')
+    loss1_ax.set_xlabel('avg. queries per user')
     loss1_ax.set_xlim([1, max_iters])
     loss1_ax.set_ylim([0, 1.05 * max_regret1])
     prettify(loss1_ax, max_iters, 'Regret')
@@ -124,7 +124,7 @@ def draw(args):
                       pad_inches=0, dpi=120)
 
     time_ax.set_ylabel('cumulative time (s)')
-    time_ax.set_xlabel('prop. queries per user')
+    loss1_ax.set_xlabel('avg. queries per user')
     time_ax.set_xlim([1, max_iters])
     time_ax.set_ylim([0, 1.05 * max_time])
     prettify(time_ax, max_iters, 'Time')
