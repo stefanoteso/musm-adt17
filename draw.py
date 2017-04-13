@@ -10,6 +10,8 @@ import matplotlib.cm as cm
 from glob import glob
 import musm
 
+# TODO: suppress plot at --min-regret
+
 
 plt.style.use('ggplot')
 
@@ -61,13 +63,13 @@ _SUMMER = cm.ScalarMappable(cmap=plt.get_cmap('summer'),
 
 def get_style(args):
     transform, tau, pick = args['transform'], args['tau'], args['pick']
-    lmbda = -1.0
     if transform == 'indep':
         return '#FF0000', 'indep. {}'.format(pick)
     elif transform == 'sumcov':
+        lmbda = args['lmbda']
         return _WINTER.to_rgba(lmbda), 'k only ({}, λ={})'.format(pick, lmbda)
     elif transform == 'varsumvarcov':
-        return _SUMMER.to_rgba(lmbda), 'v + k ({}, τ={})'.format(pick, tau)
+        return _SUMMER.to_rgba(tau), 'v + k ({}, τ={})'.format(pick, tau)
 
 
 def draw(args):
