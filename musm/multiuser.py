@@ -94,7 +94,7 @@ def select_user(var, datasets, uid_to_w, uid_to_x, regrets, satisfied_users, pic
     def min_to_1(values):
         values = np.array(values, dtype=float)
         values[satisfied_users] = -np.inf
-        min_value = values.max()
+        min_value = values.min()
         return np.array([np.isclose(value, min_value) for value in values])
 
     if pick == 'random':
