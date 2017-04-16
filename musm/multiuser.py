@@ -93,7 +93,7 @@ def select_user(var, datasets, uid_to_w, uid_to_x, regrets, satisfied_users, pic
 
     def min_to_1(values):
         values = np.array(values, dtype=float)
-        values[satisfied_users] = -np.inf
+        values[satisfied_users] = np.inf
         min_value = values.min()
         return np.array([np.isclose(value, min_value) for value in values])
 
@@ -111,7 +111,7 @@ def select_user(var, datasets, uid_to_w, uid_to_x, regrets, satisfied_users, pic
     else:
         raise ValueError('invalid pick')
 
-    pvals[list(satisfied_users)] = 0
+    pvals[satisfied_users] = 0
     pvals = pvals / pvals.sum()
     uid = np.argmax(rng.multinomial(1, pvals=pvals))
     assert not uid in satisfied_users
