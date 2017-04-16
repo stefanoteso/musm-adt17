@@ -72,9 +72,9 @@ class Problem(object):
 
         model = gurobi.Model('inference')
 
+        model.params.OutputFlag = 0
         model.params.Threads = self.num_threads
         model.params.Seed = 0
-        model.params.OutputFlag = 0
 
         x = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
 
@@ -133,9 +133,9 @@ class Problem(object):
 
         model = gurobi.Model('queryselection')
 
+        model.params.OutputFlag = 0
         model.params.Threads = self.num_threads
         model.params.Seed = 0
-        model.params.OutputFlag = 0
 
         x = {(i, z): model.addVar(vtype=G.BINARY, name='x_{}_{}'.format(i, z))
              for i in range(set_size) for z in range(self.num_attributes)}
