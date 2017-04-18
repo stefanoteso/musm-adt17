@@ -64,7 +64,7 @@ _SUMMER = cm.ScalarMappable(cmap=plt.get_cmap('summer'),
 def get_style(args):
     transform, tau, pick = args['transform'], args['tau'], args['pick']
     if transform == 'indep':
-        return '#555753', 'indep.'
+        return '#555753', 'indep.', '^', '--'
     elif transform == 'sumcov':
         lmbda = args['lmbda']
         return _WINTER.to_rgba(lmbda), 'k only ({}, λ={})'.format(pick, lmbda)
@@ -77,7 +77,15 @@ def get_style(args):
                 'numqueries': '#ef2929',
                 'regret': '#729fcf',
             }[pick]
-        return color, 'v + k ({})'.format(pick_str)
+        marker = {
+                'numqueries': 'o',
+                'regret': 'v',
+            }[pick]
+        ls = {
+                'numqueries': '-',
+                'regret': '-.',
+            }[pick]
+        return color, 'v + k ({})'.format(pick_str), marker, ls
 
 
 def draw(args):
@@ -93,7 +101,7 @@ def draw(args):
 
     max_regret1, max_time = -np.inf, -np.inf
     for loss1_matrix, time_matrix, info in data:
-        color, label = get_style(info)
+        color, label, marker, ls = get_style(info)
 
         max_iters = min(args.max_iters or info['max_iters'], info['max_iters'])
         x = np.arange(1, max_iters + 1) / info['num_users_per_group']
@@ -107,8 +115,8 @@ def draw(args):
                       / np.sqrt(loss1_matrix.shape[0])
         max_regret1 = max(max_regret1, y.max())
 
-        loss1_ax.plot(x, y, linewidth=2, label=label, color=color,
-                      marker='o', markersize=6, markevery=5)
+        loss1_ax.plot(x, y, linewidth=2, label=label, color=color, linestyle=ls,
+                      marker=marker, markersize=6, markevery=5)
         loss1_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color=color,
                               alpha=0.35)
 
@@ -120,8 +128,8 @@ def draw(args):
                    / np.sqrt(time_matrix.shape[0])
         max_time = max(max_time, y.max())
 
-        time_ax.plot(x, y, linewidth=2, label=label, color=color,
-                     marker='o', markersize=6, markevery=5)
+        time_ax.plot(x, y, linewidth=2, label=label, color=color, linestyle=ls,
+                     marker=marker, markersize=6, markevery=5)
         time_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color=color,
                              alpha=0.35)
 
