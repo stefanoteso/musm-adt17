@@ -37,7 +37,7 @@ def load(path):
 
 
 def prettify(ax, max_iters, title):
-    xtick = 5 if max_iters <= 50 else 10
+    xtick = 1 if max_iters <= 10 else 5 if max_iters <= 50 else 10
     xticks = np.hstack([[1], np.arange(xtick, max_iters + 1, xtick)])
     ax.set_xticks(xticks)
 
@@ -64,12 +64,20 @@ _SUMMER = cm.ScalarMappable(cmap=plt.get_cmap('summer'),
 def get_style(args):
     transform, tau, pick = args['transform'], args['tau'], args['pick']
     if transform == 'indep':
-        return '#FF0000', 'indep. {}'.format(pick)
+        return '#555753', 'indep.'
     elif transform == 'sumcov':
         lmbda = args['lmbda']
         return _WINTER.to_rgba(lmbda), 'k only ({}, λ={})'.format(pick, lmbda)
     elif transform == 'varsumvarcov':
-        return _SUMMER.to_rgba(tau), 'v + k ({}, τ={})'.format(pick, tau)
+        pick_str = {
+                'numqueries': 'min #queries',
+                'regret': 'regret',
+            }[pick]
+        color = {
+                'numqueries': '#ef2929',
+                'regret': '#729fcf',
+            }[pick]
+        return color, 'v + k ({})'.format(pick_str)
 
 
 def draw(args):
@@ -77,7 +85,7 @@ def draw(args):
     time_fig, time_ax = plt.subplots(1, 1)
 
     data = []
-    for path in sorted(args.pickles):
+    for path in args.pickles:
         data.append(load(path))
 
     # TODO plot selected users
@@ -88,7 +96,7 @@ def draw(args):
         color, label = get_style(info)
 
         max_iters = min(args.max_iters or info['max_iters'], info['max_iters'])
-        x = np.arange(1, max_iters + 1)
+        x = np.arange(1, max_iters + 1) / info['num_users_per_group']
 
         # regret
 
@@ -99,9 +107,9 @@ def draw(args):
                       / np.sqrt(loss1_matrix.shape[0])
         max_regret1 = max(max_regret1, y.max())
 
-        loss1_ax.plot(x, y, linewidth=2, label=label,
+        loss1_ax.plot(x, y, linewidth=2, label=label, color=color,
                       marker='o', markersize=6, markevery=5)
-        loss1_ax.fill_between(x, y - yerr, y + yerr, linewidth=0,
+        loss1_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color=color,
                               alpha=0.35)
 
         # cumulative time
@@ -112,24 +120,24 @@ def draw(args):
                    / np.sqrt(time_matrix.shape[0])
         max_time = max(max_time, y.max())
 
-        time_ax.plot(x, y, linewidth=2, label=label,
+        time_ax.plot(x, y, linewidth=2, label=label, color=color,
                      marker='o', markersize=6, markevery=5)
-        time_ax.fill_between(x, y - yerr, y + yerr, linewidth=0,
+        time_ax.fill_between(x, y - yerr, y + yerr, linewidth=0, color=color,
                              alpha=0.35)
 
     loss1_ax.set_ylabel('regret')
     loss1_ax.set_xlabel('avg. queries per user')
-    loss1_ax.set_xlim([1, max_iters])
+    loss1_ax.set_xlim([1, max_iters / info['num_users_per_group']])
     loss1_ax.set_ylim([0, 1.05 * max_regret1])
-    prettify(loss1_ax, max_iters, 'Regret')
+    prettify(loss1_ax, max_iters / info['num_users_per_group'], 'Regret')
     loss1_fig.savefig(args.png_basename + '_loss1.png', bbox_inches='tight',
                       pad_inches=0, dpi=120)
 
     time_ax.set_ylabel('cumulative time (s)')
     loss1_ax.set_xlabel('avg. queries per user')
-    time_ax.set_xlim([1, max_iters])
+    time_ax.set_xlim([1, max_iters / info['num_users_per_group']])
     time_ax.set_ylim([0, 1.05 * max_time])
-    prettify(time_ax, max_iters, 'Time')
+    prettify(time_ax, max_iters / info['num_users_per_group'], 'Time')
     time_fig.savefig(args.png_basename + '_time.png', bbox_inches='tight',
                      pad_inches=0, dpi=120)
 
