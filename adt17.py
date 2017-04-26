@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.5
 
 import sys
 import os
@@ -7,6 +7,7 @@ import numpy as np
 import musm
 
 from sklearn.utils import check_random_state
+from textwrap import dedent
 
 #1Social Choice
 _LOG = musm.get_logger('adt17')
@@ -26,9 +27,9 @@ def get_results_path(args):
     properties = [
         args['problem'], args['num_groups'], args['num_clusters_per_group'],
         args['num_users_per_group'], args['max_iters'], args['set_size'],
-        args['pick'], args['transform'], args['lmbda'], args['enable_cv'],
-        args['min_regret'], args['distrib'], args['density'],
-        args['response_model'], args['noise'], args['seed'],
+        args['pick'], args['transform'], args['tau'], args['lmbda'],
+        args['enable_cv'], args['min_regret'], args['distrib'],
+        args['density'], args['response_model'], args['noise'], args['seed'],
     ]
     return os.path.join('results', '_'.join(map(str, properties)) + '.pickle')
 
@@ -80,20 +81,32 @@ def generate_user_groups(problem, args):
                 num_users_in_cluster = args['num_users_per_group'] - len(w_star)
             else:
                 num_users_in_cluster = num_users_per_cluster
+
             temp = sample_cluster(problem,
                                   num_users=num_users_in_cluster,
                                   distrib=args['distrib'],
                                   density=args['density'],
                                   rng=rng)
+
+            ttemp = temp
             if hasattr(problem, 'cost_matrix'):
                 num_costs = problem.cost_matrix.shape[0]
                 temp_bools = temp[:, :-num_costs]
                 temp_costs = temp[:, -num_costs:]
-                temp = temp_bools + np.dot(temp_costs, problem.cost_matrix)
+                ttemp = temp_bools + np.dot(temp_costs, problem.cost_matrix)
+
+            _LOG.debug(dedent('''\
+                    CLUSTER {cid}:
+                    true user weights =
+                    {temp}
+                    true user weights transformed by cost matrix =
+                    {ttemp}
+                ''').format(**locals()))
+
             if len(w_star) == 0:
-                w_star = temp
+                w_star = ttemp
             else:
-                w_star = np.append(w_star, temp, axis=0)
+                w_star = np.append(w_star, ttemp, axis=0)
 
         user_groups.append([User(problem,
                                  w_star[uid],
@@ -127,6 +140,7 @@ def run(args):
                                 enable_cv=args['enable_cv'],
                                 pick=args['pick'],
                                 transform=args['transform'],
+                                tau=args['tau'],
                                 lmbda=args['lmbda'],
                                 rng=0))
 
@@ -166,6 +180,8 @@ def main():
                        help='critertion used for picking users')
     group.add_argument('-F', '--transform', type=str, default='indep',
                        help='user-user transformation to use')
+    group.add_argument('-t', '--tau', type=float, default=0.25,
+                       help='kernel inverse temperature parameter')
     group.add_argument('-L', '--lmbda', type=float, default=0.5,
                        help='transform importance')
     group.add_argument('-X', '--enable-cv', action='store_true',

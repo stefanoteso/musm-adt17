@@ -23,13 +23,12 @@ _NUM_FOLDS = 3
 
 
 def normalize(w):
-    if w.ndim == 1:
-        return w / np.linalg.norm(w)
-    else:
-        v = np.array(w, copy=True)
-        for i in range(len(v)):
-            v[i] /= (np.linalg.norm(v[i]) + 1e-13)
-        return v
+    if w.ndim != 2:
+        raise ValueError('I only work with 2D arrays')
+    v = np.array(w, copy=True)
+    for i in range(len(v)):
+        v[i] /= (np.linalg.norm(v[i]) + 1e-13)
+    return v
 
 
 def crossvalidate(problem, dataset, set_size, uid, w, var, cov,
@@ -80,7 +79,7 @@ def select_user(var, datasets, satisfied_users, pick, rng):
     return uid
 
 
-def compute_var_cov(uid_to_w):
+def compute_var_cov(uid_to_w, tau=0.25):
     num_users = len(uid_to_w)
 
     known_users = [uid for uid, w in uid_to_w.items() if w is not None]
@@ -105,8 +104,8 @@ def compute_var_cov(uid_to_w):
         sqdists = []
         for i, j in it.product(range(set_size), repeat=2):
             diff = uid_to_w[uid][i] - uid_to_w[vid][j]
-            sqdists.append(np.dot(diff, diff) / 4)
-        cov[uid,vid] = np.exp(-np.array(sqdists).mean())
+            sqdists.append(np.dot(diff, diff))
+        cov[uid,vid] = np.exp(-tau * np.array(sqdists).mean())
 
     assert (cov >= 0).all(), 'cov is negative'
     assert (cov <= 1 + 1e-1).all(), 'cov is too large'
@@ -119,7 +118,7 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
                     if vid != uid and w is not None)
 
     if transform == 'indep' or not len(others):
-        return 1, 0
+        return 1, np.array([0])
 
     uid_to_w1 = {vid: uid_to_w[vid].mean(axis=0) for vid in others}
 
@@ -156,19 +155,33 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
 
 
 def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
-         pick='maxvar', transform='indep', lmbda=0.5, rng=None):
+         pick='maxvar', transform='indep', tau=0.25, lmbda=0.5, rng=None):
     rng = check_random_state(rng)
     num_users = len(group)
 
     _LOG.info('running musm, {num_users} users, k={set_size}, T={max_iters}',
               **locals())
 
+    uid_to_w1 = {uid: None for uid in range(num_users)}
+
     w, _ = problem.select_query([], set_size, _DEFAULT_ALPHA)
     uid_to_w = {uid: normalize(w) for uid in range(num_users)}
+    var, cov = compute_var_cov(uid_to_w, tau=tau)
 
-    var, cov = compute_var_cov(uid_to_w)
+    uid_to_w_star = {uid: normalize(group[uid].w_star.reshape(1,-1))
+                     for uid in range(num_users)}
+    var_star, cov_star = compute_var_cov(uid_to_w_star, tau=tau)
 
-    uid_to_w1 = {uid: None for uid in range(num_users)}
+    _LOG.debug(dedent('''\
+            initial var =
+            {var}
+            initial cov =
+            {cov}
+            var* =
+            {var_star}
+            cov* =
+            {cov_star}
+        ''').format(**locals()))
 
     satisfied_users = set()
     datasets = [np.empty((0, problem.num_attributes)) for _ in group]
@@ -195,7 +208,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
                     _LOG.warning('all-zero delta added!')
                 datasets[uid] = np.append(datasets[uid], delta, axis=0)
 
-        var, cov = compute_var_cov(uid_to_w)
+        var, cov = compute_var_cov(uid_to_w, tau=tau)
 
         f = compute_transform(uid, uid_to_w1, var, cov, transform, lmbda)
         w, x = problem.select_query(datasets[uid], 1,
