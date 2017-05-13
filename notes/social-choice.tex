@@ -37,7 +37,7 @@
 
         Initially, we will focus on linear combinations:
         %
-        $$ f(W) := \sum_{u=1}^M \omega_u \vw^u $$
+        $$ f(\vx;W) := \sum_{u=1}^M \omega_u \langle \vw^u, \vx \rangle $$
 
         Linear combinations can capture the contribution of different users
         to the overall utility of configurations.
@@ -99,13 +99,64 @@
                 %
                 \begin{align*}
                     \max_{\vx^1, \ldots, \vx^2}
-                        & \;\; \lambda \sum_{i=1}^S f(\vx^i) + (1 - \lambda) \sum_{i < j} \|\vx^i - \vx_j\|_1 \\
+                        & \;\; \lambda \sum_{i=1}^S f(\vx^i) + (1 - \lambda) \sum_{i < j} \|\vx^i - \vx^j\|_1 \\
                     \text{s.t.}
                         & \;\; f(\vx^i) \ne f(\vx^j)
                             & \forall i,j \in [S], i < j
                 \end{align*}
                 %
                 where $f$ is computed using the current value for $\vomega$.
+                Here $\lambda \in [0, 1]$ is a user-provided hyper-parameter,
+                and $\|\cdot\|_1$ is the $\ell_1$ norm, i.e.:
+                %
+                $$ \|\vx\|_1 := \sum_{z=1}^N |x_z| $$
+                %
+                Note that:
+                %
+                $$ \|\vx^i - \vx^j\|_1 = \sum_{z=1}^N |x^i_z - x^j_z| = \sum_{z=1}^N \max \{x^i_z - x^j_z, x^j_z - x^i_z\} $$
+
+                Encoding the above as a MILP problem is a bit tricky; here
+                is a derivation for the $S=2$ case (the others are similar):
+                %
+                \begin{align*}
+                    \max_{\vx^1, \vx^2}
+                        & \;\; \lambda (f(\vx^1) + f(\vx^2)) + (1 - \lambda) \|\vx^1 - \vx^2\|_1 \\
+                    \text{s.t.}
+                        & \;\; f(\vx^1) \ne f(\vx^2) \\
+                    = \max_{\vx^1, \vx^2}
+                        & \;\; \lambda (f(\vx^1) + f(\vx^2)) + (1 - \lambda) \sum_{z=1}^N |x^1_z - x^2_z| \\
+                    \text{s.t.}
+                        & \;\; f(\vx^1) \ne f(\vx^2) \\
+                    = \max_{\vx^1, \vx^2, \vepsilon}
+                        & \;\; \lambda (f(\vx^1) + f(\vx^2)) + (1 - \lambda) \sum_{z=1}^N \varepsilon_z \\
+                    \text{s.t.}
+                        & \;\; \varepsilon_z \le |x^1_z - x^2_z|                            & \forall z = 1, \ldots, N \\
+                        & \;\; f(\vx^1) \ne f(\vx^2) \\
+                    = \max_{\vx^1, \vx^2, \vepsilon}
+                        & \;\; \lambda (f(\vx^1) + f(\vx^2)) + (1 - \lambda) \sum_{z=1}^N \varepsilon_z \\
+                    \text{s.t.}
+                        & \;\; \varepsilon_z \le \max \{ x^1_z - x^2_z, x^2_z - x^1_z \}    & \forall z = 1, \ldots, N \\
+                        & \;\; f(\vx^1) \ne f(\vx^2) \\
+                    = \max_{\vx^1, \vx^2, \vepsilon, \vb^1, \vb^2}
+                        & \;\; \lambda (f(\vx^1) + f(\vx^2)) + (1 - \lambda) \sum_{z=1}^N \varepsilon_z \\
+                    \text{s.t.}
+                        & \;\; \varepsilon_z \le (x^1_z - x^2_z) - b^1_z \cdot M            & \forall z = 1, \ldots, N \\
+                        & \;\; \varepsilon_z \le (x^2_z - x^1_z) - b^2_z \cdot M            & \forall z = 1, \ldots, N \\
+                        & \;\; b^1_z + b^2_z = 1                                            & \forall z = 1, \ldots, N \\
+                        & \;\; f(\vx^1) \ne f(\vx^2)
+                \end{align*}
+                %
+                Here I introduced the variables $\vepsilon$ and $\vb$ to
+                linearize the problem; $M$ is supposed to be a large positive
+                constant, e.g. $M = 10^6$. This is called the ``big-$M$''
+                trick.
+
+                \stefano{@Andrea: maximizing the $\ell_1$ norm over a
+                categorical representation is equivalent to requiring that the
+                configurations $\vx^1, \ldots, \vx^S$ have a maximal number of
+                different attributes; e.g. if $\vx^1$ and $\vx^2$ differ in
+                all attributes, regardless of the actual values, they achieve
+                maximal $\ell_1$ distance.}
 
                 This can be done \emph{incrementally}: select $\vx^1$ with
                 maximal aggregate utility $f$; then, for all $i = 2, \ldots,
