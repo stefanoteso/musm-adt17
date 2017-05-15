@@ -140,8 +140,8 @@
                     = \max_{\vx^1, \vx^2, \vepsilon, \vb^1, \vb^2}
                         & \;\; \lambda (f(\vx^1) + f(\vx^2)) + (1 - \lambda) \sum_{z=1}^N \varepsilon_z \\
                     \text{s.t.}
-                        & \;\; \varepsilon_z \le (x^1_z - x^2_z) - b^1_z \cdot M            & \forall z = 1, \ldots, N \\
-                        & \;\; \varepsilon_z \le (x^2_z - x^1_z) - b^2_z \cdot M            & \forall z = 1, \ldots, N \\
+                        & \;\; \varepsilon_z \le (x^1_z - x^2_z) + b^1_z \cdot M            & \forall z = 1, \ldots, N \\
+                        & \;\; \varepsilon_z \le (x^2_z - x^1_z) + b^2_z \cdot M            & \forall z = 1, \ldots, N \\
                         & \;\; b^1_z + b^2_z = 1                                            & \forall z = 1, \ldots, N \\
                         & \;\; f(\vx^1) \ne f(\vx^2)
                 \end{align*}
