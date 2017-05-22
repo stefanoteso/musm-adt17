@@ -12,14 +12,14 @@ _LOG = get_logger('adt17')
 
 
 class User(object):
-    def __init__(self, problem, w_star, min_regret=0, noise=0, rng=None):
+    def __init__(self,problem, w_star, min_regret=0, noise=0, rng=None):
         self.problem = problem
         self.w_star = w_star
         self.min_regret = min_regret
         self.noise = noise
         self.rng = check_random_state(rng)
 
-        self.x_star = self.problem.infer(self.w_star)
+        self.x_star = self.problem.infer(self.w_star,omega=np.random.rand(len(w_star)))
         self.u_star = self.utility(self.x_star)
 
     def __repr__(self):

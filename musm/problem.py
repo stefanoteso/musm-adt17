@@ -3,7 +3,7 @@ import itertools as it
 import gurobipy as gurobi
 from gurobipy import GRB as G
 from textwrap import dedent
-
+from math import*
 from . import get_logger, freeze, subdict
 
 
@@ -46,13 +46,52 @@ def dot(x, z):
 def bilinear(x, A, z):
     return dot(x, [dot(a[i], z) for i in range(len(x))])
 
+def L1_distance(x, y):
+    return sum(abs(a - b) for a, b in zip(x, y))
+
+
 
 class Problem(object):
     def __init__(self, num_attributes, num_threads=0):
         self.num_attributes = num_attributes
         self.num_threads = num_threads
 
-    def infer(self, w, transform=(1, 0)):
+#Implement groupwise query selection    
+
+    def infer(self, w_star,omega):
+
+
+        lamb = 0.5
+        M = 1000000
+        model = gurobi.Model('inference')
+        model.params.Threads = self.num_threads
+        model.params.Seed = 0
+        model.params.OutputFlag = 0
+        x1 = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
+        x2 = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
+        b1 = model.addVar(vtype=G.CONTINUOUS, name="b1")
+        b2 = model.addVar(vtype=G.CONTINUOUS, name="b2")
+
+        model.modelSense = G.MAXIMIZE
+        model.setObjective(lamb * omega * (dot(w_star, x1) + dot(w_star, x2))) + (1 - lamb) * (L1_distance(x1, x2))  # objective fun page 3 of notes
+        model.addConstr((L1_distance(x1, x2)) <= (x1 - x2) - b1 * M)
+        model.addConstr((L1_distance(x1, x2)) <= (x1 - x2) - b2 * M)
+        c=b1+b2
+        model.addConstr(c= 1)
+
+        self._add_constraints(model, x1)
+        self._add_constraints(model, x2)
+
+        model.optimize()
+
+        x1 = np.array([x[z].x for z in range(self.num_attributes)])
+        x2 = np.array([x[z].x for z in range(self.num_attributes)])
+
+        _LOG.debug('inferred {}'.format(x1))
+
+        return x1, x2
+
+        """def infer(self, w, transform=(1, 0)):
         a, b = transform
         transformed_w = a * w + b
         assert (transformed_w >= 0).all()
@@ -210,4 +249,4 @@ class Problem(object):
         if not apply_workaround and (w == 0).all():
             _LOG.warning('all-zero weights are bad')
 
-        return w, x
+        return w, x"""
