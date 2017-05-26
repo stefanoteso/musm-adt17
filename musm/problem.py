@@ -48,7 +48,8 @@ def bilinear(x, A, z):
 
 def L1_distance(x, y):
     return sum(abs(a - b) for a, b in zip(x, y))
-
+def Ep_distance(x,y):
+    return sum(a-b for a, b in zip(x, y))
 
 
 class Problem(object):
@@ -69,15 +70,18 @@ class Problem(object):
         model.params.OutputFlag = 0
         x1 = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
         x2 = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
-        b1 = model.addVar(vtype=G.CONTINUOUS, name="b1")
-        b2 = model.addVar(vtype=G.CONTINUOUS, name="b2")
 
+        ep = [model.addVar(vtype=G.CONTINUOUS) for z in range(self.num_attributes)]
+        b1 = [model.addVar(vtype=G.CONTINUOUS) for z in range(self.num_attributes)]
+        b2 = [model.addVar(vtype=G.CONTINUOUS) for z in range(self.num_attributes)]
         model.modelSense = G.MAXIMIZE
-        model.setObjective(lamb * omega * (dot(w_star, x1) + dot(w_star, x2))) + (1 - lamb) * (L1_distance(x1, x2))  # objective fun page 3 of notes
-        model.addConstr((L1_distance(x1, x2)) <= (x1 - x2) - b1 * M)
-        model.addConstr((L1_distance(x1, x2)) <= (x1 - x2) - b2 * M)
+        d = omega * w_star
+
+        model.setObjective(lamb * (dot(d, x1) + dot(d, x2))) + (1 - lamb) * gurobi.quicksum(ep)  # objective fun page 3 of notes
+        model.addConstr(ep <= [(x1[i] - x2[i]) - b1[i] * M for i in range(self.num_attributes)])
+        model.addConstr(ep <= [(x2[i] - x1[i]) - b2[i] * M for i in range(self.num_attributes)])
         c=b1+b2
-        model.addConstr(c= 1)
+        model.addConstr(c=[1 for _ in range(self.num_attributes)])
 
         self._add_constraints(model, x1)
         self._add_constraints(model, x2)
