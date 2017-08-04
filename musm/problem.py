@@ -75,21 +75,45 @@ class Problem(object):
         b1 = [model.addVar(vtype=G.CONTINUOUS) for z in range(self.num_attributes)]
         b2 = [model.addVar(vtype=G.CONTINUOUS) for z in range(self.num_attributes)]
         model.modelSense = G.MAXIMIZE
-        d = omega * w_star
+        ws_star= w_star * omega
+        model.update()
 
-        model.setObjective(lamb * (dot(d, x1) + dot(d, x2))) + (1 - lamb) * gurobi.quicksum(ep)  # objective fun page 3 of notes
-        model.addConstr(ep <= [(x1[i] - x2[i]) - b1[i] * M for i in range(self.num_attributes)])
-        model.addConstr(ep <= [(x2[i] - x1[i]) - b2[i] * M for i in range(self.num_attributes)])
-        c=b1+b2
-        model.addConstr(c=[1 for _ in range(self.num_attributes)])
+        # objective fun page 3 of notes
+        model.setObjective(lamb * (dot(ws_star, x1) + dot(ws_star, x2)) + (1 - lamb) * gurobi.quicksum(ep))
+
+        for i in range(self.num_attributes):
+            model.addConstr(ep[i] <= (x1[i] - x2[i]) - b1[i] * M)
+
+        for i in range(self.num_attributes):
+            model.addConstr(ep[i] <= (x2[i] - x1[i]) - b2[i] * M)
+        for i in range(self.num_attributes):
+            model.addConstr(b1[i] + b2[i] == 1)
 
         self._add_constraints(model, x1)
         self._add_constraints(model, x2)
 
+        if model.isMIP == 0:
+            print('Model is not a MIP')
+            exit(0)
         model.optimize()
 
-        x1 = np.array([x[z].x for z in range(self.num_attributes)])
-        x2 = np.array([x[z].x for z in range(self.num_attributes)])
+        if model.status == G.Status.OPTIMAL:
+            print('Optimal objective: %g' % model.objVal)
+        elif model.status == G.Status.INF_OR_UNBD:
+            print('Model is infeasible or unbounded')
+            exit(0)
+        elif model.status == G.Status.INFEASIBLE:
+            print('Model is infeasible')
+            exit(0)
+        elif model.status == G.Status.UNBOUNDED:
+            print('Model is unbounded')
+            exit(0)
+        else:
+            print('Optimization ended with status %d' % model.status)
+            exit(0)
+
+        x1 = np.array([x1[z].x for z in range(self.num_attributes)])
+        x2 = np.array([x2[z].x for z in range(self.num_attributes)])
 
         _LOG.debug('inferred {}'.format(x1))
 

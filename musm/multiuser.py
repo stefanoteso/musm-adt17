@@ -242,7 +242,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         i_star = group[uid].query_choice(query_set)
 
-        t1 = time()
+        t1 = time()zz
         for i in range(set_size):
             if i != i_star:
                 delta = (query_set[i_star] - query_set[i]).reshape(1, -1)
