@@ -60,41 +60,50 @@ class Problem(object):
 #Implement groupwise query selection    
 
     def infer(self, w_star,omega):
-
-
-        lamb = 0.5
+        LAMBDA = 0.5
         M = 1000000
+
+        # XXX w_star is supposed to be a matrix of shape (num_attributes,
+        # num_users), each column encodes the preferences of one user; omega
+        # a vector of shape (num_users,), each element encodes the importance
+        # of one user. Is this vvv correct in this case?
+        ws_star = w_star * omega
+
+        from textwrap import dedent
+        print(dedent('''\
+                w_star  = {w_star}
+                omega   = {omega}
+                ws_star = {ws_star}
+            ''').format(**locals()))
+
         model = gurobi.Model('inference')
         model.params.Threads = self.num_threads
         model.params.Seed = 0
         model.params.OutputFlag = 0
+
         x1 = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
         x2 = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
+        diff = [model.addVar(vtype=G.INTEGER) for z in range(self.num_attributes)]
+        absdiff = [model.addVar(vtype=G.INTEGER) for z in range(self.num_attributes)]
+        ep = [model.addVar(vtype=G.INTEGER) for z in range(self.num_attributes)]
 
-        ep = [model.addVar(vtype=G.CONTINUOUS) for z in range(self.num_attributes)]
-        b1 = [model.addVar(vtype=G.CONTINUOUS) for z in range(self.num_attributes)]
-        b2 = [model.addVar(vtype=G.CONTINUOUS) for z in range(self.num_attributes)]
         model.modelSense = G.MAXIMIZE
-        ws_star= w_star * omega
         model.update()
 
         # objective fun page 3 of notes
-        model.setObjective(lamb * (dot(ws_star, x1) + dot(ws_star, x2)) + (1 - lamb) * gurobi.quicksum(ep))
+        model.setObjective(LAMBDA * dot(ws_star, x1) + dot(ws_star, x2) + \
+                           (1 - LAMBDA) * gurobi.quicksum(ep))
 
-        for i in range(self.num_attributes):
-            model.addConstr(ep[i] <= (x1[i] - x2[i]) - b1[i] * M)
-
-        for i in range(self.num_attributes):
-            model.addConstr(ep[i] <= (x2[i] - x1[i]) - b2[i] * M)
-        for i in range(self.num_attributes):
-            model.addConstr(b1[i] + b2[i] == 1)
+        for z in range(self.num_attributes):
+            # diff[z] == x1[z] - x2[z]
+            model.addConstr(diff[z] == x1[z] - x2[z])
+            # absdiff[z] == abs{diff[z]}
+            model.addGenConstrAbs(absdiff[z], diff[z])
+            # ep[z] <= absdiff[z]
+            model.addConstr(ep[z] <= absdiff[z])
 
         self._add_constraints(model, x1)
         self._add_constraints(model, x2)
-
-        if model.isMIP == 0:
-            print('Model is not a MIP')
-            exit(0)
         model.optimize()
 
         if model.status == G.Status.OPTIMAL:
@@ -115,7 +124,7 @@ class Problem(object):
         x1 = np.array([x1[z].x for z in range(self.num_attributes)])
         x2 = np.array([x2[z].x for z in range(self.num_attributes)])
 
-        _LOG.debug('inferred {}'.format(x1))
+        _LOG.debug('inferred {} {}'.format(x1, x2))
 
         return x1, x2
 
