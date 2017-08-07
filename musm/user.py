@@ -19,7 +19,7 @@ class User(object):
         self.noise = noise
         self.rng = check_random_state(rng)
 
-        self.x_star = self.problem.infer(self.w_star,omega=np.random.rand(len(w_star)))
+        self.x_star = self.problem.infer(self.w_star,omega=rng.rand(len(w_star)))
         self.u_star = self.utility(self.x_star)
 
     def __repr__(self):
