@@ -195,7 +195,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         W.append(u.w_star) 
 
 # Initialize omega at random
-    omega = np.random.rand(len(group))
+    omega = rng.rand(len(group))
     ni = 1  # learning rate	
 
     for t in range(max_iters):
