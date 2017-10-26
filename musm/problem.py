@@ -56,10 +56,56 @@ class Problem(object):
     def __init__(self, num_attributes, num_threads=0):
         self.num_attributes = num_attributes
         self.num_threads = num_threads
+        num_attributes
 
-#Implement groupwise query selection    
+    def infer(self, w, transform=(1, 0)):
+        """Computes a highest-utility configuration w.r.t. the given weights.
 
-    def infer(self, w_star,omega):
+        Parameters
+        ----------
+        w : ndarray of shape (num_attributes,)
+            A weight vector.
+        transform : tuple of (float, 1D ndarray)
+            The transformation parameters (a, b).
+
+        Returns
+        -------
+        x : ndarray of shape (num_attributes,)
+            An optimal configuration.
+        """
+
+        a, b = transform
+        transformed_w = a * w + b
+        assert (transformed_w >= 0).all()
+
+        _LOG.debug(dedent('''
+                INFERENCE
+                w = {}
+                transformed w = {}
+            ''').format(w, transformed_w))
+
+        model = gurobi.Model('inference')
+
+        model.params.OutputFlag = 0
+        model.params.Threads = self.num_threads
+        model.params.Seed = 0
+
+        x = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
+
+        model.modelSense = G.MAXIMIZE
+        model.setObjective(gurobi.quicksum([w[i] * x[i] for i in range(self.num_attributes)]))
+        self._add_constraints(model, x)
+        model.optimize()
+
+        x = np.array([x[z].x for z in range(self.num_attributes)])
+
+        _LOG.debug('inferred {}'.format(x))
+
+        return x
+#Implement groupwise query selection
+
+
+    def infer_query(self, W ,omega):
         LAMBDA = 0.5
         M = 1000000
 
@@ -67,11 +113,11 @@ class Problem(object):
         # num_users), each column encodes the preferences of one user; omega
         # a vector of shape (num_users,), each element encodes the importance
         # of one user. Is this vvv correct in this case?
-        ws_star = w_star * omega
+        ws_star = W * omega
 
         from textwrap import dedent
         print(dedent('''\
-                w_star  = {w_star}
+                   W    = {W}
                 omega   = {omega}
                 ws_star = {ws_star}
             ''').format(**locals()))

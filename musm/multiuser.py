@@ -6,6 +6,7 @@ from sklearn.utils import check_random_state
 from textwrap import dedent
 from time import time
 
+
 from . import get_logger
 
 
@@ -157,50 +158,28 @@ def update(omega,W,delta,ni):
     return omega + ni*(W.transpose())*(delta)
 
 def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
-         pick='maxvar', transform='indep', tau=0.25, lmbda=0.5, rng=None):
+         pick='maxvar', transform='indep', tau=0.25, lmbda=0.5, rng=None,):
     rng = check_random_state(rng)
     num_users = len(group)
 
     _LOG.info('running musm, {num_users} users, k={set_size}, T={max_iters}',
               **locals())
-
-    uid_to_w1 = {uid: None for uid in range(num_users)}
-
-    w, _ = problem.select_query([], set_size, _DEFAULT_ALPHA)
-    uid_to_w = {uid: normalize(w) for uid in range(num_users)}
-    var, cov = compute_var_cov(uid_to_w, tau=tau)
-
-    uid_to_w_star = {uid: normalize(group[uid].w_star.reshape(1,-1))
-                     for uid in range(num_users)}
-    var_star, cov_star = compute_var_cov(uid_to_w_star, tau=tau)
-
-    _LOG.debug(dedent('''\
-            initial var =
-            {var}
-            initial cov =
-            {cov}
-            var* =
-            {var_star}
-            cov* =
-            {cov_star}
-        ''').format(**locals()))
-
-    satisfied_users = set()
-    datasets = [np.empty((0, problem.num_attributes)) for _ in group]
-    alphas = [_DEFAULT_ALPHA for _ in group]
-
-# we create the matrix aggragate !!
-    W = [2][len(group)]
+    # we create the matrix aggragate !!
+    W=np.array([])
     for u in group:
-        W.append(u.w_star) 
-
-# Initialize omega at random
+        if not W.any():
+            W=u.w_star
+        else:
+            W=np.column_stack((W,u.w_star))
+    print (W.shape)
+    # Initialize omega at random
     omega = rng.rand(len(group))
-    ni = 1  # learning rate	
+
+    ni = 1  # learning rate
 
     for t in range(max_iters):
 
-        x1,x2 = problem.infer(W, omega, ) # finding x1 and x2 that maximize the objective function
+        x1,x2 = problem.infer_query(W, omega) # finding x1 and x2 that maximize the objective function
 
         # Social choice(x with greater aggregate_utility)
 
@@ -218,7 +197,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         # perceptrone update
 
         omega = update(omega,W,delta,ni)
-       
+        print (omega)
+
 	 # update function modifies omega according to the direction of delta, so delta will tell us how to modify omega
 
     _LOG.info('{} omega learned after {} iterations/ convergence'.format(len(omega),max_iters))
@@ -228,73 +208,3 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
 
 
-"""
-   trace = []
-    for t in range(max_iters):
-        t0 = time()
-        uid = select_user(var, datasets, satisfied_users, pick, rng)
-
-        f = compute_transform(uid, uid_to_w1, var, cov, transform, lmbda)
-        w, query_set = problem.select_query(datasets[uid], set_size,
-                                            alphas[uid], transform=f)
-        uid_to_w[uid] = normalize(w)
-        t0 = time() - t0
-
-        i_star = group[uid].query_choice(query_set)
-
-        t1 = time()zz
-        for i in range(set_size):
-            if i != i_star:
-                delta = (query_set[i_star] - query_set[i]).reshape(1, -1)
-                if (delta == 0).all():
-                    _LOG.warning('all-zero delta added!')
-                datasets[uid] = np.append(datasets[uid], delta, axis=0)
-
-        var, cov = compute_var_cov(uid_to_w, tau=tau)
-
-        f = compute_transform(uid, uid_to_w1, var, cov, transform, lmbda)
-        w, x = problem.select_query(datasets[uid], 1,
-                                    alphas[uid], transform=f)
-        uid_to_w1[uid] = normalize(w)
-        t1 = time() - t1
-
-        regrets1 = np.zeros(num_users)
-        for vid, user in enumerate(group):
-            ff = compute_transform(vid, uid_to_w1, var, cov, transform, lmbda)
-            w, x = problem.select_query(datasets[vid], 1,
-                                        alphas[vid], transform=ff)
-            regrets1[vid] = user.regret(x[0])
-
-            if user.is_satisfied(x[0]):
-                satisfied_users.add(vid)
-
-        _LOG.debug('''\
-                {t:3d} var={var} regrets={regrets1} uid={uid} {satisfied_users}
-                cov = {cov}
-                transform = {f}
-                q = {query_set}
-                i_star = {i_star}
-                datasets =
-                {datasets}
-                uid_to_w =
-                {uid_to_w}
-                uid_to_w1 =
-                {uid_to_w1}
-            ''', **locals())
-
-        t2 = time()
-        if enable_cv:
-            alphas[uid] = crossvalidate(problem, datasets[uid], set_size, uid,
-                                        source_w, var, cov, transform, lmbda,
-                                        alphas[uid])
-        t2 = time() - t2
-
-        trace.append(list(regrets1) + [uid, t0 + t1 + t2])
-
-        if len(satisfied_users) == len(group):
-            break
-
-    _LOG.info('{} users satisfied after {} iterations'
-              .format(len(satisfied_users), max_iters))
-
-    return trace"""
