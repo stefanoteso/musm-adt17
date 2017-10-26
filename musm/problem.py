@@ -113,6 +113,10 @@ class Problem(object):
         # num_users), each column encodes the preferences of one user; omega
         # a vector of shape (num_users,), each element encodes the importance
         # of one user. Is this vvv correct in this case?
+        print ("Shape of aggregate_utility =", W.shape, " = (num_attributes, num_users)")
+        print ("Shape of omega =", omega.shape," = (num_users,)")
+
+
         ws_star = W * omega
 
         from textwrap import dedent
