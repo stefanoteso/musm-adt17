@@ -56,7 +56,7 @@ class Problem(object):
     def __init__(self, num_attributes, num_threads=0):
         self.num_attributes = num_attributes
         self.num_threads = num_threads
-        num_attributes
+
 
     def infer(self, w, transform=(1, 0)):
         """Computes a highest-utility configuration w.r.t. the given weights.
@@ -116,9 +116,9 @@ class Problem(object):
         print ("Shape of aggregate_utility =", W.shape, " = (num_attributes, num_users)")
         print ("Shape of omega =", omega.shape," = (num_users,)")
 
-
-        ws_star = W * omega
-
+        ws_star = np.dot(W, omega)
+        #ws_star = W * omega
+        print ("Shape of ws_star =", ws_star.shape)
         from textwrap import dedent
         print(dedent('''\
                    W    = {W}
@@ -133,6 +133,7 @@ class Problem(object):
 
         x1 = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
         x2 = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
+
         diff = [model.addVar(vtype=G.INTEGER) for z in range(self.num_attributes)]
         absdiff = [model.addVar(vtype=G.INTEGER) for z in range(self.num_attributes)]
         ep = [model.addVar(vtype=G.INTEGER) for z in range(self.num_attributes)]
@@ -155,7 +156,7 @@ class Problem(object):
         self._add_constraints(model, x1)
         self._add_constraints(model, x2)
         model.optimize()
-
+        print("this is x1",x1)
         if model.status == G.Status.OPTIMAL:
             print('Optimal objective: %g' % model.objVal)
         elif model.status == G.Status.INF_OR_UNBD:
