@@ -174,17 +174,18 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     print (W.shape)
     # Initialize omega at random
     omega = rng.rand(len(group))
-
+    print ("Initial_Omega = ", omega)
     ni = 1  # learning rate
 
     for t in range(max_iters):
 
-        x1,x2 = problem.infer_query(W, omega) # finding x1 and x2 that maximize the objective function
+        x1,x2 = problem.infer_query(W,omega) # finding x1 and x2 that maximize the objective function
 
         # Social choice(x with greater aggregate_utility)
+        ws_new = np.dot(W, omega)
 
-        util1  = sum(np.dot(W, x1)*omega)
-        util2  = sum(np.dot(W, x2)*omega)
+        util1  = np.dot(ws_new,x1)
+        util2  = np.dot(ws_new,x2)
 
         if util1 > util2:
             delta = (x1-x2).reshape(1, -1)
@@ -195,9 +196,9 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         """delta is x with greater aggregate_utility minius x with smaller aggregate_utility (group)"""
 
         # perceptrone update
-
+        omega = omega[:,None]
         omega = update(omega,W,delta,ni)
-        print (omega)
+        print ("Learned_Omega = ", omega)
 
 	 # update function modifies omega according to the direction of delta, so delta will tell us how to modify omega
 
