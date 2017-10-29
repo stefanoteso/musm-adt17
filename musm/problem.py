@@ -156,7 +156,7 @@ class Problem(object):
         self._add_constraints(model, x1)
         self._add_constraints(model, x2)
         model.optimize()
-        print("this is x1",x1)
+
         if model.status == G.Status.OPTIMAL:
             print('Optimal objective: %g' % model.objVal)
         elif model.status == G.Status.INF_OR_UNBD:
@@ -177,6 +177,8 @@ class Problem(object):
 
         _LOG.debug('inferred {} {}'.format(x1, x2))
 
+        print ("This is X1", x1)
+        print ("This is X2", x2)
         return x1, x2
 
         """def infer(self, w, transform=(1, 0)):
