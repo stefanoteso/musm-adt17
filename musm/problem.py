@@ -115,8 +115,10 @@ class Problem(object):
         # of one user. Is this vvv correct in this case?
         print ("Shape of aggregate_utility =", W.shape, " = (num_attributes, num_users)")
         print ("Shape of omega =", omega.shape," = (num_users,)")
-
-        ws_star = np.dot(W, omega)
+        #omega = omega[:,None]
+        W = np.squeeze(np.asarray(W))
+        omega = np.squeeze(np.asarray(omega))
+        ws_star = np.dot(W, omega, out=None)
         #ws_star = W * omega
         print ("Shape of ws_star =", ws_star.shape)
         from textwrap import dedent
