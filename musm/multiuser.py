@@ -167,8 +167,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     # we create the matrix aggragate !!
     #Two users
 
-    Wu_1 = np.array((1,0,0,1))
-    Wu_2 = np.array((1,0,0,1))
+    Wu_1 = np.array((0,1,0,1))
+    Wu_2 = np.array((0,1,0,1))
 
     W=np.column_stack((Wu_1,Wu_2))
     print (W.shape)
@@ -176,7 +176,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     # Initialize omega at random
 
 
-    omega =np.array([1,1])
+    omega =np.array([0.5,0.5])
     print ("Initial_Omega = ", omega)
     ni = 1  # learning rate
 
