@@ -3,7 +3,7 @@ import gurobipy as gurobi
 from .problem import Problem
 
 class Synthetic(Problem):
-    def __init__(self, domain_sizes=2, **kwargs):
+    def __init__(self, domain_sizes=4, **kwargs):
         try:
             # Assumes a list of integers
             len(domain_sizes)
