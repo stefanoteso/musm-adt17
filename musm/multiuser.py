@@ -165,12 +165,12 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     _LOG.info('running musm, {num_users} users, k={set_size}, T={max_iters}',
               **locals())
     # we create the matrix aggragate !!
-    W=np.array([1,0,0,1])
+    W=np.array([0,1,1,0])
 
     print (W.shape)
     # Initialize omega at random
 
-    #omega = np.full((3, 5), 7)
+
     omega =np.array([1])
     print ("Initial_Omega = ", omega)
     ni = 1  # learning rate
