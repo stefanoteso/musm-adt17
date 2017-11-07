@@ -165,13 +165,18 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     _LOG.info('running musm, {num_users} users, k={set_size}, T={max_iters}',
               **locals())
     # we create the matrix aggragate !!
-    W=np.array([0,1,1,0])
+    #Two users
 
+    Wu_1 = np.array((1,0,0,1))
+    Wu_2 = np.array((1,0,0,1))
+
+    W=np.column_stack((Wu_1,Wu_2))
     print (W.shape)
+    print (" W = ", W)
     # Initialize omega at random
 
 
-    omega =np.array([1])
+    omega =np.array([1,1])
     print ("Initial_Omega = ", omega)
     ni = 1  # learning rate
 
@@ -198,7 +203,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         """delta is x with greater aggregate_utility minius x with smaller aggregate_utility (group)"""
 
         # perceptrone update
-        #omega = omega[:,None]
+        omega = omega[:,None]
         omega = update(omega,W,delta,ni)
         omega = np.squeeze(np.asarray(omega))
         print ("Learned_Omega = ", omega)

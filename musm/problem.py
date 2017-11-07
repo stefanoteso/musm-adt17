@@ -40,7 +40,13 @@ def dict2array(d):
 
 
 def dot(x, z):
-    return gurobi.quicksum([x[i] * z[i] for i in range(len(x))])
+    #check computation
+    print("..............checking computaion..............")
+    grutil = gurobi.quicksum([x[i] * z[i] for i in range(len(x))])
+    print ("grutil=", grutil)
+    print("...............................................")
+    return grutil
+
 
 
 def bilinear(x, A, z):
