@@ -154,9 +154,6 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
 
     return a, b
 
-def update(omega,W,delta,ni):
-    return omega + ni*(W.transpose())*(delta)
-
 def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
          pick='maxvar', transform='indep', tau=0.25, lmbda=0.5, rng=None,):
     rng = check_random_state(rng)
@@ -166,18 +163,11 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
               **locals())
     # we create the matrix aggragate !!
 
-    W=np.array([])
-    for u in group:
-        if not W.any():
-            W=u.w_star
-        else:
-            W=np.column_stack((W,u.w_star))
+    W = np.vstack((u.w_star for u in group)).T
 
     print (W.shape)
     #print (" W = ", W)
     # Initialize omega at random
-
-
     omega = rng.rand(len(group))
     print ("Initial_Omega = ", omega)
     ni = 1  # learning rate
@@ -187,8 +177,6 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         x1,x2 = problem.infer_query(W,omega) # finding x1 and x2 that maximize the objective function
 
         # Social choice(x with greater aggregate_utility)
-        W = np.squeeze(np.asarray(W))
-        omega = np.squeeze(np.asarray(omega))
 
 
         ws_new = np.dot(W, omega)
@@ -205,10 +193,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         """delta is x with greater aggregate_utility minius x with smaller aggregate_utility (group)"""
 
         # perceptrone update
-        omega = omega[:,None]
-        omega = update(omega,W,delta,ni)
-        omega = np.squeeze(np.asarray(omega))
-        print ("Learned_Omega = ", omega)
+        omega += ni * np.dot(delta, W).ravel()
 
 	 # update function modifies omega according to the direction of delta, so delta will tell us how to modify omega
 
