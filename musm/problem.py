@@ -150,7 +150,7 @@ class Problem(object):
         model.update()
 
         # objective fun page 3 of notes
-        model.setObjective(LAMBDA * dot(ws_star, x1) + dot(ws_star, x2) + \
+        model.setObjective(LAMBDA * (dot(ws_star, x1) + dot(ws_star, x2)) + \
                            (1 - LAMBDA) * gurobi.quicksum(ep))
 
         for z in range(self.num_attributes):
