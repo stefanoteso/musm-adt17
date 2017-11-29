@@ -165,7 +165,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     W = np.vstack((u.w_star for u in group)).T
 
-    print (W.shape)
+    #print (W.shape)
     #print (" W = ", W)
     # Initialize omega at random
     omega = rng.rand(len(group))
@@ -194,7 +194,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         # perceptrone update
         omega += ni * np.dot(delta, W).ravel()
-
+        print ("Learned_Omega = ", omega)
 	 # update function modifies omega according to the direction of delta, so delta will tell us how to modify omega
 
     _LOG.info('{} omega learned after {} iterations/ convergence'.format(len(omega),max_iters))

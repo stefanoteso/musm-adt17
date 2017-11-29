@@ -40,11 +40,7 @@ def dict2array(d):
 
 
 def dot(x, z):
-    #check computation
-    print("..............checking computaion..............")
     grutil = gurobi.quicksum([x[i] * z[i] for i in range(len(x))])
-    print ("grutil=", grutil)
-    print("...............................................")
     return grutil
 
 
@@ -119,20 +115,15 @@ class Problem(object):
         # num_users), each column encodes the preferences of one user; omega
         # a vector of shape (num_users,), each element encodes the importance
         # of one user. Is this vvv correct in this case?
-        print ("Shape of aggregate_utility =", W.shape, " = (num_attributes, num_users)")
-        print ("Shape of omega =", omega.shape," = (num_users,)")
+
+        #print ("Shape of aggregate_utility =", W.shape, " = (num_attributes, num_users)")
+        #print ("Shape of omega =", omega.shape," = (num_users,)")
         #omega = omega[:,None]
         W = np.squeeze(np.asarray(W))
         omega = np.squeeze(np.asarray(omega))
         ws_star = np.dot(W, omega, out=None)
         #ws_star = W * omega
-        print ("Shape of ws_star =", ws_star.shape)
-        from textwrap import dedent
-        print(dedent('''\
-                   W    = {W}
-                omega   = {omega}
-                ws_star = {ws_star}
-            ''').format(**locals()))
+
 
         model = gurobi.Model('inference')
         model.params.Threads = self.num_threads
