@@ -50,9 +50,9 @@ def sample_cluster(problem, num_users=5, distrib='normal', density=1, rng=0):
         num_attributes += problem.cost_matrix.shape[0]
 
     if distrib == 'uniform':
-        w_mean = rng.uniform(25, 25 / 3, size=num_attributes)
+        w_mean = rng.uniform(0, 1, size=num_attributes)
     elif distrib == 'normal':
-        w_mean = rng.uniform(1, 100 + 1, size=num_attributes)
+        w_mean = rng.uniform(-1, 1, size=num_attributes)
     else:
         raise ValueError('invalid distrib, got {}'.format(distrib))
 
