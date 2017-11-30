@@ -169,7 +169,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     #print (" W = ", W)
     # Initialize omega at random
     omega = rng.rand(len(group))
-    print ("Initial_Omega = ", omega)
+    #print ("Initial_Omega = ", omega)
     ni = 1  # learning rate
 
     for t in range(max_iters):
@@ -194,7 +194,12 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         # perceptrone update
         omega += ni * np.dot(delta, W).ravel()
-        print ("Learned_Omega = ", omega)
+        #print ("Learned_Omega = ", omega)
+
+        # Compute Utility loss
+
+        utility_loss = util1 - util2
+        print('utility_loss =', utility_loss)
 	 # update function modifies omega according to the direction of delta, so delta will tell us how to modify omega
 
     _LOG.info('{} omega learned after {} iterations/ convergence'.format(len(omega),max_iters))
