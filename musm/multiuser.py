@@ -5,6 +5,7 @@ from sklearn.cross_validation import KFold
 from sklearn.utils import check_random_state
 from textwrap import dedent
 from time import time
+import csv
 
 
 from . import get_logger
@@ -172,12 +173,13 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     #print ("Initial_Omega = ", omega)
     ni = 1  # learning rate
 
+    loss = []
+
     for t in range(max_iters):
 
         x1,x2 = problem.infer_query(W,omega) # finding x1 and x2 that maximize the objective function
 
-        # Social choice(x with greater aggregate_utility)
-
+        # Group Response (Social choice(x with greater aggregate_utility))
 
         ws_new = np.dot(W, omega)
 
@@ -200,6 +202,17 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         utility_loss = util1 - util2
         print('utility_loss =', utility_loss)
+        loss.append(utility_loss)
+
+        # Normalize Utility loss
+
+    loss = np.squeeze(np.asarray(loss))
+    #print('loss =', loss)
+
+    loss_normed = (loss - loss.min(0)) / loss.ptp(0)
+    print ( "Loss_normalized =",loss_normed)
+
+        #print('Loss_data = ', loss)
 	 # update function modifies omega according to the direction of delta, so delta will tell us how to modify omega
 
     _LOG.info('{} omega learned after {} iterations/ convergence'.format(len(omega),max_iters))
