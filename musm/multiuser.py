@@ -212,6 +212,38 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     loss_normed = (loss - loss.min(0)) / loss.ptp(0)
     print ( "Loss_normalized =",loss_normed)
 
+    # Save Loss data
+
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/musm/loss_data.csv"
+    with open(csvfile, "w") as output:
+        writer = csv.writer(output, lineterminator='\n')
+        for val in loss:
+            print(val)
+            writer.writerow([val])
+
+    # Save Normalized Loss_data
+
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/musm/Normalized_loss_data.csv"
+    with open(csvfile, "w") as output:
+        writer = csv.writer(output, lineterminator='\n')
+        for val in loss_normed:
+            print(val)
+            writer.writerow([val])
+    '''
+    file = open("some_data.csv", 'w')
+    for v in loss:
+        print(v)
+        file.write(str(v))
+        file.write("\n")
+    file.close()'''
+
+
+
+
+
+
+
+
         #print('Loss_data = ', loss)
 	 # update function modifies omega according to the direction of delta, so delta will tell us how to modify omega
 
