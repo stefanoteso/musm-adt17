@@ -122,38 +122,60 @@ class Problem(object):
         W = np.squeeze(np.asarray(W))
         omega = np.squeeze(np.asarray(omega))
         ws_star = np.dot(W, omega, out=None)
-        #ws_star = W * omega
-
 
         model = gurobi.Model('inference')
         model.params.Threads = self.num_threads
         model.params.Seed = 0
         model.params.OutputFlag = 0
 
-        x1 = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
-        x2 = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
+        # XXX
+        # x1 = model.addVar(vtype=G.BINARY)
+        # x2 = model.addVar(vtype=G.BINARY)
+        # d = model.addVar(vtype=G.INTEGER, lb=-1, ub=1)
+        # a = model.addVar(vtype=G.INTEGER, lb=0, ub=1)
+        # model.modelSense = G.MAXIMIZE
+        # model.update()
+        # model.setObjective(x1 + 2 * x2 + 100 * a)
+        # model.addConstr(d == x1 - x2)
+        # model.addGenConstrAbs(a, d)
+        # model.write('problem.lp')
+        # model.optimize()
+        # print(model.objVal)
+        # print('x1 =', x1.x)
+        # print('x2 =', x2.x)
+        # print('diff =', d.x)
+        # print('|diff| =', a.x)
+        # quit()
 
-        diff = [model.addVar(vtype=G.INTEGER) for z in range(self.num_attributes)]
-        absdiff = [model.addVar(vtype=G.INTEGER) for z in range(self.num_attributes)]
-        ep = [model.addVar(vtype=G.INTEGER) for z in range(self.num_attributes)]
+
+        x1 = [model.addVar(vtype=G.BINARY, name='x1'+str(z)) for z in range(self.num_attributes)]
+        x2 = [model.addVar(vtype=G.BINARY, name='x2'+str(z)) for z in range(self.num_attributes)]
+
+        f1 = dot(ws_star, x1)
+        f2 = dot(ws_star, x2)
+
+        diff = [model.addVar(vtype=G.INTEGER, lb=-1, ub=1, name='diff'+str(z))
+                for z in range(self.num_attributes)]
+        absdiff = [model.addVar(vtype=G.INTEGER, lb=0, ub=1, name='absdiff'+str(z))
+                for z in range(self.num_attributes)]
 
         model.modelSense = G.MAXIMIZE
         model.update()
 
         # objective fun page 3 of notes
-        model.setObjective(LAMBDA * (dot(ws_star, x1) + dot(ws_star, x2)) + \
-                           (1 - LAMBDA) * gurobi.quicksum(ep))
+        model.setObjective(
+            LAMBDA * 1 / np.sum(np.abs(ws_star)) * (f1 + f2) + \
+            (1 - LAMBDA) * 1 / self.num_attributes * gurobi.quicksum(absdiff))
 
         for z in range(self.num_attributes):
             # diff[z] == x1[z] - x2[z]
             model.addConstr(diff[z] == x1[z] - x2[z])
             # absdiff[z] == abs{diff[z]}
             model.addGenConstrAbs(absdiff[z], diff[z])
-            # ep[z] <= absdiff[z]
-            model.addConstr(ep[z] <= absdiff[z])
 
         self._add_constraints(model, x1)
         self._add_constraints(model, x2)
+        model.write('problem.lp')
         model.optimize()
 
         if model.status == G.Status.OPTIMAL:
