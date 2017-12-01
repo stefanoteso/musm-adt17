@@ -4,7 +4,7 @@ from scipy.spatial.distance import pdist
 from sklearn.cross_validation import KFold
 from sklearn.utils import check_random_state
 from textwrap import dedent
-from time import time
+import time
 import csv
 
 
@@ -155,6 +155,7 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
 
     return a, b
 
+
 def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
          pick='maxvar', transform='indep', tau=0.25, lmbda=0.5, rng=None,):
     rng = check_random_state(rng)
@@ -174,7 +175,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     ni = 1  # learning rate
 
     loss = []
-
+    cumulative_time =[]
+    start = time.time()
     for t in range(max_iters):
 
         x1,x2 = problem.infer_query(W,omega) # finding x1 and x2 that maximize the objective function
@@ -204,6 +206,10 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         print('utility_loss =', utility_loss)
         loss.append(utility_loss)
 
+        end = time.time()
+        T = end - start
+        cumulative_time.append(T)
+        print("Time = ", cumulative_time)
         # Normalize Utility loss
 
     loss = np.squeeze(np.asarray(loss))
@@ -229,13 +235,16 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         for val in loss_normed:
             print(val)
             writer.writerow([val])
-    '''
-    file = open("some_data.csv", 'w')
-    for v in loss:
-        print(v)
-        file.write(str(v))
-        file.write("\n")
-    file.close()'''
+
+    # Save cumulative time
+
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/musm/time.csv"
+    with open(csvfile, "w") as output:
+        writer = csv.writer(output, lineterminator='\n')
+        for val in cumulative_time:
+            print(val)
+            writer.writerow([val])
+
 
 
 
