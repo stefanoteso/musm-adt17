@@ -176,11 +176,11 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     loss = []
     cumulative_time =[]
-    start = time.time()
+
     for t in range(max_iters):
 
         x1,x2 = problem.infer_query(W,omega) # finding x1 and x2 that maximize the objective function
-
+        start = time.time()
         # Group Response (Social choice(x with greater aggregate_utility))
 
         ws_new = np.dot(W, omega)
@@ -220,16 +220,16 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     # Save Loss data
 
-    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/musm/loss_data.csv"
+    '''csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_loss_20_1_normal_1.0.csv"
     with open(csvfile, "w") as output:
         writer = csv.writer(output, lineterminator='\n')
         for val in loss:
             print(val)
-            writer.writerow([val])
+            writer.writerow([val])'''
 
     # Save Normalized Loss_data
 
-    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/musm/Normalized_loss_data.csv"
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/NORMALIZED_synthetic_loss_20_1_normal_1.0.csv"
     with open(csvfile, "w") as output:
         writer = csv.writer(output, lineterminator='\n')
         for val in loss_normed:
@@ -238,7 +238,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     # Save cumulative time
 
-    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/musm/time.csv"
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_TIME_20_1_normal_1.0.csv"
     with open(csvfile, "w") as output:
         writer = csv.writer(output, lineterminator='\n')
         for val in cumulative_time:
