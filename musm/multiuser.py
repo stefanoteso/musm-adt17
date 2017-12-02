@@ -170,20 +170,29 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     #print (W.shape)
     #print (" W = ", W)
     # Initialize omega at random
-    omega = rng.rand(len(group))
+    omega_star = rng.rand(len(group))
     #print ("Initial_Omega = ", omega)
     ni = 1  # learning rate
 
     loss = []
     cumulative_time =[]
+    start = time.time()
 
+    x_star = problem.benchmark(W,omega_star)
+
+    #print("This is True X =", x_star)
+
+
+
+
+    omega = np.zeros(len(group))
     for t in range(max_iters):
 
         x1,x2 = problem.infer_query(W,omega) # finding x1 and x2 that maximize the objective function
-        start = time.time()
+
         # Group Response (Social choice(x with greater aggregate_utility))
 
-        ws_new = np.dot(W, omega)
+        ws_new = np.dot(W, omega_star)
 
         util1  = np.dot(ws_new,x1)
         util2  = np.dot(ws_new,x2)
@@ -198,13 +207,16 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
         # perceptrone update
         omega += ni * np.dot(delta, W).ravel()
-        #print ("Learned_Omega = ", omega)
+        print ("Learned_Omega = ", omega)
 
         # Compute Utility loss
+        if util1 > util2:
+            utility_loss = np.dot(ws_new,x_star) - np.dot(ws_new,x1)
+        else:
+            utility_loss = np.dot(ws_new,x_star) - np.dot(ws_new,x2)
 
-        utility_loss = util1 - util2
-        print('utility_loss =', utility_loss)
-        loss.append(utility_loss)
+            print('utility_loss ======================================', utility_loss)
+            loss.append(utility_loss)
 
         end = time.time()
         T = end - start
@@ -229,7 +241,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     # Save Normalized Loss_data
 
-    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/NORMALIZED_synthetic_loss_20_1_normal_1.0.csv"
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/NORMALIZED_synthetic_loss_20_5_uniform.csv"
     with open(csvfile, "w") as output:
         writer = csv.writer(output, lineterminator='\n')
         for val in loss_normed:
@@ -238,7 +250,7 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     # Save cumulative time
 
-    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_TIME_20_1_normal_1.0.csv"
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_TIME_20_5_uniform.csv"
     with open(csvfile, "w") as output:
         writer = csv.writer(output, lineterminator='\n')
         for val in cumulative_time:

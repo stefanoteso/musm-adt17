@@ -106,6 +106,40 @@ class Problem(object):
         return x
 #Implement groupwise query selection
 
+    #Compute x_star
+
+    def benchmark(self, W, omega_star):
+
+
+        W = np.squeeze(np.asarray(W))
+        omega_star = np.squeeze(np.asarray(omega_star))
+        ws_star = np.dot(W, omega_star, out=None)
+
+
+        model = gurobi.Model('inference')
+        model.params.Threads = self.num_threads
+        model.params.Seed = 0
+        model.params.OutputFlag = 0
+
+        x_star = [model.addVar(vtype=G.BINARY) for z in range(self.num_attributes)]
+
+        model.modelSense = G.MAXIMIZE
+        model.update()
+
+        model.setObjective(dot(ws_star,x_star))
+        self._add_constraints(model, x_star)
+        model.optimize()
+
+
+
+        x_star = np.array([x_star[z].x for z in range(self.num_attributes)])
+
+        print("This is True X =", x_star)
+
+        _LOG.debug('inferred {}'.format(x_star))
+
+        return x_star
+
 
     def infer_query(self, W ,omega):
         LAMBDA = 0.5
