@@ -232,8 +232,8 @@ class Problem(object):
 
         _LOG.debug('inferred {} {}'.format(x1, x2))
 
-        #print ("This is X1", x1)
-        #print ("This is X2", x2)
+        print ("This is X1", x1)
+        print ("This is X2", x2)
         return x1, x2
 
         """def infer(self, w, transform=(1, 0)):

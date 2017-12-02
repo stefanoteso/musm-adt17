@@ -171,7 +171,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     #print (" W = ", W)
     # Initialize omega at random
     omega_star = rng.rand(len(group))
-    #print ("Initial_Omega = ", omega)
+    print ("Initial_Omega_star = ", omega_star)
+
     ni = 1  # learning rate
 
     loss = []
@@ -180,19 +181,17 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     x_star = problem.benchmark(W,omega_star)
 
-    #print("This is True X =", x_star)
+    omega = rng.rand(len(group))
 
+    print ("start omega =========", omega)
 
-
-
-    omega = np.zeros(len(group))
     for t in range(max_iters):
 
         x1,x2 = problem.infer_query(W,omega) # finding x1 and x2 that maximize the objective function
 
         # Group Response (Social choice(x with greater aggregate_utility))
 
-        ws_new = np.dot(W, omega_star)
+        ws_new = np.dot(W, omega)
 
         util1  = np.dot(ws_new,x1)
         util2  = np.dot(ws_new,x2)
@@ -209,11 +208,21 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
         omega += ni * np.dot(delta, W).ravel()
         print ("Learned_Omega = ", omega)
 
+
+
         # Compute Utility loss
+        ws_true = np.dot(W, omega_star)
         if util1 > util2:
-            utility_loss = np.dot(ws_new,x_star) - np.dot(ws_new,x1)
+            print ("x_star",x_star)
+            print ("x1",x1)
+
+            #utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_true,x1)
+            utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_new,x1)
         else:
-            utility_loss = np.dot(ws_new,x_star) - np.dot(ws_new,x2)
+            print ("x_star",x_star)
+            print ("x2", x2)
+            #utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_true,x2)
+            utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_new,x2)
 
             print('utility_loss ======================================', utility_loss)
             loss.append(utility_loss)
@@ -227,7 +236,8 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     loss = np.squeeze(np.asarray(loss))
     #print('loss =', loss)
 
-    loss_normed = (loss - loss.min(0)) / loss.ptp(0)
+    loss_normed = loss
+       # (loss - loss.min(0)) / loss.ptp(0)
     print ( "Loss_normalized =",loss_normed)
 
     # Save Loss data
