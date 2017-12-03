@@ -244,7 +244,35 @@ def musm(problem, group,gid, set_size=2, max_iters=100, enable_cv=False,
     loss_normed = (loss - loss.min(0)) / loss.ptp(0)
     print ( "Loss_normalized =",loss_normed)
 
-    
+    # Save Loss data
+    '''csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_loss_20_1_normal_1.0.csv"
+    with open(csvfile, "w") as output:
+        writer = csv.writer(output, lineterminator='\n')
+        for val in loss:
+            print(val)
+            writer.writerow([val])'''
+
+
+
+
+     # Save Normalized Loss_data
+
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_loss_20_1_uniform"
+    with open(csvfile+"_"+str(gid)+".csv", "w") as output:
+        writer = csv.writer(output, lineterminator='\n')
+        for val in loss_normed:
+            print(val)
+            writer.writerow([val])
+
+
+    # Save cumulative time
+
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_TIME_20_1_uniform.csv"
+    with open(csvfile+"_"+str(gid)+".csv", "w") as output:
+        writer = csv.writer(output, lineterminator='\n')
+        for val in cumulative_time:
+            print(val)
+            writer.writerow([val])
 
 
         #print('Loss_data = ', loss)
