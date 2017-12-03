@@ -156,7 +156,7 @@ def compute_transform(uid, uid_to_w, var, cov, transform, lmbda):
     return a, b
 
 
-def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
+def musm(problem, group,gid, set_size=2, max_iters=100, enable_cv=False,
          pick='maxvar', transform='indep', tau=0.25, lmbda=0.5, rng=None,):
     rng = check_random_state(rng)
     num_users = len(group)
@@ -177,15 +177,18 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
 
     loss = []
     cumulative_time =[]
-    start = time.time()
 
+    print ("Group+++++++++++++++++++++++++++++++++++++++++++++++++++++++", group)
     x_star = problem.benchmark(W,omega_star)
 
     omega = rng.rand(len(group))
+    #omega = np.zeros(len(group))
+    print("Group ID ====================", gid)
 
     print ("start omega =========", omega)
-
+    start = time.time()
     for t in range(max_iters):
+
 
         x1,x2 = problem.infer_query(W,omega) # finding x1 and x2 that maximize the objective function
 
@@ -217,20 +220,21 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
             print ("x1",x1)
 
             #utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_true,x1)
-            utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_new,x1)
+            utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_true,x1)
         else:
             print ("x_star",x_star)
             print ("x2", x2)
             #utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_true,x2)
-            utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_new,x2)
+            utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_true,x2)
 
             print('utility_loss ======================================', utility_loss)
             loss.append(utility_loss)
 
-        end = time.time()
-        T = end - start
-        cumulative_time.append(T)
-        print("Time = ", cumulative_time)
+            end = time.time()
+            T = end - start
+            cumulative_time.append(T)
+            print("Time = ", cumulative_time)
+
         # Normalize Utility loss
 
     loss = np.squeeze(np.asarray(loss))
@@ -241,7 +245,6 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
     print ( "Loss_normalized =",loss_normed)
 
     # Save Loss data
-
     '''csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_loss_20_1_normal_1.0.csv"
     with open(csvfile, "w") as output:
         writer = csv.writer(output, lineterminator='\n')
@@ -249,30 +252,33 @@ def musm(problem, group, set_size=2, max_iters=100, enable_cv=False,
             print(val)
             writer.writerow([val])'''
 
-    # Save Normalized Loss_data
+    '''csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/NORMALIZED_synthetic_loss_20_1_uniform.csv"
+    with open(csvfile, "a") as output:
+        writer = csv.writer(output, lineterminator='\t ')
+        #writer.writerow(gid)
+        for val in cumulative_time:
+            print(val)
+            writer.writerow([val])
+        writer.writerow('\n')'''
 
-    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/NORMALIZED_synthetic_loss_20_5_uniform.csv"
-    with open(csvfile, "w") as output:
+
+     # Save Normalized Loss_data
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_loss_20_1_uniform"
+    with open(csvfile+"_"+str(gid)+".csv", "w") as output:
         writer = csv.writer(output, lineterminator='\n')
         for val in loss_normed:
             print(val)
             writer.writerow([val])
 
+
     # Save cumulative time
 
-    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_TIME_20_5_uniform.csv"
-    with open(csvfile, "w") as output:
+    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_TIME_20_1_uniform.csv"
+    with open(csvfile+"_"+str(gid)+".csv", "w") as output:
         writer = csv.writer(output, lineterminator='\n')
         for val in cumulative_time:
             print(val)
             writer.writerow([val])
-
-
-
-
-
-
-
 
 
         #print('Loss_data = ', loss)

@@ -197,9 +197,14 @@ class Problem(object):
         model.update()
 
         # objective fun page 3 of notes
-        model.setObjective(
-            LAMBDA * 1 / np.sum(np.abs(ws_star)) * (f1 + f2) + \
-            (1 - LAMBDA) * 1 / self.num_attributes * gurobi.quicksum(absdiff))
+        if np.all(ws_star) == 0:
+            model.setObjective(LAMBDA * (dot(ws_star, x1) + dot(ws_star, x2)) + \
+                           (1 - LAMBDA) * gurobi.quicksum(absdiff))
+        else:
+
+            model.setObjective(
+                LAMBDA * 1 / np.sum(np.abs(ws_star)) * (f1 + f2) + \
+                (1 - LAMBDA) * 1 / self.num_attributes * gurobi.quicksum(absdiff))
 
         for z in range(self.num_attributes):
             # diff[z] == x1[z] - x2[z]
