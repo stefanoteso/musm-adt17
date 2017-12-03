@@ -178,11 +178,11 @@ def musm(problem, group,gid, set_size=2, max_iters=100, enable_cv=False,
     loss = []
     cumulative_time =[]
 
-    print ("Group+++++++++++++++++++++++++++++++++++++++++++++++++++++++", group)
+
     x_star = problem.benchmark(W,omega_star)
 
-    omega = rng.rand(len(group))
-    #omega = np.zeros(len(group))
+    #omega = rng.rand(len(group))
+    omega = np.zeros(len(group))
     print("Group ID ====================", gid)
 
     print ("start omega =========", omega)
@@ -221,64 +221,30 @@ def musm(problem, group,gid, set_size=2, max_iters=100, enable_cv=False,
 
             #utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_true,x1)
             utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_true,x1)
+
         else:
             print ("x_star",x_star)
             print ("x2", x2)
             #utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_true,x2)
             utility_loss =  np.dot(ws_true,x_star) - np.dot(ws_true,x2)
 
-            print('utility_loss ======================================', utility_loss)
-            loss.append(utility_loss)
+        print('utility_loss ======================================', utility_loss)
+        loss.append(utility_loss)
 
-            end = time.time()
-            T = end - start
-            cumulative_time.append(T)
-            print("Time = ", cumulative_time)
+        end = time.time()
+        T = end - start
+        cumulative_time.append(T)
+        print("Time = ", cumulative_time)
 
         # Normalize Utility loss
 
     loss = np.squeeze(np.asarray(loss))
     #print('loss =', loss)
 
-    loss_normed = loss
-       # (loss - loss.min(0)) / loss.ptp(0)
+    loss_normed = (loss - loss.min(0)) / loss.ptp(0)
     print ( "Loss_normalized =",loss_normed)
 
-    # Save Loss data
-    '''csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_loss_20_1_normal_1.0.csv"
-    with open(csvfile, "w") as output:
-        writer = csv.writer(output, lineterminator='\n')
-        for val in loss:
-            print(val)
-            writer.writerow([val])'''
-
-    '''csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/NORMALIZED_synthetic_loss_20_1_uniform.csv"
-    with open(csvfile, "a") as output:
-        writer = csv.writer(output, lineterminator='\t ')
-        #writer.writerow(gid)
-        for val in cumulative_time:
-            print(val)
-            writer.writerow([val])
-        writer.writerow('\n')'''
-
-
-     # Save Normalized Loss_data
-    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_loss_20_1_uniform"
-    with open(csvfile+"_"+str(gid)+".csv", "w") as output:
-        writer = csv.writer(output, lineterminator='\n')
-        for val in loss_normed:
-            print(val)
-            writer.writerow([val])
-
-
-    # Save cumulative time
-
-    csvfile = "/Users/bereket/Documents/Social/setmargin/musm-adt17/result_data/synthetic_TIME_20_1_uniform.csv"
-    with open(csvfile+"_"+str(gid)+".csv", "w") as output:
-        writer = csv.writer(output, lineterminator='\n')
-        for val in cumulative_time:
-            print(val)
-            writer.writerow([val])
+    
 
 
         #print('Loss_data = ', loss)
