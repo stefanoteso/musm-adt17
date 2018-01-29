@@ -135,6 +135,7 @@ def run(args):
     for gid in range(args['num_groups']):
         traces.append(musm.musm(problem,
                                 user_groups[gid],
+                                gid,
                                 set_size=args['set_size'],
                                 max_iters=args['max_iters'],
                                 enable_cv=args['enable_cv'],
@@ -142,6 +143,7 @@ def run(args):
                                 transform=args['transform'],
                                 tau=args['tau'],
                                 lmbda=args['lmbda'],
+
                                 rng=0))
 
     musm.dump(get_results_path(args), {'args': args, 'traces': traces})

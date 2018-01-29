@@ -13,5 +13,5 @@ from .pc import *
 from . import user
 from .user import *
 
-from . import multiuser
-from .multiuser import *
+from . import socialchoice
+from .socialchoice import *

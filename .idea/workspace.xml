@@ -2,7 +2,294 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4d3c5e3-77e1-4808-820b-f750a46aaae8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/musm/multiuser.py" afterPath="$PROJECT_DIR$/musm/multiuser.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-1-Normal/Loss_+TIME_synthetic_20_1_normal_1.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-1-Normal/Loss_+TIME_synthetic_20_1_normal_2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-1-Uniform/Loss_+TIME_synthetic_20_1_normal_2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-1-Uniform/Loss_+TIME_synthetic_20_1_uniform_1.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-1-Uniform/Loss_synthetic_20_1_uniform.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-1-Uniform/time_synthetic_20_1_uniform.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-2-Normal/Loss_+TIME_synthetic_20_2_normal_1.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-2-Normal/Loss_+TIME_synthetic_20_2_normal_2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-2-Normal/Loss_synthetic_20_2_normal.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-2-Normal/time_synthetic_20_2_normal.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-2-Uniform/Loss_+TIME_synthetic_20_2_uniform_1.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-2-Uniform/Loss_+TIME_synthetic_20_2_uniform_2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-2-Uniform/Loss_synthetic_20_2_uniform.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-2-Uniform/time_synthetic_20_2_uniform.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-5-Normal/Loss_+TIME_synthetic_20_5_normal_1.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-5-Normal/Loss_+TIME_synthetic_20_5_normal_2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-5-Normal/Loss_synthetic_20_5_normal.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-5-Normal/time_synthetic_20_5_normal.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-5-Uniform/Loss_+TIME_synthetic_20_5_uniform_1.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-5-Uniform/Loss_+TIME_synthetic_20_5_uniform_2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-5-Uniform/Loss_synthetic_20_5_uniform.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/20-5-Uniform/time_synthetic_20_5_uniform.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/Loss_+_TIME_synthetic_20_1_normal_1.0.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/Loss_synthetic_20_1_normal_1.0.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plots/Time_synthetic_20_1_normal_1.0.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/VISUALIZE RESULTS.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/musm/multiuser.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/plots/20-1-Normal/Loss_synthetic_20_1_normal.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/plots/20-1-Normal/time_synthetic_20_1_normal.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_loss_20_1_normal_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Normal/synthetic_time_20_1_normal.csv_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_loss_20_1_uniform_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-1-Uniform/synthetic_time_20_1_uniform.csv_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_loss_20_2_normal_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Normal/synthetic_time_20_2_normal.csv_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_loss_20_2_uniform_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-2-Uniform/synthetic_time_20_2_uniform.csv_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_loss_20_5_normal_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Normal/synthetic_time_20_5_normal.csv_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_loss_20_5_uniform_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_0.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_10.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_11.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_12.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_13.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_14.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_15.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_16.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_17.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_18.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_19.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_4.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_5.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_6.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_7.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_8.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/20-5-Uniform/synthetic_time_20_5_uniform.csv_9.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/NORMALIZED_synthetic_loss_20_1_normal.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/NORMALIZED_synthetic_loss_20_1_uniform.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/NORMALIZED_synthetic_loss_20_2_normal.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/NORMALIZED_synthetic_loss_20_2_uniform.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/NORMALIZED_synthetic_loss_20_5_normal.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/NORMALIZED_synthetic_loss_20_5_uniform.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/synthetic_TIME_20_1_normal.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/synthetic_TIME_20_1_uniform.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/synthetic_TIME_20_2_normal.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/synthetic_TIME_20_2_uniform.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/synthetic_TIME_20_5_normal.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/result_data/synthetic_TIME_20_5_uniform.csv" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/musm-adt17.iml" afterPath="$PROJECT_DIR$/.idea/musm-adt17.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Synthetic_RESULTS.ipynb" afterPath="$PROJECT_DIR$/Synthetic_RESULTS.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Synthetic_RESULTS_0.2.ipynb" afterPath="$PROJECT_DIR$/Synthetic_RESULTS_0.2.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/adt17.py" afterPath="$PROJECT_DIR$/adt17.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/musm/__init__.py" afterPath="$PROJECT_DIR$/musm/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/musm/problem.py" afterPath="$PROJECT_DIR$/musm/problem.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,14 +302,13 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="problem.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/musm/problem.py">
+      <file leaf-file-name="user.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/musm/user.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="119" column="21" lean-forward="false" selection-start-line="119" selection-start-column="21" selection-end-line="119" selection-end-column="21" />
+            <state relative-caret-position="30">
+              <caret line="21" column="28" lean-forward="false" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="28" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -30,23 +316,35 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/musm/user.py">
+      <file leaf-file-name="synthetic.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/musm/synthetic.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="problem.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/musm/problem.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-112">
+              <caret line="164" column="13" lean-forward="false" selection-start-line="164" selection-start-column="13" selection-end-line="164" selection-end-column="13" />
+              <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="multiuser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
+      <file leaf-file-name="socialchoice.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/musm/socialchoice.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2646">
-              <caret line="155" column="4" lean-forward="false" selection-start-line="155" selection-start-column="4" selection-end-line="155" selection-end-column="4" />
+            <state relative-caret-position="-851">
+              <caret line="119" column="52" lean-forward="true" selection-start-line="119" selection-start-column="52" selection-end-line="119" selection-end-column="52" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -57,14 +355,62 @@
       <file leaf-file-name="adt17.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adt17.py">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="931">
+              <caret line="135" column="32" lean-forward="false" selection-start-line="135" selection-start-column="32" selection-end-line="135" selection-end-column="32" />
+              <folding>
+                <element signature="e#26#36#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/musm/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="188">
+              <caret line="16" column="27" lean-forward="true" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="adt17.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adt17.sh">
+          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="215" selection-end-column="0" />
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="pc.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/musm/pc.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>L1</find>
+      <find>rng</find>
+      <find>Group ID</find>
+      <find>gid=</find>
+      <find>min</find>
+      <find>uni</find>
+      <find>normal</find>
+      <find>spars</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -74,6 +420,8 @@
       <list>
         <option value="$PROJECT_DIR$/musm/multiuser.py" />
         <option value="$PROJECT_DIR$/musm/problem.py" />
+        <option value="$PROJECT_DIR$/musm/__init__.py" />
+        <option value="$PROJECT_DIR$/adt17.py" />
       </list>
     </option>
   </component>
@@ -83,11 +431,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="39" />
-    <option name="y" value="24" />
-    <option name="width" value="1327" />
-    <option name="height" value="744" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-1910" />
+    <option name="y" value="-138" />
+    <option name="width" value="1908" />
+    <option name="height" value="1110" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -104,45 +452,70 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="musm-adt17" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="musm-adt17" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="musm-adt17" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="musm-adt17" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="musm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
+          <expand>
+            <path>
+              <item name="musm-adt17" type="b2602c69:ProjectViewProjectNode" />
+              <item name="musm-adt17" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="js.eslint.eslintPackage" value="" />
   </component>
-  <component name="RunManager">
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.adt17">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="musm-adt17" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <module name="musm-adt17" />
+    </configuration>
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -198,37 +571,6 @@
       <module name="musm-adt17" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="ADDITIONAL_ARGS" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="musm-adt17" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <module name="musm-adt17" />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
@@ -357,9 +699,52 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
+    <configuration name="adt17" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="musm-adt17" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/adt17.py" />
+      <option name="PARAMETERS" value="synthetic -N 20 -M 20 -C 5 -G users/groups_synthetic_20_2_normal_0.2 -T 100 -K 2 --min-regret 0.1 -F indep" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration name="draw" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="musm-adt17" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/draw.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="Python.adt17" />
+      <item index="1" class="java.lang.String" itemvalue="Python.draw" />
+    </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -372,27 +757,28 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="39" y="24" width="1327" height="744" extended-state="6" />
+    <frame x="-1920" y="-138" width="1918" height="1110" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15846995" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13636364" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5277778" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -402,10 +788,258 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/adt17.py</url>
+          <line>14</line>
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/adt17.py</url>
+          <line>120</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/socialchoice.py</url>
+          <line>159</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/socialchoice.py</url>
+          <line>158</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/socialchoice.py</url>
+          <line>167</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/socialchoice.py</url>
+          <line>192</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/problem.py</url>
+          <line>143</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/problem.py</url>
+          <line>110</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/problem.py</url>
+          <line>155</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/problem.py</url>
+          <line>156</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/problem.py</url>
+          <line>160</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/problem.py</url>
+          <line>162</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/problem.py</url>
+          <line>184</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/musm/problem.py</url>
+          <line>185</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="14" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/musm/pc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4750">
+          <caret line="260" column="107" lean-forward="false" selection-start-line="260" selection-start-column="107" selection-end-line="260" selection-end-column="107" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/synthetic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4750">
+          <caret line="260" column="107" lean-forward="false" selection-start-line="260" selection-start-column="107" selection-end-line="260" selection-end-column="107" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/problem.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2907">
+          <caret line="159" column="0" lean-forward="false" selection-start-line="158" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adt17.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/pc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/synthetic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/problem.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3781">
+          <caret line="199" column="31" lean-forward="false" selection-start-line="199" selection-start-column="31" selection-end-line="199" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda/lib/python3.5/site-packages/matplotlib/dviread.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5529">
+          <caret line="305" column="37" lean-forward="false" selection-start-line="305" selection-start-column="37" selection-end-line="305" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/draw.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1216">
+          <caret line="72" column="20" lean-forward="false" selection-start-line="72" selection-start-column="20" selection-end-line="72" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adt17.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2470">
+          <caret line="137" column="35" lean-forward="true" selection-start-line="137" selection-start-column="35" selection-end-line="137" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5016">
+          <caret line="264" column="7" lean-forward="true" selection-start-line="264" selection-start-column="7" selection-end-line="264" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/problem.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="855">
+          <caret line="51" column="48" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="51" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharmEdu4.0/python_stubs/-545188813/numpy/core/multiarray.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110086">
+          <caret line="5794" column="4" lean-forward="false" selection-start-line="5794" selection-start-column="4" selection-end-line="5794" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adt17.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="14" column="12" lean-forward="false" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2774">
+          <caret line="156" column="0" lean-forward="true" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/musm/problem.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -428,11 +1062,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2646">
-          <caret line="155" column="4" lean-forward="false" selection-start-line="155" selection-start-column="4" selection-end-line="155" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="2774">
+          <caret line="155" column="0" lean-forward="true" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -440,7 +1072,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="215" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -468,93 +1099,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2646">
           <caret line="155" column="4" lean-forward="false" selection-start-line="155" selection-start-column="4" selection-end-line="155" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adt17.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/musm/problem.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adt17.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/musm/problem.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adt17.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2646">
-          <caret line="155" column="4" lean-forward="false" selection-start-line="155" selection-start-column="4" selection-end-line="155" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/musm/user.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -562,14 +1107,202 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="215" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/musm/problem.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="119" column="21" lean-forward="false" selection-start-line="119" selection-start-column="21" selection-end-line="119" selection-end-column="21" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2646">
+          <caret line="155" column="4" lean-forward="false" selection-start-line="155" selection-start-column="4" selection-end-line="155" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adt17.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/problem.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adt17.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/problem.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adt17.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharmEdu4.0/python_stubs/-545188813/numpy/core/multiarray.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="5794" column="4" lean-forward="false" selection-start-line="5794" selection-start-column="4" selection-end-line="5794" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/draw.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="70" column="0" lean-forward="true" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda/lib/python3.5/site-packages/matplotlib/dviread.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="305" column="37" lean-forward="false" selection-start-line="305" selection-start-column="37" selection-end-line="305" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/pc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adt17.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/multiuser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4750">
+          <caret line="260" column="7" lean-forward="false" selection-start-line="260" selection-start-column="7" selection-end-line="260" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="16" column="27" lean-forward="true" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/synthetic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="21" column="28" lean-forward="false" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adt17.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="931">
+          <caret line="135" column="32" lean-forward="false" selection-start-line="135" selection-start-column="32" selection-end-line="135" selection-end-column="32" />
+          <folding>
+            <element signature="e#26#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/socialchoice.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-851">
+          <caret line="119" column="52" lean-forward="true" selection-start-line="119" selection-start-column="52" selection-end-line="119" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/musm/problem.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-112">
+          <caret line="164" column="13" lean-forward="false" selection-start-line="164" selection-start-column="13" selection-end-line="164" selection-end-column="13" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
